@@ -1,5 +1,7 @@
 <template>
   <div class="cleaning">
-    <h1>This is an ......... page</h1>
+    <v-container class="my-5">
+    content
+  </v-container>
   </div>
 </template>
