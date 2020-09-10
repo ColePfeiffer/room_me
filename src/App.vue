@@ -75,7 +75,7 @@
       </v-toolbar>
     </v-card>
 
-    <v-content class="content">
+    <v-content class="content mx-4 mb-4">
       <!--            Hier werden einzelne Seiten reingeladen-->
       <router-view></router-view>
     </v-content>
