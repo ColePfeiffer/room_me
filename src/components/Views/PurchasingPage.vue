@@ -35,11 +35,8 @@
             </v-simple-table>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="9" xs="12">
+                <v-col cols="12" sm="12" xs="12">
                   <v-text-field label="Want to add something?" single-line></v-text-field>
-                </v-col>
-                <v-col cols="3" sm="3" xs="12">
-                  <v-btn color="orange" label="add" single-line>+</v-btn>
                 </v-col>
               </v-row>
             </v-container>
@@ -64,6 +61,74 @@
                 </v-list>
               </v-list-item-content>
             </v-list-item>
+           
+            <v-list class="pa-20" pa-6> 
+
+            <div class="text-center">
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn 
+        v-bind="attrs"
+          v-on="on"
+          class="pa-20" color="pink" label="addMoney">Bought something already?</v-btn>
+      </template>
+
+      <v-card>
+        <v-card-title class="headline grey lighten-2">
+          Add your bought supplies here
+        </v-card-title>
+
+        <v-card-text cols="12" sm="12">
+         <v-row>
+      <v-col >
+        <v-textarea
+          class="mx-2"
+          label="Product"
+          rows="1"
+          prepend-icon="add_shopping_cart"
+        ></v-textarea>
+         <v-textarea
+          class="mx-2"
+          label="Price"
+          rows="1"
+          prepend-icon="euro"
+        ></v-textarea>
+         <v-textarea
+          class="mx-2"
+          label="Comment"
+          placeholder="Add an optional comment about this product."
+          rows="2"
+          prepend-icon="face"
+        ></v-textarea>
+         </v-col>
+       
+       
+        
+
+     
+         </v-row>
+        --eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            Finish
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
+            </v-list>
           </v-card>
         </v-col>
 
@@ -73,13 +138,13 @@
               <v-tabs-slider></v-tabs-slider>
 
               <v-tab href="#tab-1">
-                Offen
-                <v-icon color="blue">mdi-heart</v-icon>
+                Pending
+                <v-icon color="pink">pending</v-icon>
               </v-tab>
 
               <v-tab href="#tab-2">
-                Erledigt
-                <v-icon color="pink">mdi-heart</v-icon>
+                Done
+                <v-icon color="green">euro</v-icon>
               </v-tab>
             </v-tabs>
 
@@ -114,6 +179,7 @@ export default {
   },
   data() {
     return {
+      dialogBought: false,
       checkbox: true,
       shoppingList: [
         {
