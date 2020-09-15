@@ -10,15 +10,30 @@
                 <thead>
                   <tr>
                     <th class="text-left">Bezeichnung</th>
-                    <th class="text-left">Status</th>
-                    <th class="text-left">Annehmen</th>
-                    <th class="text-left">Ablehnen</th>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Status</th>
+                      </template>
+                      <span>Was bedeutet Status?</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Annehmen</th>
+                      </template>
+                      <span>Was bedeutet Annehmen?</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
+                      </template>
+                      <span>Meeeeeeeeeeta</span>
+                    </v-tooltip>
                   </tr>
                 </thead>
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
                   <tr v-for="item in shoppingList" :key="item.articleName">
                     <td>{{ item.articleName }}</td>
-                    <td>{{ item.statusBoolean }}</td>
+                    <td>{{ item.statusText }}</td>
                     <td>
                       <v-btn text>
                         <v-icon>mdi-check</v-icon>
@@ -50,8 +65,59 @@
                 <v-list>
                   <v-list-item v-for="item in overviewList" :key="item.username">
                     <v-list-item-avatar>
-                      <v-img class="overview-pic" v-bind:src="item.profilePicture"></v-img>
+                      <v-dialog v-model="dialogProfilePage" width="500">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn v-bind="attrs" v-on="on" label="showProfileScreen">
+                            <v-img
+                              max-width="60"
+                              max-height="60"
+                              class="profile-picture"
+                              v-bind:src="item.profilePicture"
+                            ></v-img>
+                          </v-btn>
+                        </template>
+
+                        <v-card v-bind:src="item.profilePicture">
+                          <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
+                          <v-card-text cols="12" sm="12">
+                            <v-col class="justify-center">
+                              <v-img
+                                width="160"
+                                height="160"
+                                class="rounded-circle ma-3 justify-center"
+                                src="https://images.unsplash.com/photo-1494253109108-2e30c049369b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                              ></v-img>
+                            </v-col>
+
+                            <v-row>
+                              <v-col>
+                                <v-textarea
+                                  class="mx-2"
+                                  label="Roomie Name"
+                                  rows="1"
+                                  prepend-icon="face"
+                                ></v-textarea>
+
+                                <v-textarea
+                                  class="mx-2"
+                                  label="About"
+                                  placeholder="Write something about yourself... :-)"
+                                  rows="2"
+                                  prepend-icon="comment_section"
+                                ></v-textarea>
+                              </v-col>
+                            </v-row>--eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                          </v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" text @click="safeChanges = true">Safe</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
                     </v-list-item-avatar>
+
+                    <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
                       <v-list-item-title>{{ item.username }}</v-list-item-title>
                       <v-list-item-subtitle>{{ item.balance }}</v-list-item-subtitle>
@@ -61,77 +127,55 @@
                 </v-list>
               </v-list-item-content>
             </v-list-item>
-           
-            <v-list class="pa-20" pa-6> 
 
-            <div class="text-center">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn 
-        v-bind="attrs"
-          v-on="on"
-          class="pa-20" color="pink" label="addMoney">Bought something already?</v-btn>
-      </template>
+            <v-list>
+              <div class="text-center">
+                <v-dialog v-model="dialog" width="500">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      color="pink"
+                      label="addMoney"
+                    >Bought something already?</v-btn>
+                  </template>
 
-      <v-card>
-        <v-card-title class="headline grey lighten-2">
-          Add your bought supplies here
-        </v-card-title>
+                  <v-card>
+                    <v-card-title class="headline grey lighten-2">Add your bought supplies here</v-card-title>
+                    <v-card-text cols="12" sm="12">
+                      <v-row>
+                        <v-col>
+                          <v-textarea
+                            class="mx-2"
+                            label="Product"
+                            rows="1"
+                            prepend-icon="add_shopping_cart"
+                          ></v-textarea>
+                          <v-textarea class="mx-2" label="Price" rows="1" prepend-icon="euro"></v-textarea>
+                          <v-textarea
+                            class="mx-2"
+                            label="Comment"
+                            placeholder="Add an optional comment about this product."
+                            rows="2"
+                            prepend-icon="face"
+                          ></v-textarea>
+                        </v-col>
+                      </v-row>--eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </v-card-text>
 
-        <v-card-text cols="12" sm="12">
-         <v-row>
-      <v-col >
-        <v-textarea
-          class="mx-2"
-          label="Product"
-          rows="1"
-          prepend-icon="add_shopping_cart"
-        ></v-textarea>
-         <v-textarea
-          class="mx-2"
-          label="Price"
-          rows="1"
-          prepend-icon="euro"
-        ></v-textarea>
-         <v-textarea
-          class="mx-2"
-          label="Comment"
-          placeholder="Add an optional comment about this product."
-          rows="2"
-          prepend-icon="face"
-        ></v-textarea>
-         </v-col>
-       
-       
-        
+                    <v-divider></v-divider>
 
-     
-         </v-row>
-        --eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="primary"
-            text
-            @click="dialog = false"
-          >
-            Finish
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="primary" text @click="dialog = false">Finish</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </div>
             </v-list>
           </v-card>
         </v-col>
-
+        <!--My Tabs:-->
         <v-col xs="12" sm="6" md="3">
           <v-card>
             <v-tabs v-model="tab" background-color="dark" centered dark icons-and-text>
@@ -139,7 +183,7 @@
 
               <v-tab href="#tab-1">
                 Pending
-                <v-icon color="pink">pending</v-icon>
+                <v-icon color="pink">mdi-heart</v-icon>
               </v-tab>
 
               <v-tab href="#tab-2">
@@ -149,16 +193,20 @@
             </v-tabs>
 
             <v-tabs-items v-model="tab">
-              <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i"></v-tab-item>
+              <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
+                <v-card text>
+                  <v-card-text>{{ text }}</v-card-text>
+                </v-card>
+              </v-tab-item>
             </v-tabs-items>
-            <v-card-text v-for="item in openArticleList" :key="item.articleName">
-              <v-chip class="mr-2" @click="lights" outlined color="deep-purple accent-4">
-                <v-icon left>mdi-brightness-5</v-icon>
-                {{ item.articleName }}
-              </v-chip>
-            </v-card-text>
           </v-card>
         </v-col>
+
+        <!--
+  
+
+
+        -->
       </v-row>
     </v-container>
   </div>
@@ -176,23 +224,77 @@ export default {
     lights() {
       alert("Toggling lights...");
     },
+    sortBy(prop) {
+      // Compares Items next to each other: alphabetical order!
+      // if true -1, else 1
+      // if a -1, else b 1
+      this.shoppingList.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
+    },
+    filterOpen(prop) {
+      return prop == 0;
+    },
+    filterPending(prop) {
+      return prop == 1;
+    },
+    filterDone(prop) {
+      return prop == 2;
+    },
   },
   data() {
     return {
+      currentTab: 0,
+      tab: null,
+      text: "Lorem ipsum",
+
       dialogBought: false,
+      dialogProfilePage: false,
       checkbox: true,
       shoppingList: [
         {
           articleName: "Spüli",
-          statusBoolean: false,
+          // Status: 0 - offen, 1 - pending,
+          price: 0,
+          status: 0,
+          statusText: "open",
+          boughtBy: "",
         },
         {
           articleName: "Müllsäcke",
-          statusBoolean: false,
+          price: 0,
+          status: 0,
+          statusText: "open",
+          boughtBy: "",
         },
         {
           articleName: "Ingwerbröd",
-          statusBoolean: false,
+          price: 0,
+          status: 0,
+          statusText: "open",
+          boughtBy: "",
+        },
+        {
+          articleName: "Aluhut",
+          price: 0,
+          status: 1,
+          statusText: "pending",
+          boughtBy: "",
+          acceptedBy: "",
+        },
+        {
+          articleName: "Seife",
+          price: 0,
+          status: 1,
+          statusText: "pending",
+          boughtBy: "",
+          acceptedBy: "",
+        },
+        {
+          articleName: "Wlan Repeater",
+          price: 2.7,
+          status: 2,
+          statusText: "done",
+          boughtBy: this.username,
+          acceptedBy: this.username,
         },
       ],
       overviewList: [
@@ -232,12 +334,9 @@ export default {
         },
         {
           articleName: "Kaffee",
-          status: "open",
+          status: "pending",
         },
       ],
-      colors: ["darkblue"],
-      cycle: false,
-      slides: ["Uno", "Second", "Third", "Fourth", "Fifth"],
     };
   },
 };
@@ -247,19 +346,7 @@ export default {
 </style>
  <!-- 
 
-  <v-row wrap justify-space-around>
-        <v-col xs="12" sm="12" md="6">
-        <v-btn outlined block color="blue">1</v-btn>
-        </v-col>
-        <v-col xs="6" sm="6" md="3">
-        <v-btn outlined block color="blue">2</v-btn>
-        </v-col>
-        <v-col xs="6" sm="6" md="3">
-        <v-btn outlined block color="blue">2</v-btn>
-        </v-col>
-      </v-row>
-
-
+ 
 
 
         -->
