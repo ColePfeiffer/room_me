@@ -65,7 +65,9 @@
                 <v-list>
                   <v-list-item v-for="item in overviewList" :key="item.username">
                     <div class="text-center">
-                      <v-dialog v-model="dialogProfilePage" width="500">
+                    <!--Loop caused server break down, :retain-focus="false" is workaround for this prob
+                     https://stackoverflow.com/questions/59729112/vue-js-maximum-call-stack-size-exceeded-error-use-dialog-for-child-and-passin/62018919#62018919 -->
+                      <v-dialog v-model="dialogProfilePage" :retain-focus="false" width="500">
                         <template v-slot:activator="{ on, attrs }">
                           <v-list-item-avatar>
                             <v-img
