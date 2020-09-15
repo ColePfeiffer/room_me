@@ -58,70 +58,76 @@
           </v-card>
         </v-col>
         <v-col xs="12" sm="6" md="3">
-          <v-card class="mx-auto" max-width="344">
-            <v-list-item three-line>
+          <v-card class="ma-auto" max-width="344">
+            <v-list-item>
               <v-list-item-content>
-                <div class="overline mb-4">Übersicht</div>
+                <div class="overline">Übersicht</div>
                 <v-list>
                   <v-list-item v-for="item in overviewList" :key="item.username">
-                    <v-list-item-avatar>
+                    <div class="text-center">
                       <v-dialog v-model="dialogProfilePage" width="500">
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-bind="attrs" v-on="on" label="showProfileScreen">
+                          <v-list-item-avatar>
                             <v-img
+                              class="profile-picture"
                               max-width="60"
                               max-height="60"
-                              class="profile-picture"
+                              v-bind="attrs"
+                              v-on="on"
                               v-bind:src="item.profilePicture"
                             ></v-img>
-                          </v-btn>
+                          </v-list-item-avatar>
                         </template>
 
-                        <v-card v-bind:src="item.profilePicture">
+                    <!--Profile Page-->
+                        <v-card>
                           <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
                           <v-card-text cols="12" sm="12">
-                            <v-col class="justify-center">
+                            <v-row class="justify-center mt-5">
                               <v-img
-                                width="160"
-                                height="160"
-                                class="rounded-circle ma-3 justify-center"
-                                src="https://images.unsplash.com/photo-1494253109108-2e30c049369b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                                max-width="160"
+                                max-height="160"
+                                class="profile-picture ma-2 rounded-circle"
+                                src="https://images.unsplash.com/photo-1429087969512-1e85aab2683d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
                               ></v-img>
-                            </v-col>
-
+                            </v-row>
                             <v-row>
                               <v-col>
                                 <v-textarea
                                   class="mx-2"
-                                  label="Roomie Name"
+                                  placeholder="Boss Bitch"
                                   rows="1"
-                                  prepend-icon="face"
+                                  append-outer-icon="edit"
+                                  prepend-icon="mdi-account"
                                 ></v-textarea>
 
                                 <v-textarea
                                   class="mx-2"
-                                  label="About"
-                                  placeholder="Write something about yourself... :-)"
-                                  rows="2"
-                                  prepend-icon="comment_section"
+                                  label="Info"
+                                  placeholder="...Tell your Roomies something about yourself!"
+                                  rows="1"
+                                  append-outer-icon="edit"
+                                  prepend-icon="info"
                                 ></v-textarea>
                               </v-col>
-                            </v-row>--eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </v-row>
                           </v-card-text>
+
+                          <v-divider></v-divider>
 
                           <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" text @click="safeChanges = true">Safe</v-btn>
+                            <v-btn color="primary" text @click="dialogProfilePage = false">Safe</v-btn>
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
-                    </v-list-item-avatar>
+                    </div>
 
                     <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
                       <v-list-item-title>{{ item.username }}</v-list-item-title>
                       <v-list-item-subtitle>{{ item.balance }}</v-list-item-subtitle>
-                      <v-divider class="mx-1" horizontal color="pink"></v-divider>
+                      <v-divider class="ma-1" horizontal color="pink"></v-divider>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -130,14 +136,15 @@
 
             <v-list>
               <div class="text-center">
-                <v-dialog v-model="dialog" width="500">
+                <v-dialog v-model="dialogBought" width="500">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       v-bind="attrs"
                       v-on="on"
+                      class="ma-2"
                       color="pink"
                       label="addMoney"
-                    >Bought something already?</v-btn>
+                    >Bought already?</v-btn>
                   </template>
 
                   <v-card>
@@ -167,7 +174,7 @@
 
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="primary" text @click="dialog = false">Finish</v-btn>
+                      <v-btn color="primary" text @click="dialogBought = false">Finish</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
