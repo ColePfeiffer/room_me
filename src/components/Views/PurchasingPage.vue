@@ -65,12 +65,13 @@
                 <v-list>
                   <v-list-item v-for="item in overviewList" :key="item.username">
                     <div class="text-center">
-                    <!--Loop caused server break down, :retain-focus="false" is workaround for this prob
-                     https://stackoverflow.com/questions/59729112/vue-js-maximum-call-stack-size-exceeded-error-use-dialog-for-child-and-passin/62018919#62018919 -->
+                      <!--Loop caused server break down, :retain-focus="false" is workaround for this prob
+                      https://stackoverflow.com/questions/59729112/vue-js-maximum-call-stack-size-exceeded-error-use-dialog-for-child-and-passin/62018919#62018919-->
                       <v-dialog v-model="dialogProfilePage" :retain-focus="false" width="500">
                         <template v-slot:activator="{ on, attrs }">
                           <v-list-item-avatar>
                             <v-img
+                              @click="dialogProfilePage"
                               class="profile-picture"
                               max-width="60"
                               max-height="60"
@@ -81,7 +82,7 @@
                           </v-list-item-avatar>
                         </template>
 
-                    <!--Profile Page-->
+                        <!--Profile Page-->
                         <v-card>
                           <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
                           <v-card-text cols="12" sm="12">
@@ -91,8 +92,13 @@
                                 max-height="160"
                                 class="profile-picture ma-2 rounded-circle"
                                 src="https://images.unsplash.com/photo-1429087969512-1e85aab2683d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-                              ></v-img>
+                              >
+                                <v-btn absolute dark fab right bottom color="orange">
+                                  <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                              </v-img>
                             </v-row>
+
                             <v-row>
                               <v-col>
                                 <v-textarea
@@ -149,35 +155,70 @@
                     >Bought already?</v-btn>
                   </template>
 
+                  <!--Dialog To Enter Bought Supplies:-->
                   <v-card>
-                    <v-card-title class="headline grey lighten-2">Add your bought supplies here</v-card-title>
+                    <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
                     <v-card-text cols="12" sm="12">
                       <v-row>
                         <v-col>
-                          <v-textarea
-                            class="mx-2"
-                            label="Product"
-                            rows="1"
-                            prepend-icon="add_shopping_cart"
-                          ></v-textarea>
-                          <v-textarea class="mx-2" label="Price" rows="1" prepend-icon="euro"></v-textarea>
-                          <v-textarea
+                          <v-row class="mx-2">
+                            <v-text-field
+                              sm="12"
+                              m="12"
+                              label="Product"
+                              :counter="15"
+                              prepend-icon="add_shopping_cart"
+                              color="#FF6F00"
+                            ></v-text-field>
+                            <v-text-field
+                              sm="6"
+                              m="6"
+                              :counter="5"
+                              label="Price"
+                              prepend-icon="euro"
+                               color="#FF6F00"
+                            ></v-text-field>
+                          </v-row>
+                          <v-text-field
                             class="mx-2"
                             label="Comment"
                             placeholder="Add an optional comment about this product."
-                            rows="2"
-                            prepend-icon="face"
-                          ></v-textarea>
+                            prepend-icon="comment"
+                             color="#FF6F00"
+                          ></v-text-field>
                         </v-col>
-                      </v-row>--eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                      </v-row>
+                      <!--Chips with Avatar Profile Picture and Roomies >-->
+                      <v-combobox
+                        v-model="overviewList"
+                        :items="items"
+                        overviewList
+                        clearable
+                        label="Select roomies to split costs."
+                        multiple
+                        solo
+                      >
+                        <template v-slot:selection="{ attrs, item, select, selected }">
+                          <v-chip
+                          color="#FFCC80"
+                            v-bind="attrs"
+                            :input-value="selected"
+                            close
+                            @click="select"
+                            @click:close="remove(item)"
+                          >
+                            <strong>{{ overviewList.username }}</strong>&nbsp;
+                            <v-avatar left>
+                              <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                            </v-avatar>John Leider
+                          </v-chip>
+                        </template>
+                      </v-combobox>
+                       <v-row class="justify-center">
+                        <v-btn color="#FF6F00" justify-center @click="dialogBought = false">Split!</v-btn>
+                      </v-row>
                     </v-card-text>
-
-                    <v-divider></v-divider>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="primary" text @click="dialogBought = false">Finish</v-btn>
-                    </v-card-actions>
+                    <v-card-actions></v-card-actions>
                   </v-card>
                 </v-dialog>
               </div>
@@ -258,6 +299,11 @@ export default {
       dialogBought: false,
       dialogProfilePage: false,
       checkbox: true,
+      flatmate: {
+        username: "Bo",
+        profilePicture:
+          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      },
       shoppingList: [
         {
           articleName: "Spüli",
@@ -306,6 +352,7 @@ export default {
           acceptedBy: this.username,
         },
       ],
+
       overviewList: [
         {
           username: "Chris",
