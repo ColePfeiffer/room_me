@@ -12,28 +12,34 @@
                     <th class="text-left">Bezeichnung</th>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Status</th>
-                      </template>
-                      <span>Was bedeutet Status?</span>
-                    </v-tooltip>
-                    <v-tooltip top>
-                      <template v-slot:activator="{ on, attrs }">
                         <th class="text-left" v-bind="attrs" v-on="on">Annehmen</th>
                       </template>
                       <span>Was bedeutet Annehmen?</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Abrechnen</th>
+                      </template>
+                      <span>Was bedeutet Abrechnen?</span>
+                    </v-tooltip>
+                     <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
                         <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
+                      </template>
+                      <span>Meeeeeeeeeeta</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Bearbeiten</th>
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
                   </tr>
                 </thead>
+                <!--Shopping List Overview: Shows all products (should show only with status 0! -->
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
                   <tr v-for="item in shoppingList" :key="item.articleName">
                     <td>{{ item.articleName }}</td>
-                    <td>{{ item.statusText }}</td>
                     <td>
                       <v-btn text>
                         <v-icon>mdi-check</v-icon>
@@ -41,7 +47,17 @@
                     </td>
                     <td>
                       <v-btn text>
-                        <v-icon>mdi-close</v-icon>
+                        <v-icon>euro</v-icon>
+                      </v-btn>
+                    </td>
+                    <td>
+                      <v-btn text>
+                         <v-icon>mdi-close</v-icon>  
+                      </v-btn>
+                    </td>
+                    <td>
+                      <v-btn text>
+                         <v-icon>edit</v-icon>
                       </v-btn>
                     </td>
                   </tr>
@@ -176,7 +192,7 @@
                               :counter="5"
                               label="Price"
                               prepend-icon="euro"
-                               color="#FF6F00"
+                              color="#FF6F00"
                             ></v-text-field>
                           </v-row>
                           <v-text-field
@@ -184,7 +200,7 @@
                             label="Comment"
                             placeholder="Add an optional comment about this product."
                             prepend-icon="comment"
-                             color="#FF6F00"
+                            color="#FF6F00"
                           ></v-text-field>
                         </v-col>
                       </v-row>
@@ -200,7 +216,7 @@
                       >
                         <template v-slot:selection="{ attrs, item, select, selected }">
                           <v-chip
-                          color="#FFCC80"
+                            color="#FFCC80"
                             v-bind="attrs"
                             :input-value="selected"
                             close
@@ -214,7 +230,7 @@
                           </v-chip>
                         </template>
                       </v-combobox>
-                       <v-row class="justify-center">
+                      <v-row class="justify-center">
                         <v-btn color="#FF6F00" justify-center @click="dialogBought = false">Split!</v-btn>
                       </v-row>
                     </v-card-text>
@@ -232,8 +248,9 @@
               <v-tabs-slider></v-tabs-slider>
 
               <v-tab href="#tab-1">
-                Pending
                 <v-icon color="pink">mdi-heart</v-icon>
+                <span class="mb-2" >Pending</span>
+                
               </v-tab>
 
               <v-tab href="#tab-2">
