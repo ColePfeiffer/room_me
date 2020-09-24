@@ -179,6 +179,7 @@
                         <v-col>
                           <v-row class="mx-2">
                             <v-text-field
+                              v-model="newPurchase.name"
                               sm="12"
                               m="12"
                               label="Product"
@@ -187,6 +188,7 @@
                               color="#FF6F00"
                             ></v-text-field>
                             <v-text-field
+                              v-model="newPurchase.price"
                               sm="6"
                               m="6"
                               :counter="5"
@@ -196,6 +198,7 @@
                             ></v-text-field>
                           </v-row>
                           <v-text-field
+                            v-model="newPurchase.comment"
                             class="mx-2"
                             label="Comment"
                             placeholder="Add an optional comment about this product."
@@ -231,7 +234,7 @@
                         </template>
                       </v-combobox>
                       <v-row class="justify-center">
-                        <v-btn color="#FF6F00" justify-center @click="dialogBought = false">Split!</v-btn>
+                        <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
                       </v-row>
                     </v-card-text>
                     <v-card-actions></v-card-actions>
@@ -282,6 +285,9 @@
 <script>
 export default {
   methods: {
+    addPurchase() {
+      this.dialogBought = false;
+    },
     alarm() {
       alert("Turning on alarm...");
     },
@@ -316,6 +322,11 @@ export default {
       dialogBought: false,
       dialogProfilePage: false,
       checkbox: true,
+      newPurchase: {
+        name: "",
+        price: "",
+        comment: ""
+      },
       flatmate: {
         username: "Bo",
         profilePicture:
