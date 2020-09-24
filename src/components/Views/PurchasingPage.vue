@@ -10,15 +10,36 @@
                 <thead>
                   <tr>
                     <th class="text-left">Bezeichnung</th>
-                    <th class="text-left">Status</th>
-                    <th class="text-left">Annehmen</th>
-                    <th class="text-left">Ablehnen</th>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Annehmen</th>
+                      </template>
+                      <span>Was bedeutet Annehmen?</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Abrechnen</th>
+                      </template>
+                      <span>Was bedeutet Abrechnen?</span>
+                    </v-tooltip>
+                     <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
+                      </template>
+                      <span>Meeeeeeeeeeta</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Bearbeiten</th>
+                      </template>
+                      <span>Meeeeeeeeeeta</span>
+                    </v-tooltip>
                   </tr>
                 </thead>
+                <!--Shopping List Overview: Shows all products (should show only with status 0! -->
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
                   <tr v-for="item in shoppingList" :key="item.articleName">
                     <td>{{ item.articleName }}</td>
-                    <td>{{ item.statusBoolean }}</td>
                     <td>
                       <v-btn text>
                         <v-icon>mdi-check</v-icon>
@@ -26,7 +47,17 @@
                     </td>
                     <td>
                       <v-btn text>
-                        <v-icon>mdi-close</v-icon>
+                        <v-icon>euro</v-icon>
+                      </v-btn>
+                    </td>
+                    <td>
+                      <v-btn text>
+                         <v-icon>mdi-close</v-icon>  
+                      </v-btn>
+                    </td>
+                    <td>
+                      <v-btn text>
+                         <v-icon>edit</v-icon>
                       </v-btn>
                     </td>
                   </tr>
@@ -35,65 +66,214 @@
             </v-simple-table>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="9" xs="12">
+                <v-col cols="12" sm="12" xs="12">
                   <v-text-field label="Want to add something?" single-line></v-text-field>
-                </v-col>
-                <v-col cols="3" sm="3" xs="12">
-                  <v-btn color="orange" label="add" single-line>+</v-btn>
                 </v-col>
               </v-row>
             </v-container>
           </v-card>
         </v-col>
         <v-col xs="12" sm="6" md="3">
-          <v-card class="mx-auto" max-width="344">
-            <v-list-item three-line>
+          <v-card class="ma-auto" max-width="344">
+            <v-list-item>
               <v-list-item-content>
-                <div class="overline mb-4">Übersicht</div>
+                <div class="overline">Übersicht</div>
                 <v-list>
                   <v-list-item v-for="item in overviewList" :key="item.username">
-                    <v-list-item-avatar>
-                      <v-img class="overview-pic" v-bind:src="item.profilePicture"></v-img>
-                    </v-list-item-avatar>
+                    <div class="text-center">
+                      <!--Loop caused server break down, :retain-focus="false" is workaround for this prob
+                      https://stackoverflow.com/questions/59729112/vue-js-maximum-call-stack-size-exceeded-error-use-dialog-for-child-and-passin/62018919#62018919-->
+                      <v-dialog v-model="dialogProfilePage" :retain-focus="false" width="500">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-list-item-avatar>
+                            <v-img
+                              @click="dialogProfilePage"
+                              class="profile-picture"
+                              max-width="60"
+                              max-height="60"
+                              v-bind="attrs"
+                              v-on="on"
+                              v-bind:src="item.profilePicture"
+                            ></v-img>
+                          </v-list-item-avatar>
+                        </template>
+
+                        <!--Profile Page-->
+                        <v-card>
+                          <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
+                          <v-card-text cols="12" sm="12">
+                            <v-row class="justify-center mt-5">
+                              <v-img
+                                max-width="160"
+                                max-height="160"
+                                class="profile-picture ma-2 rounded-circle"
+                                src="https://images.unsplash.com/photo-1429087969512-1e85aab2683d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                              >
+                                <v-btn absolute dark fab right bottom color="orange">
+                                  <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                              </v-img>
+                            </v-row>
+
+                            <v-row>
+                              <v-col>
+                                <v-textarea
+                                  class="mx-2"
+                                  placeholder="Boss Bitch"
+                                  rows="1"
+                                  append-outer-icon="edit"
+                                  prepend-icon="mdi-account"
+                                ></v-textarea>
+
+                                <v-textarea
+                                  class="mx-2"
+                                  label="Info"
+                                  placeholder="...Tell your Roomies something about yourself!"
+                                  rows="1"
+                                  append-outer-icon="edit"
+                                  prepend-icon="info"
+                                ></v-textarea>
+                              </v-col>
+                            </v-row>
+                          </v-card-text>
+
+                          <v-divider></v-divider>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" text @click="dialogProfilePage = false">Safe</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </div>
+
+                    <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
                       <v-list-item-title>{{ item.username }}</v-list-item-title>
                       <v-list-item-subtitle>{{ item.balance }}</v-list-item-subtitle>
-                      <v-divider class="mx-1" horizontal color="pink"></v-divider>
+                      <v-divider class="ma-1" horizontal color="pink"></v-divider>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-list-item-content>
             </v-list-item>
+
+            <v-list>
+              <div class="text-center">
+                <v-dialog v-model="dialogBought" width="500">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      class="ma-2"
+                      color="pink"
+                      label="addMoney"
+                    >Bought already?</v-btn>
+                  </template>
+
+                  <!--Dialog To Enter Bought Supplies:-->
+                  <v-card>
+                    <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
+                    <v-card-text cols="12" sm="12">
+                      <v-row>
+                        <v-col>
+                          <v-row class="mx-2">
+                            <v-text-field
+                              sm="12"
+                              m="12"
+                              label="Product"
+                              :counter="15"
+                              prepend-icon="add_shopping_cart"
+                              color="#FF6F00"
+                            ></v-text-field>
+                            <v-text-field
+                              sm="6"
+                              m="6"
+                              :counter="5"
+                              label="Price"
+                              prepend-icon="euro"
+                              color="#FF6F00"
+                            ></v-text-field>
+                          </v-row>
+                          <v-text-field
+                            class="mx-2"
+                            label="Comment"
+                            placeholder="Add an optional comment about this product."
+                            prepend-icon="comment"
+                            color="#FF6F00"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <!--Chips with Avatar Profile Picture and Roomies >-->
+                      <v-combobox
+                        v-model="overviewList"
+                        :items="items"
+                        overviewList
+                        clearable
+                        label="Select roomies to split costs."
+                        multiple
+                        solo
+                      >
+                        <template v-slot:selection="{ attrs, item, select, selected }">
+                          <v-chip
+                            color="#FFCC80"
+                            v-bind="attrs"
+                            :input-value="selected"
+                            close
+                            @click="select"
+                            @click:close="remove(item)"
+                          >
+                            <strong>{{ overviewList.username }}</strong>&nbsp;
+                            <v-avatar left>
+                              <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                            </v-avatar>John Leider
+                          </v-chip>
+                        </template>
+                      </v-combobox>
+                      <v-row class="justify-center">
+                        <v-btn color="#FF6F00" justify-center @click="dialogBought = false">Split!</v-btn>
+                      </v-row>
+                    </v-card-text>
+                    <v-card-actions></v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </div>
+            </v-list>
           </v-card>
         </v-col>
-
+        <!--My Tabs:-->
         <v-col xs="12" sm="6" md="3">
           <v-card>
             <v-tabs v-model="tab" background-color="dark" centered dark icons-and-text>
               <v-tabs-slider></v-tabs-slider>
 
               <v-tab href="#tab-1">
-                Offen
-                <v-icon color="blue">mdi-heart</v-icon>
+                <v-icon color="pink">mdi-heart</v-icon>
+                <span class="mb-2" >Pending</span>
+                
               </v-tab>
 
               <v-tab href="#tab-2">
-                Erledigt
-                <v-icon color="pink">mdi-heart</v-icon>
+                Done
+                <v-icon color="green">euro</v-icon>
               </v-tab>
             </v-tabs>
 
             <v-tabs-items v-model="tab">
-              <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i"></v-tab-item>
+              <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
+                <v-card text>
+                  <v-card-text>{{ text }}</v-card-text>
+                </v-card>
+              </v-tab-item>
             </v-tabs-items>
-            <v-card-text v-for="item in openArticleList" :key="item.articleName">
-              <v-chip class="mr-2" @click="lights" outlined color="deep-purple accent-4">
-                <v-icon left>mdi-brightness-5</v-icon>
-                {{ item.articleName }}
-              </v-chip>
-            </v-card-text>
           </v-card>
         </v-col>
+
+        <!--
+  
+
+
+        -->
       </v-row>
     </v-container>
   </div>
@@ -111,24 +291,85 @@ export default {
     lights() {
       alert("Toggling lights...");
     },
+    sortBy(prop) {
+      // Compares Items next to each other: alphabetical order!
+      // if true -1, else 1
+      // if a -1, else b 1
+      this.shoppingList.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
+    },
+    filterOpen(prop) {
+      return prop == 0;
+    },
+    filterPending(prop) {
+      return prop == 1;
+    },
+    filterDone(prop) {
+      return prop == 2;
+    },
   },
   data() {
     return {
+      currentTab: 0,
+      tab: null,
+      text: "Lorem ipsum",
+
+      dialogBought: false,
+      dialogProfilePage: false,
       checkbox: true,
+      flatmate: {
+        username: "Bo",
+        profilePicture:
+          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      },
       shoppingList: [
         {
           articleName: "Spüli",
-          statusBoolean: false,
+          // Status: 0 - offen, 1 - pending,
+          price: 0,
+          status: 0,
+          statusText: "open",
+          boughtBy: "",
         },
         {
           articleName: "Müllsäcke",
-          statusBoolean: false,
+          price: 0,
+          status: 0,
+          statusText: "open",
+          boughtBy: "",
         },
         {
           articleName: "Ingwerbröd",
-          statusBoolean: false,
+          price: 0,
+          status: 0,
+          statusText: "open",
+          boughtBy: "",
+        },
+        {
+          articleName: "Aluhut",
+          price: 0,
+          status: 1,
+          statusText: "pending",
+          boughtBy: "",
+          acceptedBy: "",
+        },
+        {
+          articleName: "Seife",
+          price: 0,
+          status: 1,
+          statusText: "pending",
+          boughtBy: "",
+          acceptedBy: "",
+        },
+        {
+          articleName: "Wlan Repeater",
+          price: 2.7,
+          status: 2,
+          statusText: "done",
+          boughtBy: this.username,
+          acceptedBy: this.username,
         },
       ],
+
       overviewList: [
         {
           username: "Chris",
@@ -166,12 +407,9 @@ export default {
         },
         {
           articleName: "Kaffee",
-          status: "open",
+          status: "pending",
         },
       ],
-      colors: ["darkblue"],
-      cycle: false,
-      slides: ["Uno", "Second", "Third", "Fourth", "Fifth"],
     };
   },
 };
@@ -181,19 +419,7 @@ export default {
 </style>
  <!-- 
 
-  <v-row wrap justify-space-around>
-        <v-col xs="12" sm="12" md="6">
-        <v-btn outlined block color="blue">1</v-btn>
-        </v-col>
-        <v-col xs="6" sm="6" md="3">
-        <v-btn outlined block color="blue">2</v-btn>
-        </v-col>
-        <v-col xs="6" sm="6" md="3">
-        <v-btn outlined block color="blue">2</v-btn>
-        </v-col>
-      </v-row>
-
-
+ 
 
 
         -->
