@@ -22,7 +22,7 @@
                       </template>
                       <span>Was bedeutet Abrechnen?</span>
                     </v-tooltip>
-                     <v-tooltip top>
+                    <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
                         <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
                       </template>
@@ -52,12 +52,12 @@
                     </td>
                     <td>
                       <v-btn text>
-                         <v-icon>mdi-close</v-icon>  
+                        <v-icon>mdi-close</v-icon>
                       </v-btn>
                     </td>
                     <td>
                       <v-btn text>
-                         <v-icon>edit</v-icon>
+                        <v-icon>edit</v-icon>
                       </v-btn>
                     </td>
                   </tr>
@@ -207,32 +207,24 @@
                           ></v-text-field>
                         </v-col>
                       </v-row>
-                      <!--Chips with Avatar Profile Picture and Roomies >-->
-                      <v-combobox
-                        v-model="overviewList"
-                        :items="items"
-                        overviewList
-                        clearable
-                        label="Select roomies to split costs."
-                        multiple
-                        solo
-                      >
-                        <template v-slot:selection="{ attrs, item, select, selected }">
+                      <v-chip-group column multiple active-class="primary--text">
+                        <template>
                           <v-chip
-                            color="#FFCC80"
-                            v-bind="attrs"
-                            :input-value="selected"
+                            v-for="roomie in overviewList"
+                            :key="roomie"
                             close
+                            color="#FFCC80"
+                            input-value="true"
                             @click="select"
-                            @click:close="remove(item)"
                           >
-                            <strong>{{ overviewList.username }}</strong>&nbsp;
                             <v-avatar left>
-                              <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-                            </v-avatar>John Leider
+                              <v-img v-bind:src="roomie.profilePicture"></v-img>
+                            </v-avatar>
+                            <strong>{{ roomie.username }}</strong>&nbsp;
                           </v-chip>
                         </template>
-                      </v-combobox>
+                      </v-chip-group>
+
                       <v-row class="justify-center">
                         <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
                       </v-row>
@@ -252,8 +244,7 @@
 
               <v-tab href="#tab-1">
                 <v-icon color="pink">mdi-heart</v-icon>
-                <span class="mb-2" >Pending</span>
-                
+                <span class="mb-2">Pending</span>
               </v-tab>
 
               <v-tab href="#tab-2">
@@ -311,7 +302,7 @@ export default {
     },
     filterDone(prop) {
       return prop == 2;
-    },
+    }
   },
   data() {
     return {
@@ -330,7 +321,7 @@ export default {
       flatmate: {
         username: "Bo",
         profilePicture:
-          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
       },
       shoppingList: [
         {
@@ -339,21 +330,21 @@ export default {
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: "",
+          boughtBy: ""
         },
         {
           articleName: "Müllsäcke",
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: "",
+          boughtBy: ""
         },
         {
           articleName: "Ingwerbröd",
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: "",
+          boughtBy: ""
         },
         {
           articleName: "Aluhut",
@@ -361,7 +352,7 @@ export default {
           status: 1,
           statusText: "pending",
           boughtBy: "",
-          acceptedBy: "",
+          acceptedBy: ""
         },
         {
           articleName: "Seife",
@@ -369,7 +360,7 @@ export default {
           status: 1,
           statusText: "pending",
           boughtBy: "",
-          acceptedBy: "",
+          acceptedBy: ""
         },
         {
           articleName: "Wlan Repeater",
@@ -377,52 +368,51 @@ export default {
           status: 2,
           statusText: "done",
           boughtBy: this.username,
-          acceptedBy: this.username,
-        },
+          acceptedBy: this.username
+        }
       ],
-
       overviewList: [
         {
           username: "Chris",
           profilePicture:
             "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "+ " + "02.50" + " €",
+          balance: "+ " + "02.50" + " €"
         },
         {
           username: "Hannah",
           profilePicture:
             "https://images.unsplash.com/photo-1457131760772-7017c6180f05?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "- " + "01.50" + " €",
+          balance: "- " + "01.50" + " €"
         },
         {
           username: "Rufus",
           profilePicture:
             "https://images.unsplash.com/photo-1517423568366-8b83523034fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "- " + "01.50" + " €",
+          balance: "- " + "01.50" + " €"
         },
         {
           username: "Tim",
           profilePicture:
             "https://images.unsplash.com/photo-1516210673878-84fa2173547b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "+ " + "02.50" + " €",
-        },
+          balance: "+ " + "02.50" + " €"
+        }
       ],
       openArticleList: [
         {
           articleName: "Atommüll",
-          status: "open",
+          status: "open"
         },
         {
           articleName: "Kuchen",
-          status: "open",
+          status: "open"
         },
         {
           articleName: "Kaffee",
-          status: "pending",
-        },
-      ],
+          status: "pending"
+        }
+      ]
     };
-  },
+  }
 };
 </script>
 
