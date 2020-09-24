@@ -76,8 +76,8 @@
     </v-card>
 
     <v-content class="content">
-      <!--            Hier werden einzelne Seiten reingeladen-->
-      <router-view></router-view>
+            <!--            Hier werden einzelne Seiten reingeladen-->
+            <router-view></router-view>
     </v-content>
 
     <v-footer dark dense color="#211E21">
