@@ -79,7 +79,7 @@
               <v-list-item-content>
                 <div class="overline">Übersicht</div>
                 <v-list>
-                  <v-list-item v-for="item in overviewList" :key="item.username">
+                  <v-list-item v-for="item in roomies" :key="item.username">
                     <div class="text-center">
                       <!--Loop caused server break down, :retain-focus="false" is workaround for this prob
                       https://stackoverflow.com/questions/59729112/vue-js-maximum-call-stack-size-exceeded-error-use-dialog-for-child-and-passin/62018919#62018919-->
@@ -207,22 +207,19 @@
                           ></v-text-field>
                         </v-col>
                       </v-row>
-                      <v-chip-group column multiple active-class="primary--text">
-                        <template>
+                      <!-- Roomie Chip -->
+                      <v-chip-group column multiple active-class="primary--text"> 
+                        <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
                           <v-chip
-                            v-for="roomie in overviewList"
-                            :key="roomie"
-                            close
-                            color="#FFCC80"
-                            input-value="true"
-                            @click="select"
+                            :color ="roomie.color"
+                            @click="selectRoomie(roomie)"
                           >
                             <v-avatar left>
                               <v-img v-bind:src="roomie.profilePicture"></v-img>
                             </v-avatar>
-                            <strong>{{ roomie.username }}</strong>&nbsp;
+                            <strong>{{roomie.username}}</strong>&nbsp;
                           </v-chip>
-                        </template>
+                        </v-row>
                       </v-chip-group>
 
                       <v-row class="justify-center">
@@ -277,8 +274,54 @@
 export default {
   methods: {
     addPurchase() {
+      console.log(this.newPurchase.price);
+      // hide dialoge
       this.dialogBought = false;
+
+      var sharedByNumber = 0;
+      // var buyer
+      var individualPrice;
+
+      // count selected roomies to determine divider
+       this.roomies.forEach(function (roomie){
+         if(roomie.selected){
+           sharedByNumber = sharedByNumber + 1;
+         }
+      });
+
+      // calculate individual price
+      if (this.debug) console.log("Divided by", sharedByNumber)
+      individualPrice = this.newPurchase.price / sharedByNumber;
+      individualPrice = individualPrice.toFixed(2);
+      if (this.debug) console.log("Individual Price: ", individualPrice);
+
+      this.roomies.forEach(function (roomie){
+         if(roomie.selected){
+           roomie.balance = roomie.balance + individualPrice;
+         }
+      });
+
+     // reset everything
+     this.roomies.forEach(function (roomie){
+        roomie.selected = true;
+      });
+
+      this.newPurchase.name = "";
+      this.newPurchase.price = "";
+      this.newPurchase.comment = "";
+
+
+      if (this.debug) console.log("Split!");
     },
+
+    selectRoomie(selected_roomie){
+      this.roomies.forEach(function (roomie, index){
+        if(roomie == selected_roomie){
+          roomie.selected = !roomie.selected;
+          console.log(roomie.selected, index);
+        }
+      }) 
+      },
     alarm() {
       alert("Turning on alarm...");
     },
@@ -306,9 +349,12 @@ export default {
   },
   data() {
     return {
+      debug: true,
       currentTab: 0,
       tab: null,
       text: "Lorem ipsum",
+    
+      selectedRoomies: [],
 
       dialogBought: false,
       dialogProfilePage: false,
@@ -371,30 +417,43 @@ export default {
           acceptedBy: this.username
         }
       ],
-      overviewList: [
+      // used to be OverviewList
+      roomies: [
         {
+          id: 0,
           username: "Chris",
           profilePicture:
             "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "+ " + "02.50" + " €"
+          balance: "+ " + "02.50" + " €",
+          selected: true,
+          color: "#1F85DE"
         },
         {
+          id: 1,
           username: "Hannah",
           profilePicture:
             "https://images.unsplash.com/photo-1457131760772-7017c6180f05?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "- " + "01.50" + " €"
+          balance: "- " + "01.50" + " €",
+          selected: false,
+          color: "#DE591F"
         },
         {
+          id: 2,
           username: "Rufus",
           profilePicture:
             "https://images.unsplash.com/photo-1517423568366-8b83523034fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "- " + "01.50" + " €"
+          balance: "- " + "01.50" + " €",
+          selected: true,
+          color: "#BDA0EC"
         },
         {
+          id: 3,
           username: "Tim",
           profilePicture:
             "https://images.unsplash.com/photo-1516210673878-84fa2173547b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "+ " + "02.50" + " €"
+          balance: "+ " + "02.50" + " €",
+          selected: true,
+          color: "#EBE386"
         }
       ],
       openArticleList: [
