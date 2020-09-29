@@ -22,7 +22,7 @@
                       </template>
                       <span>Was bedeutet Abrechnen?</span>
                     </v-tooltip>
-                     <v-tooltip top>
+                    <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
                         <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
                       </template>
@@ -36,30 +36,37 @@
                     </v-tooltip>
                   </tr>
                 </thead>
-                <!--Shopping List Overview: Shows all products (should show only with status 0! -->
+                <!--Shopping List Overview: Shows all products (should show only with status 0! 
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
-                  <tr v-for="item in shoppingList" :key="item.articleName">
-                    <td>{{ item.articleName }}</td>
+                -->
+                <tbody>
+                  <tr v-for="article in shoppingList" :key="article.articleName">
+                    <td v-if="article.status == 0">{{ article.articleName }}
+                    </td>
+                    <div v-if="article.status == 0">
                     <td>
                       <v-btn text>
-                        <v-icon>mdi-check</v-icon>
+                        <v-icon v-on:click="acceptedArticle">mdi-check</v-icon>
+                      </v-btn>
+                    </td>
+                    <td>
+           
+                      <v-btn text>
+                        <v-icon v-on:click="billArticle">euro</v-icon>
                       </v-btn>
                     </td>
                     <td>
                       <v-btn text>
-                        <v-icon>euro</v-icon>
+                        <v-icon v-on:click="declineArticle">mdi-close</v-icon>
                       </v-btn>
                     </td>
                     <td>
                       <v-btn text>
-                         <v-icon>mdi-close</v-icon>  
+                        <v-icon v-on:click="editArticle">edit</v-icon>
                       </v-btn>
                     </td>
-                    <td>
-                      <v-btn text>
-                         <v-icon>edit</v-icon>
-                      </v-btn>
-                    </td>
+                    </div>
+        
                   </tr>
                 </tbody>
               </template>
@@ -249,8 +256,7 @@
 
               <v-tab href="#tab-1">
                 <v-icon color="pink">mdi-heart</v-icon>
-                <span class="mb-2" >Pending</span>
-                
+                <span class="mb-2">Pending</span>
               </v-tab>
 
               <v-tab href="#tab-2">
@@ -282,6 +288,10 @@
 <script>
 export default {
   methods: {
+    acceptArticle: function () {
+     return this.shoppingList.accepted = true;
+      
+    },
     alarm() {
       alert("Turning on alarm...");
     },
@@ -324,11 +334,13 @@ export default {
       shoppingList: [
         {
           articleName: "Spüli",
-          // Status: 0 - offen, 1 - pending,
           price: 0,
           status: 0,
           statusText: "open",
           boughtBy: "",
+          accepted: false,
+          bill: false,
+          decline: false,
         },
         {
           articleName: "Müllsäcke",
@@ -336,6 +348,9 @@ export default {
           status: 0,
           statusText: "open",
           boughtBy: "",
+          accepted: false,
+          bill: false,
+          decline: false,
         },
         {
           articleName: "Ingwerbröd",
@@ -343,14 +358,19 @@ export default {
           status: 0,
           statusText: "open",
           boughtBy: "",
+          accepted: false,
+          bill: false,
+          decline: false,
         },
         {
           articleName: "Aluhut",
           price: 0,
-          status: 1,
-          statusText: "pending",
+          status: 0,
+          statusText: "open",
           boughtBy: "",
-          acceptedBy: "",
+          accepted: true,
+          bill: false,
+          decline: false,
         },
         {
           articleName: "Seife",
@@ -358,15 +378,27 @@ export default {
           status: 1,
           statusText: "pending",
           boughtBy: "",
-          acceptedBy: "",
+          accepted: true,
+          bill: false,
+          decline: false,
         },
         {
           articleName: "Wlan Repeater",
-          price: 2.7,
+          price: 0,
           status: 2,
-          statusText: "done",
-          boughtBy: this.username,
+          statusText: "billed",
           acceptedBy: this.username,
+          boughtBy: this.username,
+          accepted: false,
+          bill: true,
+          decline: false,
+        },
+      ],
+      statusAricle: [
+        {
+          annehmen: false,
+          abrechnen: false,
+          ablehnen: false,
         },
       ],
 
