@@ -150,7 +150,7 @@
                     <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
                       <v-list-item-title>{{ item.username }}</v-list-item-title>
-                      <v-list-item-subtitle>{{ item.balance }}</v-list-item-subtitle>
+                      <v-list-item-subtitle>{{ item.balance >= 0 ? "+" + item.balance + currencySymbol : "" + item.balance + currencySymbol}}</v-list-item-subtitle>
                       <v-divider class="ma-1" horizontal color="pink"></v-divider>
                     </v-list-item-content>
                   </v-list-item>
@@ -300,7 +300,8 @@ export default {
 
       this.roomies.forEach(function (roomie){
          if(roomie.selected){
-           roomie.balance = roomie.balance + individualPrice;
+           roomie.balance = parseInt(roomie.balance) + individualPrice;
+           if (this.debug) console.log(roomie.balance);
          }
       });
 
@@ -367,6 +368,7 @@ export default {
       if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
       return 'Number has to be between 0 and 999';
     },
+      currencySymbol: " €",
       debug: true,
       currentTab: 0,
       tab: null,
@@ -442,7 +444,8 @@ export default {
           username: "Chris",
           profilePicture:
             "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "+ " + "02.50" + " €",
+          balance: +3,
+          balancePlus: true,
           selected: true,
           color: "#1F85DE"
         },
@@ -451,7 +454,8 @@ export default {
           username: "Hannah",
           profilePicture:
             "https://images.unsplash.com/photo-1457131760772-7017c6180f05?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "- " + "01.50" + " €",
+          balance: -3,
+          balancePlus: false,
           selected: false,
           color: "#DE591F"
         },
@@ -460,7 +464,8 @@ export default {
           username: "Rufus",
           profilePicture:
             "https://images.unsplash.com/photo-1517423568366-8b83523034fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "- " + "01.50" + " €",
+          balance: 0,
+          balancePlus: true,
           selected: true,
           color: "#BDA0EC"
         },
@@ -469,7 +474,8 @@ export default {
           username: "Tim",
           profilePicture:
             "https://images.unsplash.com/photo-1516210673878-84fa2173547b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "+ " + "02.50" + " €",
+          balance: 0,
+          balancePlus: true,
           selected: true,
           color: "#EBE386"
         }
