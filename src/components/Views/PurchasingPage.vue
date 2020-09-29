@@ -1,9 +1,9 @@
-
 <template>
   <div class="purchasing">
     <v-container class="my-5">
       <v-row wrap justify-space-around>
         <v-col xs="12" sm="12" md="6">
+          <profilePage v-if="showProfilePage = true" />
           <v-card flat class="pa-3">
             <v-simple-table>
               <template v-slot:default>
@@ -38,7 +38,7 @@
                 </thead>
                 <!--Shopping List Overview: Shows all products (should show only with status 0! -->
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
-                  <tr v-for="item in shoppingList" :key="item.articleName">
+                  <tr v-for="item in activeItems" :key="item.articleName">
                     <td>{{ item.articleName }}</td>
                     <td>
                       <v-btn text>
@@ -79,80 +79,30 @@
               <v-list-item-content>
                 <div class="overline">Übersicht</div>
                 <v-list>
-                  <v-list-item v-for="roomie in roomies" :key="roomie.username">
+                  <v-list-item v-for="roomie in roomies" :key="roomie.id">
                     <div class="text-center">
-                      <!--Loop caused server break down, :retain-focus="false" is workaround for this prob
-                      https://stackoverflow.com/questions/59729112/vue-js-maximum-call-stack-size-exceeded-error-use-dialog-for-child-and-passin/62018919#62018919-->
-                      <v-dialog v-model="dialogProfilePage" :retain-focus="false" width="500">
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-list-item-avatar>
-                            <v-img
-                              @click="dialogProfilePage"
-                              class="profile-picture"
-                              max-width="60"
-                              max-height="60"
-                              v-bind="attrs"
-                              v-on="on"
-                              v-bind:src="roomie.profilePicture"
-                            ></v-img>
-                          </v-list-item-avatar>
-                        </template>
-
-                        <!--Profile Page-->
-                        <v-card>
-                          <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
-                          <v-card-text cols="12" sm="12">
-                            <v-row class="justify-center mt-5">
-                              <v-img
-                              
-                                width="160"
-                                height="160"
-                                max-width="160"
-                                max-height="160"
-                                class="profile-picture ma-2 rounded-circle"
-                                :src="profilePicture"
-                              >
-                                <input type="file" @change="uploadPicture" accept="image/*" />
-                                <v-icon>mdi-plus</v-icon>
-                              </v-img>
-                            </v-row>
-
-                            <v-row>
-                              <v-col>
-                                <v-textarea
-                                  class="mx-2"
-                                  placeholder="Boss Bitch"
-                                  rows="1"
-                                  append-outer-icon="edit"
-                                  prepend-icon="mdi-account"
-                                ></v-textarea>
-
-                                <v-textarea
-                                  class="mx-2"
-                                  label="Info"
-                                  placeholder="...Tell your Roomies something about yourself!"
-                                  rows="1"
-                                  append-outer-icon="edit"
-                                  prepend-icon="info"
-                                ></v-textarea>
-                              </v-col>
-                            </v-row>
-                          </v-card-text>
-
-                          <v-divider></v-divider>
-
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="primary" text @click="dialogProfilePage = false">Safe</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
+                      <v-list-item-avatar>
+                        <v-img
+                          @click="showProfilePage = true"
+                          class="profile-picture"
+                          max-width="60"
+                          max-height="60"
+                          v-bind="attrs"
+                          v-on="on"
+                          v-bind:src="roomie.profilePicture"
+                        ></v-img>
+                      </v-list-item-avatar>
                     </div>
-
                     <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
                       <v-list-item-title>{{ roomie.username }}</v-list-item-title>
-                      <v-list-item-subtitle>{{ roomie.balance >= 0 ? "+" + roomie.balance + currencySymbol : "" + roomie.balance + currencySymbol}}</v-list-item-subtitle>
+                      <v-list-item-subtitle>
+                        <span
+                          v-if="roomie.balance >= 0"
+                          class="balance-plus"
+                        >{{"+" + roomie.balance + currencySymbol}}</span>
+                        <span v-else class="balance-minus">{{roomie.balance + currencySymbol}}</span>
+                      </v-list-item-subtitle>
                       <v-divider class="ma-1" horizontal color="pink"></v-divider>
                     </v-list-item-content>
                   </v-list-item>
@@ -275,9 +225,14 @@
 </template>
 
 <script>
+import profilePage from "../profilePage";
+
 export default {
+  components: {
+    profilePage
+  },
   methods: {
-    uploadPicture: function (event) {
+    uploadPicture: function(event, roomie) {
       // Reference to the DOM input element
       var input = event.target;
       // Ensure that you have a file before attempting to read it
@@ -285,17 +240,26 @@ export default {
         // create a new FileReader to read this image and convert to base64 format
         var reader = new FileReader();
         // Define a callback function to run, when FileReader finishes its job
-        reader.onload = (e) => {
+        reader.onload = e => {
           // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
           // Read image as base64 and set to imageData
-          this.profilePicture = e.target.result;
+
+          this.roomies.forEach(r => {
+            if (r.username === roomie.username) {
+              r.profilePicture = e.target.result;
+            }
+          });
+          //this.profilePicture = e.target.result;
         };
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(input.files[0]);
       }
     },
     addPurchase() {
-      console.log(this.newPurchase.price);
+      let vn = this;
+
+      if (this.debug) console.log(this.newPurchase.price);
+
       // hide dialoge
       this.dialogBought = false;
 
@@ -304,27 +268,28 @@ export default {
       var individualPrice;
 
       // count selected roomies to determine divider
-      this.roomies.forEach(function (roomie) {
+      this.roomies.forEach(function(roomie) {
         if (roomie.selected) {
           sharedByNumber = sharedByNumber + 1;
         }
       });
 
       // calculate individual price
-      if (this.debug) console.log("Divided by", sharedByNumber);
+      if (this.debug === true) console.log("Divided by", sharedByNumber);
       individualPrice = this.newPurchase.price / sharedByNumber;
       individualPrice = individualPrice.toFixed(2);
-      if (this.debug) console.log("Individual Price: ", individualPrice);
+      if (this.debug === true)
+        console.log("Individual Price: ", individualPrice);
 
-      this.roomies.forEach(function (roomie) {
+      this.roomies.forEach(function(roomie) {
         if (roomie.selected) {
           roomie.balance = parseInt(roomie.balance) + individualPrice;
-          if (this.debug) console.log(roomie.balance);
+          if (vn.this.debug) console.log(roomie.balance);
         }
       });
 
       // reset everything
-      this.roomies.forEach(function (roomie) {
+      this.roomies.forEach(function(roomie) {
         roomie.selected = true;
       });
 
@@ -336,7 +301,7 @@ export default {
     },
 
     selectRoomie(selected_roomie) {
-      this.roomies.forEach(function (roomie, index) {
+      this.roomies.forEach(function(roomie, index) {
         if (roomie == selected_roomie) {
           roomie.selected = !roomie.selected;
           console.log(roomie.selected, index);
@@ -374,12 +339,20 @@ export default {
       } else {
         return true;
       }
-    },
+    }
   },
-  computed: {},
+  computed: {
+    // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
+    activeItems() {
+      // Javascript-Funktion zum Filtern von Arrays
+      return this.shoppingList.filter(function(value) {
+        return value.status === 1;
+      });
+    }
+  },
   data() {
     return {
-      numberRule: (v) => {
+      numberRule: v => {
         if (!v.trim()) return true;
         if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
         return "Number has to be between 0 and 999";
@@ -395,17 +368,17 @@ export default {
       selectedRoomies: [],
 
       dialogBought: false,
-      dialogProfilePage: false,
+      showProfilePage: false,
       checkbox: true,
       newPurchase: {
         name: "",
         price: "",
-        comment: "",
+        comment: ""
       },
       flatmate: {
         username: "Bo",
         profilePicture:
-          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
       },
       shoppingList: [
         {
@@ -414,21 +387,21 @@ export default {
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: "",
+          boughtBy: ""
         },
         {
           articleName: "Müllsäcke",
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: "",
+          boughtBy: ""
         },
         {
           articleName: "Ingwerbröd",
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: "",
+          boughtBy: ""
         },
         {
           articleName: "Aluhut",
@@ -436,7 +409,7 @@ export default {
           status: 1,
           statusText: "pending",
           boughtBy: "",
-          acceptedBy: "",
+          acceptedBy: ""
         },
         {
           articleName: "Seife",
@@ -444,7 +417,7 @@ export default {
           status: 1,
           statusText: "pending",
           boughtBy: "",
-          acceptedBy: "",
+          acceptedBy: ""
         },
         {
           articleName: "Wlan Repeater",
@@ -452,8 +425,8 @@ export default {
           status: 2,
           statusText: "done",
           boughtBy: this.username,
-          acceptedBy: this.username,
-        },
+          acceptedBy: this.username
+        }
       ],
       // used to be OverviewList
       roomies: [
@@ -465,7 +438,7 @@ export default {
           balance: +3,
           balancePlus: true,
           selected: true,
-          color: "#1F85DE",
+          color: "#1F85DE"
         },
         {
           id: 1,
@@ -474,8 +447,8 @@ export default {
             "https://images.unsplash.com/photo-1457131760772-7017c6180f05?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
           balance: -3,
           balancePlus: false,
-          selected: false,
-          color: "#DE591F",
+          selected: true,
+          color: "#DE591F"
         },
         {
           id: 2,
@@ -485,7 +458,7 @@ export default {
           balance: 0,
           balancePlus: true,
           selected: true,
-          color: "#BDA0EC",
+          color: "#BDA0EC"
         },
         {
           id: 3,
@@ -495,29 +468,36 @@ export default {
           balance: 0,
           balancePlus: true,
           selected: true,
-          color: "#EBE386",
-        },
+          color: "#EBE386"
+        }
       ],
       openArticleList: [
         {
           articleName: "Atommüll",
-          status: "open",
+          status: "open"
         },
         {
           articleName: "Kuchen",
-          status: "open",
+          status: "open"
         },
         {
           articleName: "Kaffee",
-          status: "pending",
-        },
-      ],
+          status: "pending"
+        }
+      ]
     };
-  },
+  }
 };
 </script>
 
 <style>
+.balance-plus {
+  color: green;
+}
+
+.balance-minus {
+  color: red;
+}
 </style>
  <!-- 
 
