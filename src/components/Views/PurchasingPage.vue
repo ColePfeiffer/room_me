@@ -189,6 +189,7 @@
                             ></v-text-field>
                             <v-text-field
                               v-model="newPurchase.price"
+                              :rules="[numberRule]"
                               sm="6"
                               m="6"
                               :counter="5"
@@ -213,6 +214,7 @@
                           <v-chip
                             :color ="roomie.color"
                             @click="selectRoomie(roomie)"
+                         
                           >
                             <v-avatar left>
                               <v-img v-bind:src="roomie.profilePicture"></v-img>
@@ -349,6 +351,11 @@ export default {
   },
   data() {
     return {
+      numberRule: v  => {
+      if (!v.trim()) return true;
+      if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
+      return 'Number has to be between 0 and 999';
+    },
       debug: true,
       currentTab: 0,
       tab: null,
