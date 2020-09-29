@@ -79,7 +79,7 @@
               <v-list-item-content>
                 <div class="overline">Übersicht</div>
                 <v-list>
-                  <v-list-item v-for="item in roomies" :key="item.username">
+                  <v-list-item v-for="roomie in roomies" :key="roomie.username">
                     <div class="text-center">
                       <!--Loop caused server break down, :retain-focus="false" is workaround for this prob
                       https://stackoverflow.com/questions/59729112/vue-js-maximum-call-stack-size-exceeded-error-use-dialog-for-child-and-passin/62018919#62018919-->
@@ -93,7 +93,7 @@
                               max-height="60"
                               v-bind="attrs"
                               v-on="on"
-                              v-bind:src="item.profilePicture"
+                              v-bind:src="roomie.profilePicture"
                             ></v-img>
                           </v-list-item-avatar>
                         </template>
@@ -104,14 +104,16 @@
                           <v-card-text cols="12" sm="12">
                             <v-row class="justify-center mt-5">
                               <v-img
+                              
+                                width="160"
+                                height="160"
                                 max-width="160"
                                 max-height="160"
                                 class="profile-picture ma-2 rounded-circle"
-                                src="https://images.unsplash.com/photo-1429087969512-1e85aab2683d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                                :src="profilePicture"
                               >
-                                <v-btn absolute dark fab right bottom color="orange">
-                                  <v-icon>mdi-plus</v-icon>
-                                </v-btn>
+                                <input type="file" @change="uploadPicture" accept="image/*" />
+                                <v-icon>mdi-plus</v-icon>
                               </v-img>
                             </v-row>
 
@@ -149,8 +151,8 @@
 
                     <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
-                      <v-list-item-title>{{ item.username }}</v-list-item-title>
-                      <v-list-item-subtitle>{{ item.balance >= 0 ? "+" + item.balance + currencySymbol : "" + item.balance + currencySymbol}}</v-list-item-subtitle>
+                      <v-list-item-title>{{ roomie.username }}</v-list-item-title>
+                      <v-list-item-subtitle>{{ roomie.balance >= 0 ? "+" + roomie.balance + currencySymbol : "" + roomie.balance + currencySymbol}}</v-list-item-subtitle>
                       <v-divider class="ma-1" horizontal color="pink"></v-divider>
                     </v-list-item-content>
                   </v-list-item>
@@ -209,13 +211,12 @@
                         </v-col>
                       </v-row>
                       <!-- Roomie Chip -->
-                      <v-chip-group column multiple active-class="primary--text"> 
+                      <v-chip-group column multiple active-class="primary--text">
                         <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
                           <v-chip
-                            :color ="roomie.color"
-                            :outlined ="roomieChipOutlined(roomie)"
+                            :color="roomie.color"
+                            :outlined="roomieChipOutlined(roomie)"
                             @click="selectRoomie(roomie)"
-                         
                           >
                             <v-avatar left>
                               <v-img v-bind:src="roomie.profilePicture"></v-img>
@@ -276,6 +277,23 @@
 <script>
 export default {
   methods: {
+    uploadPicture: function (event) {
+      // Reference to the DOM input element
+      var input = event.target;
+      // Ensure that you have a file before attempting to read it
+      if (input.files && input.files[0]) {
+        // create a new FileReader to read this image and convert to base64 format
+        var reader = new FileReader();
+        // Define a callback function to run, when FileReader finishes its job
+        reader.onload = (e) => {
+          // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
+          // Read image as base64 and set to imageData
+          this.profilePicture = e.target.result;
+        };
+        // Start the reader job - read file as a data url (base64 format)
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
     addPurchase() {
       console.log(this.newPurchase.price);
       // hide dialoge
@@ -286,27 +304,27 @@ export default {
       var individualPrice;
 
       // count selected roomies to determine divider
-       this.roomies.forEach(function (roomie){
-         if(roomie.selected){
-           sharedByNumber = sharedByNumber + 1;
-         }
+      this.roomies.forEach(function (roomie) {
+        if (roomie.selected) {
+          sharedByNumber = sharedByNumber + 1;
+        }
       });
 
       // calculate individual price
-      if (this.debug) console.log("Divided by", sharedByNumber)
+      if (this.debug) console.log("Divided by", sharedByNumber);
       individualPrice = this.newPurchase.price / sharedByNumber;
       individualPrice = individualPrice.toFixed(2);
       if (this.debug) console.log("Individual Price: ", individualPrice);
 
-      this.roomies.forEach(function (roomie){
-         if(roomie.selected){
-           roomie.balance = parseInt(roomie.balance) + individualPrice;
-           if (this.debug) console.log(roomie.balance);
-         }
+      this.roomies.forEach(function (roomie) {
+        if (roomie.selected) {
+          roomie.balance = parseInt(roomie.balance) + individualPrice;
+          if (this.debug) console.log(roomie.balance);
+        }
       });
 
-     // reset everything
-     this.roomies.forEach(function (roomie){
+      // reset everything
+      this.roomies.forEach(function (roomie) {
         roomie.selected = true;
       });
 
@@ -314,18 +332,17 @@ export default {
       this.newPurchase.price = "";
       this.newPurchase.comment = "";
 
-
       if (this.debug) console.log("Split!");
     },
 
-    selectRoomie(selected_roomie){
-      this.roomies.forEach(function (roomie, index){
-        if(roomie == selected_roomie){
+    selectRoomie(selected_roomie) {
+      this.roomies.forEach(function (roomie, index) {
+        if (roomie == selected_roomie) {
           roomie.selected = !roomie.selected;
           console.log(roomie.selected, index);
         }
-      }) 
-      },
+      });
+    },
     alarm() {
       alert("Turning on alarm...");
     },
@@ -351,29 +368,30 @@ export default {
       return prop == 2;
     },
 
-    roomieChipOutlined(roomie){
-      if(roomie.selected){
-        return false
-      }else{
-        return true
+    roomieChipOutlined(roomie) {
+      if (roomie.selected) {
+        return false;
+      } else {
+        return true;
       }
-    }
+    },
   },
-  computed: {
-  },
+  computed: {},
   data() {
     return {
-      numberRule: v  => {
-      if (!v.trim()) return true;
-      if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
-      return 'Number has to be between 0 and 999';
-    },
+      numberRule: (v) => {
+        if (!v.trim()) return true;
+        if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
+        return "Number has to be between 0 and 999";
+      },
+      profilePicture:
+        "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
       currencySymbol: " €",
       debug: true,
       currentTab: 0,
       tab: null,
       text: "Lorem ipsum",
-    
+
       selectedRoomies: [],
 
       dialogBought: false,
@@ -382,12 +400,12 @@ export default {
       newPurchase: {
         name: "",
         price: "",
-        comment: ""
+        comment: "",
       },
       flatmate: {
         username: "Bo",
         profilePicture:
-          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
       },
       shoppingList: [
         {
@@ -396,21 +414,21 @@ export default {
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: ""
+          boughtBy: "",
         },
         {
           articleName: "Müllsäcke",
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: ""
+          boughtBy: "",
         },
         {
           articleName: "Ingwerbröd",
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: ""
+          boughtBy: "",
         },
         {
           articleName: "Aluhut",
@@ -418,7 +436,7 @@ export default {
           status: 1,
           statusText: "pending",
           boughtBy: "",
-          acceptedBy: ""
+          acceptedBy: "",
         },
         {
           articleName: "Seife",
@@ -426,7 +444,7 @@ export default {
           status: 1,
           statusText: "pending",
           boughtBy: "",
-          acceptedBy: ""
+          acceptedBy: "",
         },
         {
           articleName: "Wlan Repeater",
@@ -434,8 +452,8 @@ export default {
           status: 2,
           statusText: "done",
           boughtBy: this.username,
-          acceptedBy: this.username
-        }
+          acceptedBy: this.username,
+        },
       ],
       // used to be OverviewList
       roomies: [
@@ -447,7 +465,7 @@ export default {
           balance: +3,
           balancePlus: true,
           selected: true,
-          color: "#1F85DE"
+          color: "#1F85DE",
         },
         {
           id: 1,
@@ -457,7 +475,7 @@ export default {
           balance: -3,
           balancePlus: false,
           selected: false,
-          color: "#DE591F"
+          color: "#DE591F",
         },
         {
           id: 2,
@@ -467,7 +485,7 @@ export default {
           balance: 0,
           balancePlus: true,
           selected: true,
-          color: "#BDA0EC"
+          color: "#BDA0EC",
         },
         {
           id: 3,
@@ -477,25 +495,25 @@ export default {
           balance: 0,
           balancePlus: true,
           selected: true,
-          color: "#EBE386"
-        }
+          color: "#EBE386",
+        },
       ],
       openArticleList: [
         {
           articleName: "Atommüll",
-          status: "open"
+          status: "open",
         },
         {
           articleName: "Kuchen",
-          status: "open"
+          status: "open",
         },
         {
           articleName: "Kaffee",
-          status: "pending"
-        }
-      ]
+          status: "pending",
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 
