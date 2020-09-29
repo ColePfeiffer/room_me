@@ -36,18 +36,19 @@
                     </v-tooltip>
                   </tr>
                 </thead>
-                <!--Shopping List Overview: Shows all products (should show only with status 0! -->
+                <!--Shopping List Overview: Shows all products (should show only with status 0! 
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
                   <tr v-for="item in activeItems" :key="item.articleName">
                     <td>{{ item.articleName }}</td>
                     <td>
                       <v-btn text>
-                        <v-icon>mdi-check</v-icon>
+                        <v-icon v-on:click="acceptedArticle">mdi-check</v-icon>
                       </v-btn>
                     </td>
                     <td>
+           
                       <v-btn text>
-                        <v-icon>euro</v-icon>
+                        <v-icon v-on:click="billArticle">euro</v-icon>
                       </v-btn>
                     </td>
                     <td>
@@ -60,6 +61,8 @@
                         <v-icon>edit</v-icon>
                       </v-btn>
                     </td>
+                    </div>
+        
                   </tr>
                 </tbody>
               </template>
@@ -383,7 +386,6 @@ export default {
       shoppingList: [
         {
           articleName: "Spüli",
-          // Status: 0 - offen, 1 - pending,
           price: 0,
           status: 0,
           statusText: "open",
@@ -406,8 +408,8 @@ export default {
         {
           articleName: "Aluhut",
           price: 0,
-          status: 1,
-          statusText: "pending",
+          status: 0,
+          statusText: "open",
           boughtBy: "",
           acceptedBy: ""
         },
@@ -421,9 +423,10 @@ export default {
         },
         {
           articleName: "Wlan Repeater",
-          price: 2.7,
+          price: 0,
           status: 2,
-          statusText: "done",
+          statusText: "billed",
+          acceptedBy: this.username,
           boughtBy: this.username,
           acceptedBy: this.username
         }
