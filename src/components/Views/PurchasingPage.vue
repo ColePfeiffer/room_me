@@ -213,6 +213,7 @@
                         <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
                           <v-chip
                             :color ="roomie.color"
+                            :outlined ="roomieChipOutlined"
                             @click="selectRoomie(roomie)"
                          
                           >
@@ -347,6 +348,11 @@ export default {
     },
     filterDone(prop) {
       return prop == 2;
+    }
+  },
+  computed: {
+    roomieChipOutlined(){
+      return true;
     }
   },
   data() {
