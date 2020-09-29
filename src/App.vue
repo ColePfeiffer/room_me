@@ -65,7 +65,7 @@
         <v-toolbar-title></v-toolbar-title>
         <v-spacer></v-spacer>
         <!--                Buttons Profile-->
-        <v-btn icon to="/Login">
+        <v-btn text color="grey" icon to="/Login">
           <v-icon color="grey">mdi-account</v-icon>
         </v-btn>
         <v-btn text color="grey">
@@ -75,9 +75,9 @@
       </v-toolbar>
     </v-card>
 
-    <v-content class="content mx-4 mb-4">
-      <!--            Hier werden einzelne Seiten reingeladen-->
-      <router-view></router-view>
+    <v-content class="content">
+            <!--            Hier werden einzelne Seiten reingeladen-->
+            <router-view></router-view>
     </v-content>
 
     <v-footer dark dense color="#211E21">
@@ -104,7 +104,7 @@ export default {
 <style scoped>
 .header {
   background: #333;
-  color: #fff;
+color: #fff;
   text-align: center;
   padding: 10px;
 }

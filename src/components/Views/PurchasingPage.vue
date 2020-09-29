@@ -1,24 +1,45 @@
-
 <template>
   <div class="purchasing">
     <v-container class="my-5">
       <v-row wrap justify-space-around>
         <v-col xs="12" sm="12" md="6">
+          <profilePage v-if="showProfilePage = true" />
           <v-card flat class="pa-3">
             <v-simple-table>
               <template v-slot:default>
                 <thead>
                   <tr>
                     <th class="text-left">Bezeichnung</th>
-                    <th class="text-left">Status</th>
-                    <th class="text-left">Annehmen</th>
-                    <th class="text-left">Ablehnen</th>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Annehmen</th>
+                      </template>
+                      <span>Was bedeutet Annehmen?</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Abrechnen</th>
+                      </template>
+                      <span>Was bedeutet Abrechnen?</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
+                      </template>
+                      <span>Meeeeeeeeeeta</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <th class="text-left" v-bind="attrs" v-on="on">Bearbeiten</th>
+                      </template>
+                      <span>Meeeeeeeeeeta</span>
+                    </v-tooltip>
                   </tr>
                 </thead>
+                <!--Shopping List Overview: Shows all products (should show only with status 0! -->
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
-                  <tr v-for="item in shoppingList" :key="item.articleName">
+                  <tr v-for="item in activeItems" :key="item.articleName">
                     <td>{{ item.articleName }}</td>
-                    <td>{{ item.statusBoolean }}</td>
                     <td>
                       <v-btn text>
                         <v-icon>mdi-check</v-icon>
@@ -26,7 +47,17 @@
                     </td>
                     <td>
                       <v-btn text>
+                        <v-icon>euro</v-icon>
+                      </v-btn>
+                    </td>
+                    <td>
+                      <v-btn text>
                         <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                    </td>
+                    <td>
+                      <v-btn text>
+                        <v-icon>edit</v-icon>
                       </v-btn>
                     </td>
                   </tr>
@@ -35,73 +66,248 @@
             </v-simple-table>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="9" xs="12">
+                <v-col cols="12" sm="12" xs="12">
                   <v-text-field label="Want to add something?" single-line></v-text-field>
-                </v-col>
-                <v-col cols="3" sm="3" xs="12">
-                  <v-btn color="orange" label="add" single-line>+</v-btn>
                 </v-col>
               </v-row>
             </v-container>
           </v-card>
         </v-col>
         <v-col xs="12" sm="6" md="3">
-          <v-card class="mx-auto" max-width="344">
-            <v-list-item three-line>
+          <v-card class="ma-auto" max-width="344">
+            <v-list-item>
               <v-list-item-content>
-                <div class="overline mb-4">Übersicht</div>
+                <div class="overline">Übersicht</div>
                 <v-list>
-                  <v-list-item v-for="item in overviewList" :key="item.username">
-                    <v-list-item-avatar>
-                      <v-img class="overview-pic" v-bind:src="item.profilePicture"></v-img>
-                    </v-list-item-avatar>
+                  <v-list-item v-for="roomie in roomies" :key="roomie.id">
+                    <div class="text-center">
+                      <v-list-item-avatar>
+                        <v-img
+                          @click="showProfilePage = true"
+                          class="profile-picture"
+                          max-width="60"
+                          max-height="60"
+                          v-bind="attrs"
+                          v-on="on"
+                          v-bind:src="roomie.profilePicture"
+                        ></v-img>
+                      </v-list-item-avatar>
+                    </div>
+                    <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
-                      <v-list-item-title>{{ item.username }}</v-list-item-title>
-                      <v-list-item-subtitle>{{ item.balance }}</v-list-item-subtitle>
-                      <v-divider class="mx-1" horizontal color="pink"></v-divider>
+                      <v-list-item-title>{{ roomie.username }}</v-list-item-title>
+                      <v-list-item-subtitle>
+                        <span
+                          v-if="roomie.balance >= 0"
+                          class="balance-plus"
+                        >{{"+" + roomie.balance + currencySymbol}}</span>
+                        <span v-else class="balance-minus">{{roomie.balance + currencySymbol}}</span>
+                      </v-list-item-subtitle>
+                      <v-divider class="ma-1" horizontal color="pink"></v-divider>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-list-item-content>
             </v-list-item>
+
+            <v-list>
+              <div class="text-center">
+                <v-dialog v-model="dialogBought" width="500">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      class="ma-2"
+                      color="pink"
+                      label="addMoney"
+                    >Bought already?</v-btn>
+                  </template>
+
+                  <!--Dialog To Enter Bought Supplies:-->
+                  <v-card>
+                    <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
+                    <v-card-text cols="12" sm="12">
+                      <v-row>
+                        <v-col>
+                          <v-row class="mx-2">
+                            <v-text-field
+                              v-model="newPurchase.name"
+                              sm="12"
+                              m="12"
+                              label="Product"
+                              :counter="15"
+                              prepend-icon="add_shopping_cart"
+                              color="#FF6F00"
+                            ></v-text-field>
+                            <v-text-field
+                              v-model="newPurchase.price"
+                              :rules="[numberRule]"
+                              sm="6"
+                              m="6"
+                              :counter="5"
+                              label="Price"
+                              prepend-icon="euro"
+                              color="#FF6F00"
+                            ></v-text-field>
+                          </v-row>
+                          <v-text-field
+                            v-model="newPurchase.comment"
+                            class="mx-2"
+                            label="Comment"
+                            placeholder="Add an optional comment about this product."
+                            prepend-icon="comment"
+                            color="#FF6F00"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <!-- Roomie Chip -->
+                      <v-chip-group column multiple active-class="primary--text">
+                        <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+                          <v-chip
+                            :color="roomie.color"
+                            :outlined="roomieChipOutlined(roomie)"
+                            @click="selectRoomie(roomie)"
+                          >
+                            <v-avatar left>
+                              <v-img v-bind:src="roomie.profilePicture"></v-img>
+                            </v-avatar>
+                            <strong>{{roomie.username}}</strong>&nbsp;
+                          </v-chip>
+                        </v-row>
+                      </v-chip-group>
+
+                      <v-row class="justify-center">
+                        <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
+                      </v-row>
+                    </v-card-text>
+                    <v-card-actions></v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </div>
+            </v-list>
           </v-card>
         </v-col>
-
+        <!--My Tabs:-->
         <v-col xs="12" sm="6" md="3">
           <v-card>
             <v-tabs v-model="tab" background-color="dark" centered dark icons-and-text>
               <v-tabs-slider></v-tabs-slider>
 
               <v-tab href="#tab-1">
-                Offen
-                <v-icon color="blue">mdi-heart</v-icon>
+                <v-icon color="pink">mdi-heart</v-icon>
+                <span class="mb-2">Pending</span>
               </v-tab>
 
               <v-tab href="#tab-2">
-                Erledigt
-                <v-icon color="pink">mdi-heart</v-icon>
+                Done
+                <v-icon color="green">euro</v-icon>
               </v-tab>
             </v-tabs>
 
             <v-tabs-items v-model="tab">
-              <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i"></v-tab-item>
+              <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
+                <v-card text>
+                  <v-card-text>{{ text }}</v-card-text>
+                </v-card>
+              </v-tab-item>
             </v-tabs-items>
-            <v-card-text v-for="item in openArticleList" :key="item.articleName">
-              <v-chip class="mr-2" @click="lights" outlined color="deep-purple accent-4">
-                <v-icon left>mdi-brightness-5</v-icon>
-                {{ item.articleName }}
-              </v-chip>
-            </v-card-text>
           </v-card>
         </v-col>
+
+        <!--
+  
+
+
+        -->
       </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
+import profilePage from "../profilePage";
+
 export default {
+  components: {
+    profilePage
+  },
   methods: {
+    uploadPicture: function(event, roomie) {
+      // Reference to the DOM input element
+      var input = event.target;
+      // Ensure that you have a file before attempting to read it
+      if (input.files && input.files[0]) {
+        // create a new FileReader to read this image and convert to base64 format
+        var reader = new FileReader();
+        // Define a callback function to run, when FileReader finishes its job
+        reader.onload = e => {
+          // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
+          // Read image as base64 and set to imageData
+
+          this.roomies.forEach(r => {
+            if (r.username === roomie.username) {
+              r.profilePicture = e.target.result;
+            }
+          });
+          //this.profilePicture = e.target.result;
+        };
+        // Start the reader job - read file as a data url (base64 format)
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+    addPurchase() {
+      let vn = this;
+
+      if (this.debug) console.log(this.newPurchase.price);
+
+      // hide dialoge
+      this.dialogBought = false;
+
+      var sharedByNumber = 0;
+      // var buyer
+      var individualPrice;
+
+      // count selected roomies to determine divider
+      this.roomies.forEach(function(roomie) {
+        if (roomie.selected) {
+          sharedByNumber = sharedByNumber + 1;
+        }
+      });
+
+      // calculate individual price
+      if (this.debug === true) console.log("Divided by", sharedByNumber);
+      individualPrice = this.newPurchase.price / sharedByNumber;
+      individualPrice = individualPrice.toFixed(2);
+      if (this.debug === true)
+        console.log("Individual Price: ", individualPrice);
+
+      this.roomies.forEach(function(roomie) {
+        if (roomie.selected) {
+          roomie.balance = parseInt(roomie.balance) + individualPrice;
+          if (vn.this.debug) console.log(roomie.balance);
+        }
+      });
+
+      // reset everything
+      this.roomies.forEach(function(roomie) {
+        roomie.selected = true;
+      });
+
+      this.newPurchase.name = "";
+      this.newPurchase.price = "";
+      this.newPurchase.comment = "";
+
+      if (this.debug) console.log("Split!");
+    },
+
+    selectRoomie(selected_roomie) {
+      this.roomies.forEach(function(roomie, index) {
+        if (roomie == selected_roomie) {
+          roomie.selected = !roomie.selected;
+          console.log(roomie.selected, index);
+        }
+      });
+    },
     alarm() {
       alert("Turning on alarm...");
     },
@@ -111,89 +317,191 @@ export default {
     lights() {
       alert("Toggling lights...");
     },
+    sortBy(prop) {
+      // Compares Items next to each other: alphabetical order!
+      // if true -1, else 1
+      // if a -1, else b 1
+      this.shoppingList.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
+    },
+    filterOpen(prop) {
+      return prop == 0;
+    },
+    filterPending(prop) {
+      return prop == 1;
+    },
+    filterDone(prop) {
+      return prop == 2;
+    },
+
+    roomieChipOutlined(roomie) {
+      if (roomie.selected) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  },
+  computed: {
+    // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
+    activeItems() {
+      // Javascript-Funktion zum Filtern von Arrays
+      return this.shoppingList.filter(function(value) {
+        return value.status === 1;
+      });
+    }
   },
   data() {
     return {
+      numberRule: v => {
+        if (!v.trim()) return true;
+        if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
+        return "Number has to be between 0 and 999";
+      },
+      profilePicture:
+        "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
+      currencySymbol: " €",
+      debug: true,
+      currentTab: 0,
+      tab: null,
+      text: "Lorem ipsum",
+
+      selectedRoomies: [],
+
+      dialogBought: false,
+      showProfilePage: false,
       checkbox: true,
+      newPurchase: {
+        name: "",
+        price: "",
+        comment: ""
+      },
+      flatmate: {
+        username: "Bo",
+        profilePicture:
+          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+      },
       shoppingList: [
         {
           articleName: "Spüli",
-          statusBoolean: false,
+          // Status: 0 - offen, 1 - pending,
+          price: 0,
+          status: 0,
+          statusText: "open",
+          boughtBy: ""
         },
         {
           articleName: "Müllsäcke",
-          statusBoolean: false,
+          price: 0,
+          status: 0,
+          statusText: "open",
+          boughtBy: ""
         },
         {
           articleName: "Ingwerbröd",
-          statusBoolean: false,
+          price: 0,
+          status: 0,
+          statusText: "open",
+          boughtBy: ""
         },
-      ],
-      overviewList: [
         {
+          articleName: "Aluhut",
+          price: 0,
+          status: 1,
+          statusText: "pending",
+          boughtBy: "",
+          acceptedBy: ""
+        },
+        {
+          articleName: "Seife",
+          price: 0,
+          status: 1,
+          statusText: "pending",
+          boughtBy: "",
+          acceptedBy: ""
+        },
+        {
+          articleName: "Wlan Repeater",
+          price: 2.7,
+          status: 2,
+          statusText: "done",
+          boughtBy: this.username,
+          acceptedBy: this.username
+        }
+      ],
+      // used to be OverviewList
+      roomies: [
+        {
+          id: 0,
           username: "Chris",
           profilePicture:
             "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "+ " + "02.50" + " €",
+          balance: +3,
+          balancePlus: true,
+          selected: true,
+          color: "#1F85DE"
         },
         {
+          id: 1,
           username: "Hannah",
           profilePicture:
             "https://images.unsplash.com/photo-1457131760772-7017c6180f05?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "- " + "01.50" + " €",
+          balance: -3,
+          balancePlus: false,
+          selected: true,
+          color: "#DE591F"
         },
         {
+          id: 2,
           username: "Rufus",
           profilePicture:
             "https://images.unsplash.com/photo-1517423568366-8b83523034fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "- " + "01.50" + " €",
+          balance: 0,
+          balancePlus: true,
+          selected: true,
+          color: "#BDA0EC"
         },
         {
+          id: 3,
           username: "Tim",
           profilePicture:
             "https://images.unsplash.com/photo-1516210673878-84fa2173547b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: "+ " + "02.50" + " €",
-        },
+          balance: 0,
+          balancePlus: true,
+          selected: true,
+          color: "#EBE386"
+        }
       ],
       openArticleList: [
         {
           articleName: "Atommüll",
-          status: "open",
+          status: "open"
         },
         {
           articleName: "Kuchen",
-          status: "open",
+          status: "open"
         },
         {
           articleName: "Kaffee",
-          status: "open",
-        },
-      ],
-      colors: ["darkblue"],
-      cycle: false,
-      slides: ["Uno", "Second", "Third", "Fourth", "Fifth"],
+          status: "pending"
+        }
+      ]
     };
-  },
+  }
 };
 </script>
 
 <style>
+.balance-plus {
+  color: green;
+}
+
+.balance-minus {
+  color: red;
+}
 </style>
  <!-- 
 
-  <v-row wrap justify-space-around>
-        <v-col xs="12" sm="12" md="6">
-        <v-btn outlined block color="blue">1</v-btn>
-        </v-col>
-        <v-col xs="6" sm="6" md="3">
-        <v-btn outlined block color="blue">2</v-btn>
-        </v-col>
-        <v-col xs="6" sm="6" md="3">
-        <v-btn outlined block color="blue">2</v-btn>
-        </v-col>
-      </v-row>
-
-
+ 
 
 
         -->
