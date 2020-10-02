@@ -11,25 +11,33 @@
                     <th class="text-left">Bezeichnung</th>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Annehmen</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Annehmen
+                        </th>
                       </template>
                       <span>Was bedeutet Annehmen?</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Abrechnen</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Abrechnen
+                        </th>
                       </template>
                       <span>Was bedeutet Abrechnen?</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Ablehnen
+                        </th>
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Bearbeiten</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Bearbeiten
+                        </th>
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
@@ -71,7 +79,10 @@
             <v-container>
               <v-row>
                 <v-col cols="12" sm="12" xs="12">
-                  <v-text-field label="Want to add something?" single-line></v-text-field>
+                  <v-text-field
+                    label="Want to add something?"
+                    single-line
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -120,7 +131,11 @@
                           }}
                         </span>
                       </v-list-item-subtitle>
-                      <v-divider class="ma-1" horizontal color="pink"></v-divider>
+                      <v-divider
+                        class="ma-1"
+                        horizontal
+                        color="pink"
+                      ></v-divider>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -137,12 +152,15 @@
                       class="ma-2"
                       color="pink"
                       label="addMoney"
-                    >Bought already?</v-btn>
+                      >Bought already?</v-btn
+                    >
                   </template>
 
                   <!--Dialog To Enter Bought Supplies:-->
                   <v-card>
-                    <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
+                    <v-card-title class="headline ighten-2"
+                      >Add your bought supplies here</v-card-title
+                    >
                     <v-card-text cols="12" sm="12">
                       <v-row>
                         <v-col>
@@ -178,8 +196,16 @@
                         </v-col>
                       </v-row>
                       <!-- Roomie Chip -->
-                      <v-chip-group column multiple active-class="primary--text">
-                        <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+                      <v-chip-group
+                        column
+                        multiple
+                        active-class="primary--text"
+                      >
+                        <v-row
+                          class="mx-2"
+                          v-for="roomie in roomies"
+                          :key="roomie.id"
+                        >
                           <v-chip
                             :color="roomie.color"
                             :outlined="roomieChipOutlined(roomie)"
@@ -194,7 +220,12 @@
                       </v-chip-group>
 
                       <v-row class="justify-center">
-                        <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
+                        <v-btn
+                          color="#FF6F00"
+                          justify-center
+                          @click="addPurchase"
+                          >Split!</v-btn
+                        >
                       </v-row>
                     </v-card-text>
                     <v-card-actions></v-card-actions>
@@ -259,7 +290,7 @@ import profilePage from "../profilePage";
 
 export default {
   components: {
-    profilePage
+    profilePage,
   },
   methods: {
     acceptItem(item) {
@@ -274,6 +305,28 @@ export default {
 
       this.currentItemForCashingUp = item;
     },
+
+    addArticleAccepted(accepted_article) {
+
+      this.shoppingList.forEach(function (shoppingList) {
+        if (accepted_article.status != shoppingList.status) {
+          return (accepted_article.status = 1); 
+        
+          
+        }
+      });
+    },
+
+    addArticleBilled(billed_article) {
+      this.dialogBought = true;
+
+      this.shoppingList.forEach(function (shoppingList) {
+        if (billed_article.status != shoppingList.status) {
+          return (billed_article.status = 99);
+        }
+      });
+    },
+
     addPurchase() {
       //let vn = this;
 
@@ -288,7 +341,7 @@ export default {
       var individualPrice;
 
       // count selected roomies to determine divider
-      this.roomies.forEach(function(roomie) {
+      this.roomies.forEach(function (roomie) {
         if (roomie.selected) {
           sharedByNumber = sharedByNumber + 1;
         }
@@ -323,7 +376,7 @@ export default {
       }
 
       // reset everything
-      this.roomies.forEach(function(roomie) {
+      this.roomies.forEach(function (roomie) {
         roomie.selected = true;
       });
 
@@ -336,7 +389,7 @@ export default {
     },
 
     selectRoomie(selected_roomie) {
-      this.roomies.forEach(function(roomie, index) {
+      this.roomies.forEach(function (roomie, index) {
         if (roomie == selected_roomie) {
           roomie.selected = !roomie.selected;
           console.log(roomie.selected, index);
@@ -357,7 +410,7 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
@@ -382,7 +435,7 @@ export default {
   },
   data() {
     return {
-      numberRule: v => {
+      numberRule: (v) => {
         if (!v.trim()) return true;
         if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
         return "Number has to be between 0 and 999";
@@ -417,7 +470,7 @@ export default {
       newPurchase: {
         name: "",
         price: "",
-        comment: ""
+        comment: "",
       },
       shoppingList: [
         {
@@ -481,7 +534,7 @@ export default {
           balance: +3,
           balancePlus: true,
           selected: true,
-          color: "#1F85DE"
+          color: "#1F85DE",
         },
         {
           id: 1,
@@ -492,7 +545,7 @@ export default {
           balance: -3,
           balancePlus: false,
           selected: true,
-          color: "#DE591F"
+          color: "#DE591F",
         },
         {
           id: 2,
@@ -503,7 +556,7 @@ export default {
           balance: 0,
           balancePlus: true,
           selected: true,
-          color: "#BDA0EC"
+          color: "#BDA0EC",
         },
         {
           id: 3,
@@ -518,7 +571,7 @@ export default {
         }
       ]
     };
-  }
+  },
 };
 </script>
 
