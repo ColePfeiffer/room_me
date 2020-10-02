@@ -1,7 +1,4 @@
 <template>
-  <div class="profilePage">
-    <v-dialog v-show="show" width="500">
-      <!--Profile Page-->
       <v-card>
         <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
         <v-card-text cols="12" sm="12">
@@ -23,7 +20,8 @@
             <v-col>
               <v-textarea
                 class="mx-2"
-                placeholder="Boss Bitch"
+                placeholder="Name"
+                :value="roomie.username"
                 rows="1"
                 append-outer-icon="edit"
                 prepend-icon="mdi-account"
@@ -32,7 +30,8 @@
               <v-textarea
                 class="mx-2"
                 label="Info"
-                placeholder="...Tell your Roomies something about yourself!"
+                placeholder="Write something about yourself!"
+                :value="roomie.description"
                 rows="1"
                 append-outer-icon="edit"
                 prepend-icon="info"
@@ -40,33 +39,63 @@
             </v-col>
           </v-row>
         </v-card-text>
-
         <v-divider></v-divider>
-
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="dialogProfilePage = false">Save</v-btn>
+          <v-btn color="primary">Save</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
-  </div>
 </template>
 
 <script>
 export default {
   name: "profilePage",
   props: {
-    value: Boolean
   },
   computed: {},
   data() {
     return {
+      roomie: {
+          id: 0,
+          username: "Chris",
+          description: "Hi there!",
+          profilePicture:
+            "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+          balance: +3,
+          balancePlus: true,
+          selected: true,
+          color: "#1F85DE"
+      },
       title: ""
     };
   },
-  methods: {}
+  methods: {
+    uploadPicture: function(event, roomie) {
+      // Reference to the DOM input element
+      var input = event.target;
+      // Ensure that you have a file before attempting to read it
+      if (input.files && input.files[0]) {
+        // create a new FileReader to read this image and convert to base64 format
+        var reader = new FileReader();
+        // Define a callback function to run, when FileReader finishes its job
+        reader.onload = e => {
+          // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
+          // Read image as base64 and set to imageData
+
+          this.roomies.forEach(r => {
+            if (r.username === roomie.username) {
+              r.profilePicture = e.target.result;
+            }
+          });
+          //this.profilePicture = e.target.result;
+        };
+        // Start the reader job - read file as a data url (base64 format)
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  }
 };
 </script>
 
-<style scoped>
+<style>
 </style>

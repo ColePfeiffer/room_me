@@ -3,7 +3,6 @@
     <v-container class="my-5">
       <v-row wrap justify-space-around>
         <v-col xs="12" sm="12" md="6">
-          <profilePage v-if="showProfilePage = true" />
           <v-card flat class="pa-3">
             <v-simple-table>
               <template v-slot:default>
@@ -187,6 +186,10 @@
             </v-list>
           </v-card>
         </v-col>
+
+    <profilePage></profilePage>
+
+
         <!--My Tabs:-->
         <v-col xs="12" sm="6" md="3">
           <v-card>
@@ -213,12 +216,6 @@
             </v-tabs-items>
           </v-card>
         </v-col>
-
-        <!--
-  
-
-
-        -->
       </v-row>
     </v-container>
   </div>
@@ -232,29 +229,6 @@ export default {
     profilePage
   },
   methods: {
-    uploadPicture: function(event, roomie) {
-      // Reference to the DOM input element
-      var input = event.target;
-      // Ensure that you have a file before attempting to read it
-      if (input.files && input.files[0]) {
-        // create a new FileReader to read this image and convert to base64 format
-        var reader = new FileReader();
-        // Define a callback function to run, when FileReader finishes its job
-        reader.onload = e => {
-          // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
-          // Read image as base64 and set to imageData
-
-          this.roomies.forEach(r => {
-            if (r.username === roomie.username) {
-              r.profilePicture = e.target.result;
-            }
-          });
-          //this.profilePicture = e.target.result;
-        };
-        // Start the reader job - read file as a data url (base64 format)
-        reader.readAsDataURL(input.files[0]);
-      }
-    },
     addPurchase() {
       let vn = this;
 
@@ -433,6 +407,7 @@ export default {
         {
           id: 0,
           username: "Chris",
+          description: "Hi there!",
           profilePicture:
             "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
           balance: +3,
@@ -443,6 +418,7 @@ export default {
         {
           id: 1,
           username: "Hannah",
+          description: "Möpp",
           profilePicture:
             "https://images.unsplash.com/photo-1457131760772-7017c6180f05?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
           balance: -3,
@@ -453,6 +429,7 @@ export default {
         {
           id: 2,
           username: "Rufus",
+          description: "",
           profilePicture:
             "https://images.unsplash.com/photo-1517423568366-8b83523034fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
           balance: 0,
@@ -463,6 +440,7 @@ export default {
         {
           id: 3,
           username: "Tim",
+          description: "",
           profilePicture:
             "https://images.unsplash.com/photo-1516210673878-84fa2173547b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
           balance: 0,
