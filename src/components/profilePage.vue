@@ -50,8 +50,17 @@
 <script>
 export default {
   name: "profilePage",
+  /*
   props: {
-  },
+    'id': Number,
+    'username': String,
+    'description': String,
+    'profilePicture': String,
+    'balance': Number,
+    'balancePlus': Boolean,
+    'selected': Boolean,
+    'color': String
+  },*/
   computed: {},
   data() {
     return {

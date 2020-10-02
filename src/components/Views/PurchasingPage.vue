@@ -74,6 +74,10 @@
         </v-col>
         <v-col xs="12" sm="6" md="3">
           <v-card class="ma-auto" max-width="344">
+        <v-dialog v-model="showProfilePage" width="500">
+          <profilePage></profilePage>
+        </v-dialog>
+
             <v-list-item>
               <v-list-item-content>
                 <div class="overline">Übersicht</div>
