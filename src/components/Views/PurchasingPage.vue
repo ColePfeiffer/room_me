@@ -3,7 +3,7 @@
     <v-container class="my-5">
       <v-row wrap justify-space-around>
         <v-col xs="12" sm="12" md="6">
-          <profilePage v-if="showProfilePage = true" />
+          <profilePage v-if="(showProfilePage = true)" />
           <v-card flat class="pa-3">
             <v-simple-table>
               <template v-slot:default>
@@ -12,43 +12,52 @@
                     <th class="text-left">Bezeichnung</th>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Annehmen</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Annehmen
+                        </th>
                       </template>
                       <span>Was bedeutet Annehmen?</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Abrechnen</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Abrechnen
+                        </th>
                       </template>
                       <span>Was bedeutet Abrechnen?</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Ablehnen
+                        </th>
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Bearbeiten</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Bearbeiten
+                        </th>
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
                   </tr>
                 </thead>
-                <!--Shopping List Overview: Shows all products (should show only with status 0! 
+                <!--Shopping List Overview: Shows all products (should show only with status 0! -->
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
                   <tr v-for="item in activeItems" :key="item.articleName">
                     <td>{{ item.articleName }}</td>
                     <td>
                       <v-btn text>
-                        <v-icon v-on:click="acceptedArticle">mdi-check</v-icon>
+                        <v-icon @click="addArticleAccepted(item)"
+                          >mdi-check</v-icon
+                        >
                       </v-btn>
                     </td>
                     <td>
-           
                       <v-btn text>
-                        <v-icon v-on:click="billArticle">euro</v-icon>
+                        <v-icon @click="addArticleBilled(item)">euro</v-icon>
                       </v-btn>
                     </td>
                     <td>
@@ -61,8 +70,6 @@
                         <v-icon>edit</v-icon>
                       </v-btn>
                     </td>
-                    </div>
-        
                   </tr>
                 </tbody>
               </template>
@@ -70,7 +77,10 @@
             <v-container>
               <v-row>
                 <v-col cols="12" sm="12" xs="12">
-                  <v-text-field label="Want to add something?" single-line></v-text-field>
+                  <v-text-field
+                    label="Want to add something?"
+                    single-line
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -98,15 +108,22 @@
                     </div>
                     <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
-                      <v-list-item-title>{{ roomie.username }}</v-list-item-title>
+                      <v-list-item-title>{{
+                        roomie.username
+                      }}</v-list-item-title>
                       <v-list-item-subtitle>
-                        <span
-                          v-if="roomie.balance >= 0"
-                          class="balance-plus"
-                        >{{"+" + roomie.balance + currencySymbol}}</span>
-                        <span v-else class="balance-minus">{{roomie.balance + currencySymbol}}</span>
+                        <span v-if="roomie.balance >= 0" class="balance-plus">{{
+                          "+" + roomie.balance + currencySymbol
+                        }}</span>
+                        <span v-else class="balance-minus">{{
+                          roomie.balance + currencySymbol
+                        }}</span>
                       </v-list-item-subtitle>
-                      <v-divider class="ma-1" horizontal color="pink"></v-divider>
+                      <v-divider
+                        class="ma-1"
+                        horizontal
+                        color="pink"
+                      ></v-divider>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -123,12 +140,15 @@
                       class="ma-2"
                       color="pink"
                       label="addMoney"
-                    >Bought already?</v-btn>
+                      >Bought already?</v-btn
+                    >
                   </template>
 
                   <!--Dialog To Enter Bought Supplies:-->
                   <v-card>
-                    <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
+                    <v-card-title class="headline ighten-2"
+                      >Add your bought supplies here</v-card-title
+                    >
                     <v-card-text cols="12" sm="12">
                       <v-row>
                         <v-col>
@@ -164,8 +184,16 @@
                         </v-col>
                       </v-row>
                       <!-- Roomie Chip -->
-                      <v-chip-group column multiple active-class="primary--text">
-                        <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+                      <v-chip-group
+                        column
+                        multiple
+                        active-class="primary--text"
+                      >
+                        <v-row
+                          class="mx-2"
+                          v-for="roomie in roomies"
+                          :key="roomie.id"
+                        >
                           <v-chip
                             :color="roomie.color"
                             :outlined="roomieChipOutlined(roomie)"
@@ -174,13 +202,19 @@
                             <v-avatar left>
                               <v-img v-bind:src="roomie.profilePicture"></v-img>
                             </v-avatar>
-                            <strong>{{roomie.username}}</strong>&nbsp;
+                            <strong>{{ roomie.username }}</strong
+                            >&nbsp;
                           </v-chip>
                         </v-row>
                       </v-chip-group>
 
                       <v-row class="justify-center">
-                        <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
+                        <v-btn
+                          color="#FF6F00"
+                          justify-center
+                          @click="addPurchase"
+                          >Split!</v-btn
+                        >
                       </v-row>
                     </v-card-text>
                     <v-card-actions></v-card-actions>
@@ -192,34 +226,38 @@
         </v-col>
         <!--My Tabs:-->
         <v-col xs="12" sm="6" md="3">
-          <v-card>
-            <v-tabs v-model="tab" background-color="dark" centered dark icons-and-text>
-              <v-tabs-slider></v-tabs-slider>
+          <v-tabs centered color="cyan" dark icons-and-text>
+            <v-tabs-slider color="yellow"></v-tabs-slider>
 
-              <v-tab href="#tab-1">
-                <v-icon color="pink">mdi-heart</v-icon>
-                <span class="mb-2">Pending</span>
-              </v-tab>
+            <v-tab href="#tab-1">
+              <v-icon color="pink">mdi-heart</v-icon>
+              <span class="mb-2">Pending</span>
+            </v-tab>
 
-              <v-tab href="#tab-2">
-                Done
-                <v-icon color="green">euro</v-icon>
-              </v-tab>
-            </v-tabs>
+            <v-tab href="#tab-2">
+              Done
+              <v-icon color="green">euro</v-icon>
+            </v-tab>
 
-            <v-tabs-items v-model="tab">
-              <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
-                <v-card text>
-                  <v-card-text>{{ text }}</v-card-text>
-                </v-card>
-              </v-tab-item>
-            </v-tabs-items>
-          </v-card>
+            <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
+              <v-card flat v-for="item in pendingItems" :key="item.articleName">
+                <v-card-text v-if="i == 1"
+                  >{{ item.articleName }} accepted by:
+                  {{ item.acceptedBy }}</v-card-text
+                >
+                <v-card-text v-if="i == 2">
+                
+               {{ item.articleName }}</v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs>
         </v-col>
 
         <!--
   
-
+ <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
+                  <tr v-for="item in activeItems" :key="item.articleName">
+                    <td>{{ item.articleName }}</td>
 
         -->
       </v-row>
@@ -232,10 +270,10 @@ import profilePage from "../profilePage";
 
 export default {
   components: {
-    profilePage
+    profilePage,
   },
   methods: {
-    uploadPicture: function(event, roomie) {
+    uploadPicture: function (event, roomie) {
       // Reference to the DOM input element
       var input = event.target;
       // Ensure that you have a file before attempting to read it
@@ -243,11 +281,11 @@ export default {
         // create a new FileReader to read this image and convert to base64 format
         var reader = new FileReader();
         // Define a callback function to run, when FileReader finishes its job
-        reader.onload = e => {
+        reader.onload = (e) => {
           // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
           // Read image as base64 and set to imageData
 
-          this.roomies.forEach(r => {
+          this.roomies.forEach((r) => {
             if (r.username === roomie.username) {
               r.profilePicture = e.target.result;
             }
@@ -258,6 +296,28 @@ export default {
         reader.readAsDataURL(input.files[0]);
       }
     },
+
+    addArticleAccepted(accepted_article) {
+
+      this.shoppingList.forEach(function (shoppingList) {
+        if (accepted_article.status != shoppingList.status) {
+          return (accepted_article.status = 1); 
+        
+          
+        }
+      });
+    },
+
+    addArticleBilled(billed_article) {
+      this.dialogBought = true;
+
+      this.shoppingList.forEach(function (shoppingList) {
+        if (billed_article.status != shoppingList.status) {
+          return (billed_article.status = 99);
+        }
+      });
+    },
+
     addPurchase() {
       let vn = this;
 
@@ -271,7 +331,7 @@ export default {
       var individualPrice;
 
       // count selected roomies to determine divider
-      this.roomies.forEach(function(roomie) {
+      this.roomies.forEach(function (roomie) {
         if (roomie.selected) {
           sharedByNumber = sharedByNumber + 1;
         }
@@ -284,7 +344,7 @@ export default {
       if (this.debug === true)
         console.log("Individual Price: ", individualPrice);
 
-      this.roomies.forEach(function(roomie) {
+      this.roomies.forEach(function (roomie) {
         if (roomie.selected) {
           roomie.balance = parseInt(roomie.balance) + individualPrice;
           if (vn.this.debug) console.log(roomie.balance);
@@ -292,7 +352,7 @@ export default {
       });
 
       // reset everything
-      this.roomies.forEach(function(roomie) {
+      this.roomies.forEach(function (roomie) {
         roomie.selected = true;
       });
 
@@ -304,36 +364,19 @@ export default {
     },
 
     selectRoomie(selected_roomie) {
-      this.roomies.forEach(function(roomie, index) {
+      this.roomies.forEach(function (roomie, index) {
         if (roomie == selected_roomie) {
           roomie.selected = !roomie.selected;
           console.log(roomie.selected, index);
         }
       });
     },
-    alarm() {
-      alert("Turning on alarm...");
-    },
-    blinds() {
-      alert("Toggling Blinds...");
-    },
-    lights() {
-      alert("Toggling lights...");
-    },
+
     sortBy(prop) {
       // Compares Items next to each other: alphabetical order!
       // if true -1, else 1
       // if a -1, else b 1
       this.shoppingList.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
-    },
-    filterOpen(prop) {
-      return prop == 0;
-    },
-    filterPending(prop) {
-      return prop == 1;
-    },
-    filterDone(prop) {
-      return prop == 2;
     },
 
     roomieChipOutlined(roomie) {
@@ -342,20 +385,32 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
     activeItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function(value) {
-        return value.status === 1;
+      return this.shoppingList.filter(function (value) {
+        return value.status === 0;
       });
-    }
+    },
+    pendingItems() {
+      // Javascript-Funktion zum Filtern von Arrays
+      return this.shoppingList.filter(function (value) {
+        return value.status === status;
+      });
+    },
+    billedItems() {
+      // Javascript-Funktion zum Filtern von Arrays
+      return this.shoppingList.filter(function (value) {
+        return value.status === 99;
+      });
+    },
   },
   data() {
     return {
-      numberRule: v => {
+      numberRule: (v) => {
         if (!v.trim()) return true;
         if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
         return "Number has to be between 0 and 999";
@@ -376,42 +431,44 @@ export default {
       newPurchase: {
         name: "",
         price: "",
-        comment: ""
+        comment: "",
       },
       flatmate: {
         username: "Bo",
         profilePicture:
-          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
       },
       shoppingList: [
         {
           articleName: "Spüli",
+          // Status: 0 - offen, 1 - pending,
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: ""
+
+          boughtBy: "",
         },
         {
           articleName: "Müllsäcke",
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: ""
+          boughtBy: "",
         },
         {
           articleName: "Ingwerbröd",
           price: 0,
           status: 0,
           statusText: "open",
-          boughtBy: ""
+          boughtBy: "",
         },
         {
           articleName: "Aluhut",
           price: 0,
-          status: 0,
-          statusText: "open",
+          status: 1,
+          statusText: "pending",
           boughtBy: "",
-          acceptedBy: ""
+          acceptedBy: "Christina",
         },
         {
           articleName: "Seife",
@@ -419,17 +476,16 @@ export default {
           status: 1,
           statusText: "pending",
           boughtBy: "",
-          acceptedBy: ""
+          acceptedBy: "",
         },
         {
           articleName: "Wlan Repeater",
-          price: 0,
-          status: 2,
-          statusText: "billed",
-          acceptedBy: this.username,
+          price: 2.7,
+          status: 99,
+          statusText: "done",
           boughtBy: this.username,
-          acceptedBy: this.username
-        }
+          acceptedBy: this.username,
+        },
       ],
       // used to be OverviewList
       roomies: [
@@ -441,7 +497,7 @@ export default {
           balance: +3,
           balancePlus: true,
           selected: true,
-          color: "#1F85DE"
+          color: "#1F85DE",
         },
         {
           id: 1,
@@ -451,7 +507,7 @@ export default {
           balance: -3,
           balancePlus: false,
           selected: true,
-          color: "#DE591F"
+          color: "#DE591F",
         },
         {
           id: 2,
@@ -461,7 +517,7 @@ export default {
           balance: 0,
           balancePlus: true,
           selected: true,
-          color: "#BDA0EC"
+          color: "#BDA0EC",
         },
         {
           id: 3,
@@ -471,25 +527,11 @@ export default {
           balance: 0,
           balancePlus: true,
           selected: true,
-          color: "#EBE386"
-        }
+          color: "#EBE386",
+        },
       ],
-      openArticleList: [
-        {
-          articleName: "Atommüll",
-          status: "open"
-        },
-        {
-          articleName: "Kuchen",
-          status: "open"
-        },
-        {
-          articleName: "Kaffee",
-          status: "pending"
-        }
-      ]
     };
-  }
+  },
 };
 </script>
 
