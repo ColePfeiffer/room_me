@@ -37,16 +37,21 @@
                 </thead>
                 <!--Shopping List Overview: Shows all products (should show only with status 0! -->
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
-                  <tr v-for="item in activeItems" :key="item.articleName">
-                    <td>{{ item.articleName }}</td>
+                  <tr v-for="item in openItems
+            " :key="item.article
+">
+                    <td>
+                      {{ item.article
+                      }}
+                    </td>
                     <td>
                       <v-btn text>
-                        <v-icon>mdi-check</v-icon>
+                        <v-icon @click="acceptItem(item)">mdi-check</v-icon>
                       </v-btn>
                     </td>
                     <td>
                       <v-btn text>
-                        <v-icon>euro</v-icon>
+                        <v-icon @click="cashUpItem(item)">euro</v-icon>
                       </v-btn>
                     </td>
                     <td>
@@ -74,9 +79,9 @@
         </v-col>
         <v-col xs="12" sm="6" md="3">
           <v-card class="ma-auto" max-width="344">
-        <v-dialog v-model="showProfilePage" width="500">
-          <profilePage></profilePage>
-        </v-dialog>
+            <v-dialog v-model="showProfilePage" width="500">
+              <profilePage></profilePage>
+            </v-dialog>
 
             <v-list-item>
               <v-list-item-content>
@@ -98,13 +103,22 @@
                     </div>
                     <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
-                      <v-list-item-title>{{ roomie.username }}</v-list-item-title>
+                      <v-list-item-title>
+                        {{
+                        roomie.username
+                        }}
+                      </v-list-item-title>
                       <v-list-item-subtitle>
-                        <span
-                          v-if="roomie.balance >= 0"
-                          class="balance-plus"
-                        >{{"+" + roomie.balance + currencySymbol}}</span>
-                        <span v-else class="balance-minus">{{roomie.balance + currencySymbol}}</span>
+                        <span v-if="roomie.balance >= 0" class="balance-plus">
+                          {{
+                          "+" + roomie.balance + currencySymbol
+                          }}
+                        </span>
+                        <span v-else class="balance-minus">
+                          {{
+                          roomie.balance + currencySymbol
+                          }}
+                        </span>
                       </v-list-item-subtitle>
                       <v-divider class="ma-1" horizontal color="pink"></v-divider>
                     </v-list-item-content>
@@ -174,7 +188,7 @@
                             <v-avatar left>
                               <v-img v-bind:src="roomie.profilePicture"></v-img>
                             </v-avatar>
-                            <strong>{{roomie.username}}</strong>&nbsp;
+                            <strong>{{ roomie.username }}</strong>&nbsp;
                           </v-chip>
                         </v-row>
                       </v-chip-group>
@@ -191,35 +205,50 @@
           </v-card>
         </v-col>
 
-    <profilePage></profilePage>
-
+        <profilePage></profilePage>
 
         <!--My Tabs:-->
         <v-col xs="12" sm="6" md="3">
-          <v-card>
-            <v-tabs v-model="tab" background-color="dark" centered dark icons-and-text>
-              <v-tabs-slider></v-tabs-slider>
+          <v-tabs centered color="cyan" dark icons-and-text>
+            <v-tabs-slider color="yellow"></v-tabs-slider>
 
-              <v-tab href="#tab-1">
-                <v-icon color="pink">mdi-heart</v-icon>
-                <span class="mb-2">Pending</span>
-              </v-tab>
+            <v-tab href="#tab-1">
+              <v-icon color="pink">mdi-heart</v-icon>
+              <span class="mb-2">Pending</span>
+            </v-tab>
 
-              <v-tab href="#tab-2">
-                Done
-                <v-icon color="green">euro</v-icon>
-              </v-tab>
-            </v-tabs>
+            <v-tab href="#tab-2">
+              Done
+              <v-icon color="green">euro</v-icon>
+            </v-tab>
 
-            <v-tabs-items v-model="tab">
-              <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
-                <v-card text>
-                  <v-card-text>{{ text }}</v-card-text>
-                </v-card>
-              </v-tab-item>
-            </v-tabs-items>
-          </v-card>
+            <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
+              <v-card flat v-for="item in pendingItems" :key="item.article
+  ">
+                <v-card-text v-if="i == 1">
+                  {{ item.article
+                  }} accepted by:
+                  {{ item.acceptedBy }}
+                </v-card-text>
+                <v-card-text v-if="i == 2">
+                  {{ item.article
+                  }}
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs>
         </v-col>
+
+        <!--
+  
+ <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
+                  <tr v-for="item in openItems
+            " :key="item.article
+">
+                    <td>{{ item.article
+           }}</td>
+
+        -->
       </v-row>
     </v-container>
   </div>
@@ -233,14 +262,27 @@ export default {
     profilePage
   },
   methods: {
-    addPurchase() {
-      let vn = this;
+    acceptItem(item) {
+      /* Status: 0 = offen, 1 = accepted, 2 = bought, 99 = declined */
+      item.status = 1;
+      item.acceptedBy = this.currentUser.username;
+    },
+    cashUpItem(item) {
+      this.completedPurchase = false;
+      this.newPurchase.name = item.article;
+      this.dialogBought = true;
 
-      if (this.debug) console.log(this.newPurchase.price);
+      this.currentItemForCashingUp = item;
+    },
+    addPurchase() {
+      //let vn = this;
+
+      if (this.debug) console.log("Preis: " + this.newPurchase.price);
 
       // hide dialoge
       this.dialogBought = false;
 
+      /*
       var sharedByNumber = 0;
       // var buyer
       var individualPrice;
@@ -259,12 +301,26 @@ export default {
       if (this.debug === true)
         console.log("Individual Price: ", individualPrice);
 
+    
       this.roomies.forEach(function(roomie) {
         if (roomie.selected) {
           roomie.balance = parseInt(roomie.balance) + individualPrice;
           if (vn.this.debug) console.log(roomie.balance);
         }
       });
+      */
+      // checks if this dialog was opened via the cash up-option
+
+      if (this.completedPurchase === false) {
+        this.openItems.forEach(element => {
+          if (element === this.currentItemForCashingUp) {
+            element.acceptedBy = this.currentUser.username;
+            element.boughtBy = this.currentUser.username;
+            if (this.debug) console.log(this.currentUser.username);
+            element.status = 2;
+          }
+        });
+      }
 
       // reset everything
       this.roomies.forEach(function(roomie) {
@@ -276,6 +332,7 @@ export default {
       this.newPurchase.comment = "";
 
       if (this.debug) console.log("Split!");
+      this.completedPurchase = true;
     },
 
     selectRoomie(selected_roomie) {
@@ -286,29 +343,12 @@ export default {
         }
       });
     },
-    alarm() {
-      alert("Turning on alarm...");
-    },
-    blinds() {
-      alert("Toggling Blinds...");
-    },
-    lights() {
-      alert("Toggling lights...");
-    },
+
     sortBy(prop) {
       // Compares Items next to each other: alphabetical order!
       // if true -1, else 1
       // if a -1, else b 1
       this.shoppingList.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
-    },
-    filterOpen(prop) {
-      return prop == 0;
-    },
-    filterPending(prop) {
-      return prop == 1;
-    },
-    filterDone(prop) {
-      return prop == 2;
     },
 
     roomieChipOutlined(roomie) {
@@ -321,10 +361,22 @@ export default {
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
-    activeItems() {
+    openItems() {
       // Javascript-Funktion zum Filtern von Arrays
       return this.shoppingList.filter(function(value) {
-        return value.status === 1;
+        return value.status === 0;
+      });
+    },
+    pendingItems() {
+      // Javascript-Funktion zum Filtern von Arrays
+      return this.shoppingList.filter(function(value) {
+        return value.status === status;
+      });
+    },
+    billedItems() {
+      // Javascript-Funktion zum Filtern von Arrays
+      return this.shoppingList.filter(function(value) {
+        return value.status === 99;
       });
     }
   },
@@ -335,6 +387,20 @@ export default {
         if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
         return "Number has to be between 0 and 999";
       },
+      currentUser: {
+        id: 0,
+        username: "Chris",
+        description: "Hi there!",
+        profilePicture:
+          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+        balance: +3,
+        balancePlus: true,
+        selected: true,
+        color: "#1F85DE"
+      },
+      // Einkauf
+      completedPurchase: false,
+      currentItemForCashingUp: {},
       profilePicture:
         "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",
       currencySymbol: " €",
@@ -353,57 +419,55 @@ export default {
         price: "",
         comment: ""
       },
-      flatmate: {
-        username: "Bo",
-        profilePicture:
-          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-      },
       shoppingList: [
         {
-          articleName: "Spüli",
+          article: "Spüli",
           // Status: 0 - offen, 1 - pending,
           price: 0,
           status: 0,
-          statusText: "open",
-          boughtBy: ""
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
         },
         {
-          articleName: "Müllsäcke",
+          article: "Müllsäcke",
           price: 0,
           status: 0,
-          statusText: "open",
-          boughtBy: ""
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
         },
         {
-          articleName: "Ingwerbröd",
+          article: "Ingwerbröd",
           price: 0,
           status: 0,
-          statusText: "open",
-          boughtBy: ""
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
         },
         {
-          articleName: "Aluhut",
+          article: "Aluhut",
           price: 0,
           status: 1,
-          statusText: "pending",
+          acceptedBy: "",
           boughtBy: "",
-          acceptedBy: ""
+          declinedBy: []
         },
         {
-          articleName: "Seife",
+          article: "Seife",
           price: 0,
           status: 1,
-          statusText: "pending",
+          acceptedBy: "",
           boughtBy: "",
-          acceptedBy: ""
+          declinedBy: []
         },
         {
-          articleName: "Wlan Repeater",
+          article: "Wlan Repeater",
           price: 2.7,
-          status: 2,
-          statusText: "done",
-          boughtBy: this.username,
-          acceptedBy: this.username
+          status: 99,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
         }
       ],
       // used to be OverviewList
@@ -451,20 +515,6 @@ export default {
           balancePlus: true,
           selected: true,
           color: "#EBE386"
-        }
-      ],
-      openArticleList: [
-        {
-          articleName: "Atommüll",
-          status: "open"
-        },
-        {
-          articleName: "Kuchen",
-          status: "open"
-        },
-        {
-          articleName: "Kaffee",
-          status: "pending"
         }
       ]
     };
