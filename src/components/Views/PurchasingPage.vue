@@ -35,7 +35,7 @@
                     </v-tooltip>
                   </tr>
                 </thead>
-                <!--Shopping List Overview: Shows all products (should show only with status 0! -->
+                <!--Shopping List Overview: Shows all products (should show only with status 0! 
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
                   <tr v-for="item in openItems
             " :key="item.article
@@ -50,6 +50,7 @@
                       </v-btn>
                     </td>
                     <td>
+           
                       <v-btn text>
                         <v-icon @click="cashUpItem(item)">euro</v-icon>
                       </v-btn>
@@ -64,6 +65,8 @@
                         <v-icon>edit</v-icon>
                       </v-btn>
                     </td>
+                    </div>
+        
                   </tr>
                 </tbody>
               </template>
