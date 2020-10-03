@@ -80,7 +80,7 @@
         <v-col xs="12" sm="6" md="3">
           <v-card class="ma-auto" max-width="344">
             <v-dialog v-model="showProfilePage" width="500">
-              <profilePage></profilePage>
+              <profilePage :roomie="roomies[1]"></profilePage>
             </v-dialog>
 
             <v-list-item>
@@ -205,7 +205,7 @@
           </v-card>
         </v-col>
 
-        <profilePage></profilePage>
+        <profilePage :roomie="roomies[2]"></profilePage>
 
         <!--My Tabs:-->
         <v-col xs="12" sm="6" md="3">
