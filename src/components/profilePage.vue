@@ -12,7 +12,7 @@
             class="profile-picture ma-2 rounded-circle"
             :src="roomie.profilePicture"
           >
-            <input type="file" @change="uploadPicture(roomie)" accept="image/*" />
+            <input type="file" @change="uploadPicture" accept="image/*" />
             <v-icon>mdi-plus</v-icon>
           </v-img>
         </v-row>
@@ -43,7 +43,7 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary">Save</v-btn>
+        <v-btn color="primary" @click="saveChanges">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -83,6 +83,9 @@ export default {
     };
   },
   methods: {
+    saveChanges() {
+      this.$emit("save-changes", this.roomie.id);
+    },
     uploadPicture: function(event, roomie) {
       // Reference to the DOM input element
       var input = event.target;
@@ -95,11 +98,7 @@ export default {
           // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
           // Read image as base64 and set to imageData
 
-          this.roomies.forEach(r => {
-            if (r.username === roomie.username) {
-              r.profilePicture = e.target.result;
-            }
-          });
+          roomie.profilePicture = e.target.result;
           //this.profilePicture = e.target.result;
         };
         // Start the reader job - read file as a data url (base64 format)

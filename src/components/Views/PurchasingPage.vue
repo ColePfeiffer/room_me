@@ -84,7 +84,7 @@
                 <div class="overline">Übersicht</div>
                 <v-list>
                   <v-list-item v-for="roomie in roomies" :key="roomie.id">
-                    <profilePage :roomie="roomie"></profilePage>
+                    <profilePage :roomie="roomie" @save-changes="saveChanges"></profilePage>
                     <div class="text-center">
                       <v-list-item-avatar>
                         <v-img
@@ -257,6 +257,17 @@ export default {
     profilePage
   },
   methods: {
+    saveChanges(roomieId, changedRoomie) {
+      const identitifedRoomie = this.roomies.find(
+        roomie => roomie.id === roomieId
+      );
+      // for each ausprobieren
+      console.log("hehehehe, it was " + changedRoomie.username);
+      //identitifedRoomie.profilePicture = changedRoomie.profilePicture;
+      identitifedRoomie.showProfilePicture = false;
+      changedRoomie.username = "OTTO";
+      //name change
+    },
     acceptItem(item) {
       /* Status: 0 = offen, 1 = accepted, 2 = bought, 99 = declined */
       item.status = 1;
