@@ -79,19 +79,16 @@
         </v-col>
         <v-col xs="12" sm="6" md="3">
           <v-card class="ma-auto" max-width="344">
-            <v-dialog v-model="showProfilePage" width="500">
-              <profilePage :roomie="roomies[1]"></profilePage>
-            </v-dialog>
-
             <v-list-item>
               <v-list-item-content>
                 <div class="overline">Übersicht</div>
                 <v-list>
                   <v-list-item v-for="roomie in roomies" :key="roomie.id">
+                    <profilePage :roomie="roomie"></profilePage>
                     <div class="text-center">
                       <v-list-item-avatar>
                         <v-img
-                          @click="showProfilePage = true"
+                          @click="roomie.showProfilePage = true"
                           class="profile-picture"
                           max-width="60"
                           max-height="60"
@@ -204,8 +201,6 @@
             </v-list>
           </v-card>
         </v-col>
-
-        <profilePage :roomie="roomies[2]"></profilePage>
 
         <!--My Tabs:-->
         <v-col xs="12" sm="6" md="3">
@@ -412,7 +407,6 @@ export default {
       selectedRoomies: [],
 
       dialogBought: false,
-      showProfilePage: false,
       checkbox: true,
       newPurchase: {
         name: "",
@@ -481,7 +475,8 @@ export default {
           balance: +3,
           balancePlus: true,
           selected: true,
-          color: "#1F85DE"
+          color: "#1F85DE",
+          showProfilePage: false
         },
         {
           id: 1,
@@ -492,7 +487,8 @@ export default {
           balance: -3,
           balancePlus: false,
           selected: true,
-          color: "#DE591F"
+          color: "#DE591F",
+          showProfilePage: false
         },
         {
           id: 2,
@@ -503,7 +499,8 @@ export default {
           balance: 0,
           balancePlus: true,
           selected: true,
-          color: "#BDA0EC"
+          color: "#BDA0EC",
+          showProfilePage: false
         },
         {
           id: 3,
@@ -514,7 +511,8 @@ export default {
           balance: 0,
           balancePlus: true,
           selected: true,
-          color: "#EBE386"
+          color: "#EBE386",
+          showProfilePage: false
         }
       ]
     };

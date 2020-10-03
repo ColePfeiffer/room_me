@@ -1,57 +1,61 @@
 <template>
-  <v-card>
-    <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
-    <v-card-text cols="12" sm="12">
-      <v-row class="justify-center mt-5">
-        <v-img
-          width="160"
-          height="160"
-          max-width="160"
-          max-height="160"
-          class="profile-picture ma-2 rounded-circle"
-          :src="roomie.profilePicture"
-        >
-          <input type="file" @change="uploadPicture(roomie)" accept="image/*" />
-          <v-icon>mdi-plus</v-icon>
-        </v-img>
-      </v-row>
+  <v-dialog v-model="roomie.showProfilePage" width="500">
+    <v-card>
+      <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
+      <v-card-text cols="12" sm="12">
+        <v-row class="justify-center mt-5">
+          <v-img
+            width="160"
+            height="160"
+            max-width="160"
+            max-height="160"
+            class="profile-picture ma-2 rounded-circle"
+            :src="roomie.profilePicture"
+          >
+            <input type="file" @change="uploadPicture(roomie)" accept="image/*" />
+            <v-icon>mdi-plus</v-icon>
+          </v-img>
+        </v-row>
 
-      <v-row>
-        <v-col>
-          <v-textarea
-            class="mx-2"
-            placeholder="Name"
-            :value="roomie.username"
-            rows="1"
-            append-outer-icon="edit"
-            prepend-icon="mdi-account"
-          ></v-textarea>
+        <v-row>
+          <v-col>
+            <v-textarea
+              class="mx-2"
+              placeholder="Name"
+              :value="roomie.username"
+              rows="1"
+              append-outer-icon="edit"
+              prepend-icon="mdi-account"
+            ></v-textarea>
 
-          <v-textarea
-            class="mx-2"
-            label="Info"
-            placeholder="Write something about yourself!"
-            :value="roomie.description"
-            rows="1"
-            append-outer-icon="edit"
-            prepend-icon="info"
-          ></v-textarea>
-        </v-col>
-      </v-row>
-    </v-card-text>
-    <v-divider></v-divider>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="primary">Save</v-btn>
-    </v-card-actions>
-  </v-card>
+            <v-textarea
+              class="mx-2"
+              label="Info"
+              placeholder="Write something about yourself!"
+              :value="roomie.description"
+              rows="1"
+              append-outer-icon="edit"
+              prepend-icon="info"
+            ></v-textarea>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary">Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
 export default {
   name: "profilePage",
 
-  props: ["roomie"],
+  props: {
+    ["roomie"]: Object
+  },
   /*{
     'id': Number,
     'username': String,
@@ -65,7 +69,7 @@ export default {
   computed: {},
   data() {
     return {
-      roomie2: {
+      placeholder: {
         id: 0,
         username: "Chris",
         description: "Hi there!",
@@ -75,8 +79,7 @@ export default {
         balancePlus: true,
         selected: true,
         color: "#1F85DE"
-      },
-      title: ""
+      }
     };
   },
   methods: {
