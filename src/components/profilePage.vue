@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="roomie.showProfilePage" width="500">
+  <v-dialog v-model="roomie.showProfilePage" persistent width="500">
     <v-card>
       <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
       <v-card-text cols="12" sm="12">
@@ -10,9 +10,9 @@
             max-width="160"
             max-height="160"
             class="profile-picture ma-2 rounded-circle"
-            :src="roomie.profilePicture"
+            :src="changedRoomie.profilePicture"
           >
-            <input type="file" @change="uploadPicture" accept="image/*" />
+            <input type="file" @change="uploadPicture" accept="image/*" v-if="roomie.isLoggedIn" />
             <v-icon>mdi-plus</v-icon>
           </v-img>
         </v-row>
@@ -22,7 +22,8 @@
             <v-textarea
               class="mx-2"
               placeholder="Name"
-              :value="roomie.username"
+              v-model="changedRoomie.username"
+              :disabled="!roomie.isLoggedIn"
               rows="1"
               append-outer-icon="edit"
               prepend-icon="mdi-account"
@@ -32,7 +33,8 @@
               class="mx-2"
               label="Info"
               placeholder="Write something about yourself!"
-              :value="roomie.description"
+              v-model="changedRoomie.description"
+              :disabled="!roomie.isLoggedIn"
               rows="1"
               append-outer-icon="edit"
               prepend-icon="info"
@@ -43,7 +45,8 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="saveChanges">Save</v-btn>
+        <v-btn color="primary" @click="closeDialog">{{roomie.isLoggedIn ? "Cancel": "Close"}}</v-btn>
+        <v-btn color="primary" v-if="roomie.isLoggedIn" @click="saveChanges">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -52,41 +55,33 @@
 <script>
 export default {
   name: "profilePage",
-
   props: {
     ["roomie"]: Object
   },
-  /*{
-    'id': Number,
-    'username': String,
-    'description': String,
-    'profilePicture': String,
-    'balance': Number,
-    'balancePlus': Boolean,
-    'selected': Boolean,
-    'color': String
-  }*/
   computed: {},
   data() {
     return {
-      placeholder: {
-        id: 0,
-        username: "Chris",
-        description: "Hi there!",
-        profilePicture:
-          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        balance: +3,
-        balancePlus: true,
-        selected: true,
-        color: "#1F85DE"
+      changedRoomie: this.roomie,
+      changeData: {
+        username: this.roomie.username,
+        description: this.roomie.description,
+        profilePicture: this.roomie.profilePicture,
+        color: this.roomie.color
       }
     };
   },
   methods: {
     saveChanges() {
-      this.$emit("save-changes", this.roomie.id);
+      this.$emit("save-changes", this.roomie, this.changedRoomie);
     },
-    uploadPicture: function(event, roomie) {
+
+    closeDialog() {
+      this.changedRoomie = this.roomie;
+      console.log(this.changedRoomie.username, this.roomie.username);
+      this.roomie.showProfilePage = false;
+    },
+
+    uploadPicture: function(event) {
       // Reference to the DOM input element
       var input = event.target;
       // Ensure that you have a file before attempting to read it
@@ -97,8 +92,7 @@ export default {
         reader.onload = e => {
           // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
           // Read image as base64 and set to imageData
-
-          roomie.profilePicture = e.target.result;
+          this.roomie.profilePicture = e.target.result;
           //this.profilePicture = e.target.result;
         };
         // Start the reader job - read file as a data url (base64 format)

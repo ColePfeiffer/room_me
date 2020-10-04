@@ -257,16 +257,12 @@ export default {
     profilePage
   },
   methods: {
-    saveChanges(roomieId, changedRoomie) {
-      const identitifedRoomie = this.roomies.find(
-        roomie => roomie.id === roomieId
-      );
-      // for each ausprobieren
-      console.log("hehehehe, it was " + changedRoomie.username);
-      //identitifedRoomie.profilePicture = changedRoomie.profilePicture;
-      identitifedRoomie.showProfilePicture = false;
-      changedRoomie.username = "OTTO";
-      //name change
+    saveChanges(roomie, changedRoomie) {
+      console.log(roomie.username);
+      console.log(changedRoomie.username);
+
+      roomie = changedRoomie;
+      roomie.showProfilePage = false;
     },
     acceptItem(item) {
       /* Status: 0 = offen, 1 = accepted, 2 = bought, 99 = declined */
@@ -487,7 +483,8 @@ export default {
           balancePlus: true,
           selected: true,
           color: "#1F85DE",
-          showProfilePage: false
+          showProfilePage: false,
+          isLoggedIn: true
         },
         {
           id: 1,
@@ -499,7 +496,8 @@ export default {
           balancePlus: false,
           selected: true,
           color: "#DE591F",
-          showProfilePage: false
+          showProfilePage: false,
+          isLoggedIn: false
         },
         {
           id: 2,
@@ -511,7 +509,8 @@ export default {
           balancePlus: true,
           selected: true,
           color: "#BDA0EC",
-          showProfilePage: false
+          showProfilePage: false,
+          isLoggedIn: false
         },
         {
           id: 3,
@@ -523,7 +522,8 @@ export default {
           balancePlus: true,
           selected: true,
           color: "#EBE386",
-          showProfilePage: false
+          showProfilePage: false,
+          isLoggedIn: false
         }
       ]
     };
