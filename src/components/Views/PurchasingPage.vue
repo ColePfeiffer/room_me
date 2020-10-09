@@ -11,38 +11,44 @@
                     <th class="text-left">Bezeichnung</th>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Annehmen</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Annehmen
+                        </th>
                       </template>
                       <span>Was bedeutet Annehmen?</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Abrechnen</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Abrechnen
+                        </th>
                       </template>
                       <span>Was bedeutet Abrechnen?</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Ablehnen
+                        </th>
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">Bearbeiten</th>
+                        <th class="text-left" v-bind="attrs" v-on="on">
+                          Bearbeiten
+                        </th>
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
-                  </tr>
+                  </tr> 
                 </thead>
                 <!--Shopping List Overview: Shows all products (should show only with status 0! -->
+              
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
-                  <tr v-for="item in openItems
-            " :key="item.article
-">
+                  <tr v-for="item in openItems" :key="item.article">
                     <td>
-                      {{ item.article
-                      }}
+                      {{ item.article }}
                     </td>
                     <td>
                       <v-btn text>
@@ -71,7 +77,17 @@
             <v-container>
               <v-row>
                 <v-col cols="12" sm="12" xs="12">
-                  <v-text-field label="Want to add something?" single-line></v-text-field>
+                <!--Appears if shoppingList is empty!-->
+                 <p v-if="shoppingList.length === 0">
+                  No supplies added yet. Please start adding something.
+                </p>
+                  <v-text-field
+                    v-on:keydown.enter="addItem" 
+                    v-model="enteredItem"
+                    label="Want to add something?"
+                    single-line
+                  ></v-text-field>
+                 
                 </v-col>
               </v-row>
             </v-container>
@@ -84,7 +100,10 @@
                 <div class="overline">Übersicht</div>
                 <v-list>
                   <v-list-item v-for="roomie in roomies" :key="roomie.id">
-                    <profilePage :roomie="roomie" @save-changes="saveChanges"></profilePage>
+                    <profilePage
+                      :roomie="roomie"
+                      @save-changes="saveChanges"
+                    ></profilePage>
                     <div class="text-center">
                       <v-list-item-avatar>
                         <v-img
@@ -101,23 +120,21 @@
                     <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
                       <v-list-item-title>
-                        {{
-                        roomie.username
-                        }}
+                        {{ roomie.username }}
                       </v-list-item-title>
                       <v-list-item-subtitle>
                         <span v-if="roomie.balance >= 0" class="balance-plus">
-                          {{
-                          "+" + roomie.balance + currencySymbol
-                          }}
+                          {{ "+" + roomie.balance + currencySymbol }}
                         </span>
                         <span v-else class="balance-minus">
-                          {{
-                          roomie.balance + currencySymbol
-                          }}
+                          {{ roomie.balance + currencySymbol }}
                         </span>
                       </v-list-item-subtitle>
-                      <v-divider class="ma-1" horizontal color="pink"></v-divider>
+                      <v-divider
+                        class="ma-1"
+                        horizontal
+                        color="pink"
+                      ></v-divider>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -134,12 +151,15 @@
                       class="ma-2"
                       color="pink"
                       label="addMoney"
-                    >Bought already?</v-btn>
+                      >Bought already?</v-btn
+                    >
                   </template>
 
                   <!--Dialog To Enter Bought Supplies:-->
                   <v-card>
-                    <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
+                    <v-card-title class="headline ighten-2"
+                      >Add your bought supplies here</v-card-title
+                    >
                     <v-card-text cols="12" sm="12">
                       <v-row>
                         <v-col>
@@ -175,8 +195,16 @@
                         </v-col>
                       </v-row>
                       <!-- Roomie Chip -->
-                      <v-chip-group column multiple active-class="primary--text">
-                        <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+                      <v-chip-group
+                        column
+                        multiple
+                        active-class="primary--text"
+                      >
+                        <v-row
+                          class="mx-2"
+                          v-for="roomie in roomies"
+                          :key="roomie.id"
+                        >
                           <v-chip
                             :color="roomie.color"
                             :outlined="roomieChipOutlined(roomie)"
@@ -185,13 +213,19 @@
                             <v-avatar left>
                               <v-img v-bind:src="roomie.profilePicture"></v-img>
                             </v-avatar>
-                            <strong>{{ roomie.username }}</strong>&nbsp;
+                            <strong>{{ roomie.username }}</strong
+                            >&nbsp;
                           </v-chip>
                         </v-row>
                       </v-chip-group>
 
                       <v-row class="justify-center">
-                        <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
+                        <v-btn
+                          color="#FF6F00"
+                          justify-center
+                          @click="addPurchase"
+                          >Split!</v-btn
+                        >
                       </v-row>
                     </v-card-text>
                     <v-card-actions></v-card-actions>
@@ -218,16 +252,13 @@
             </v-tab>
 
             <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
-              <v-card flat v-for="item in pendingItems" :key="item.article
-  ">
+              <v-card flat v-for="item in pendingItems" :key="item.article">
                 <v-card-text v-if="i == 1">
-                  {{ item.article
-                  }} accepted by:
+                  {{ item.article }} accepted by:
                   {{ item.acceptedBy }}
                 </v-card-text>
                 <v-card-text v-if="i == 2">
-                  {{ item.article
-                  }}
+                  {{ item.article }}
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -254,12 +285,12 @@ import profilePage from "../profilePage";
 
 export default {
   components: {
-    profilePage
+    profilePage,
   },
   methods: {
     saveChanges(roomieId, changedRoomie) {
       const identitifedRoomie = this.roomies.find(
-        roomie => roomie.id === roomieId
+        (roomie) => roomie.id === roomieId
       );
       // for each ausprobieren
       console.log("hehehehe, it was " + changedRoomie.username);
@@ -280,6 +311,11 @@ export default {
 
       this.currentItemForCashingUp = item;
     },
+    addItem() {
+      this.shoppingList.push({article: this.enteredItem, status: 0}); 
+      console.log("hi");
+    },
+
     addPurchase() {
       //let vn = this;
 
@@ -318,7 +354,7 @@ export default {
       // checks if this dialog was opened via the cash up-option
 
       if (this.completedPurchase === false) {
-        this.openItems.forEach(element => {
+        this.openItems.forEach((element) => {
           if (element === this.currentItemForCashingUp) {
             element.acceptedBy = this.currentUser.username;
             element.boughtBy = this.currentUser.username;
@@ -363,7 +399,7 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
@@ -384,11 +420,13 @@ export default {
       return this.shoppingList.filter(function(value) {
         return value.status === 99;
       });
-    }
+    },
   },
   data() {
     return {
-      numberRule: v => {
+    
+      // Regex for Pricerange:
+      numberRule: (v) => {
         if (!v.trim()) return true;
         if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
         return "Number has to be between 0 and 999";
@@ -402,8 +440,10 @@ export default {
         balance: +3,
         balancePlus: true,
         selected: true,
-        color: "#1F85DE"
+        color: "#1F85DE",
       },
+      // Supply: Item that User enters for shoppingList:
+      enteredItem: '',
       // Einkauf
       completedPurchase: false,
       currentItemForCashingUp: {},
@@ -422,58 +462,10 @@ export default {
       newPurchase: {
         name: "",
         price: "",
-        comment: ""
+        comment: "",
       },
       shoppingList: [
-        {
-          article: "Spüli",
-          // Status: 0 - offen, 1 - pending,
-          price: 0,
-          status: 0,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Müllsäcke",
-          price: 0,
-          status: 0,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Ingwerbröd",
-          price: 0,
-          status: 0,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Aluhut",
-          price: 0,
-          status: 1,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Seife",
-          price: 0,
-          status: 1,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Wlan Repeater",
-          price: 2.7,
-          status: 99,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        }
+      
       ],
       // used to be OverviewList
       roomies: [
@@ -487,7 +479,7 @@ export default {
           balancePlus: true,
           selected: true,
           color: "#1F85DE",
-          showProfilePage: false
+          showProfilePage: false,
         },
         {
           id: 1,
@@ -499,7 +491,7 @@ export default {
           balancePlus: false,
           selected: true,
           color: "#DE591F",
-          showProfilePage: false
+          showProfilePage: false,
         },
         {
           id: 2,
@@ -511,7 +503,7 @@ export default {
           balancePlus: true,
           selected: true,
           color: "#BDA0EC",
-          showProfilePage: false
+          showProfilePage: false,
         },
         {
           id: 3,
@@ -523,11 +515,11 @@ export default {
           balancePlus: true,
           selected: true,
           color: "#EBE386",
-          showProfilePage: false
-        }
-      ]
+          showProfilePage: false,
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 
@@ -540,9 +532,59 @@ export default {
   color: red;
 }
 </style>
- <!-- 
+<!-- 
 
- 
+   {
+          article: "Spüli",
+          // Status: 0 - offen, 1 - pending,
+          price: 0,
+          status: 0,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: [],
+        },
+        {
+          article: "Müllsäcke",
+          price: 0,
+          status: 0,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: [],
+        },
+        {
+          article: "Ingwerbröd",
+          price: 0,
+          status: 0,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: [],
+        },
+        {
+          article: "Aluhut",
+          price: 0,
+          status: 1,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: [],
+        },
+        {
+          article: "Seife",
+          price: 0,
+          status: 1,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: [],
+        },
+        {
+          article: "Wlan Repeater",
+          price: 2.7,
+          status: 99,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: [],
+        },
 
 
         -->
+
+        
