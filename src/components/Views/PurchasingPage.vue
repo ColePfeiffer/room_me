@@ -41,12 +41,13 @@
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
-                  </tr> 
+                  </tr>
                 </thead>
                 <!--Shopping List Overview: Shows all products (should show only with status 0! -->
-              
+
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
                   <tr v-for="item in openItems" :key="item.article">
+                   
                     <td>
                       {{ item.article }}
                     </td>
@@ -66,9 +67,20 @@
                       </v-btn>
                     </td>
                     <td>
+                    
+ 
                       <v-btn text>
-                        <v-icon>edit</v-icon>
+                        <v-icon 
+                        @click="item.showEditDialog = true"
+                        class="editItemDialog"
+                          >edit</v-icon
+                        >
                       </v-btn>
+
+                       <editItemDialog
+                      :item="item"
+                      @save-changes="saveChanges"
+                    ></editItemDialog>
                     </td>
                   </tr>
                 </tbody>
@@ -77,17 +89,16 @@
             <v-container>
               <v-row>
                 <v-col cols="12" sm="12" xs="12">
-                <!--Appears if shoppingList is empty!-->
-                 <p v-if="shoppingList.length === 0">
-                  No supplies added yet. Please start adding something.
-                </p>
+                  <!--Appears if shoppingList is empty!-->
+                  <p v-if="shoppingList.length === 0">
+                    No supplies added yet. Please start adding something.
+                  </p>
                   <v-text-field
-                    v-on:keydown.enter="addItem" 
+                    v-on:keydown.enter="addItem"
                     v-model="enteredItem"
                     label="Want to add something?"
                     single-line
                   ></v-text-field>
-                 
                 </v-col>
               </v-row>
             </v-container>
@@ -252,13 +263,13 @@
             </v-tab>
 
             <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
-              <v-card flat v-for="item in pendingItems" :key="item.article">
-                <v-card-text v-if="i == 1">
-                  {{ item.article }} accepted by:
-                  {{ item.acceptedBy }}
+              <v-card flat v-for="item in shoppingList" :key="item.article">
+                <v-card-text>
+                   {{ item.article }} accepted by: {{ item.acceptedBy }}
+                  {{ pendingItems }} pendingItems
                 </v-card-text>
-                <v-card-text v-if="i == 2">
-                  {{ item.article }}
+                <v-card-text v-if="item.status === 2">
+                  {{ item.article }} bought by: {{ item.boughtBy }}
                 </v-card-text>
               </v-card>
             </v-tab-item>
@@ -282,12 +293,19 @@
 
 <script>
 import profilePage from "../profilePage";
+import editItemDialog from "../editItemDialog";
 
 export default {
   components: {
     profilePage,
+    editItemDialog,
   },
   methods: {
+
+    editItemName(editedItemName) {
+      this.shoppingList.article = editedItemName;
+    },
+
     saveChanges(roomieId, changedRoomie) {
       const identitifedRoomie = this.roomies.find(
         (roomie) => roomie.id === roomieId
@@ -304,6 +322,9 @@ export default {
       item.status = 1;
       item.acceptedBy = this.currentUser.username;
     },
+
+   
+
     cashUpItem(item) {
       this.completedPurchase = false;
       this.newPurchase.name = item.article;
@@ -312,9 +333,20 @@ export default {
       this.currentItemForCashingUp = item;
     },
     addItem() {
-      this.shoppingList.push({article: this.enteredItem, status: 0}); 
+      this.shoppingList.push({
+        article: this.enteredItem,
+        status: 0,
+        showEditDialog: false,
+      });
       console.log("hi");
     },
+    // Should be an option if item is edited!
+    removeItem(index) {
+      this.shoppingList.splice(index, 1);
+    // beim Aufrufen IN DEM CLICK EVENT!!
+    // v-for="(goal, index) in goals @click="removeGoal(index)"
+    },
+
 
     addPurchase() {
       //let vn = this;
@@ -386,13 +418,6 @@ export default {
       });
     },
 
-    sortBy(prop) {
-      // Compares Items next to each other: alphabetical order!
-      // if true -1, else 1
-      // if a -1, else b 1
-      this.shoppingList.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
-    },
-
     roomieChipOutlined(roomie) {
       if (roomie.selected) {
         return false;
@@ -406,6 +431,7 @@ export default {
     openItems() {
       // Javascript-Funktion zum Filtern von Arrays
       return this.shoppingList.filter(function(value) {
+
         return value.status === 0;
       });
     },
@@ -424,13 +450,6 @@ export default {
   },
   data() {
     return {
-    
-      // Regex for Pricerange:
-      numberRule: (v) => {
-        if (!v.trim()) return true;
-        if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
-        return "Number has to be between 0 and 999";
-      },
       currentUser: {
         id: 0,
         username: "Chris",
@@ -443,7 +462,7 @@ export default {
         color: "#1F85DE",
       },
       // Supply: Item that User enters for shoppingList:
-      enteredItem: '',
+      enteredItem: "",
       // Einkauf
       completedPurchase: false,
       currentItemForCashingUp: {},
@@ -458,15 +477,20 @@ export default {
       selectedRoomies: [],
 
       dialogBought: false,
-      checkbox: true,
+
+      editedItemName: {
+        name: "",
+        // if deleted true, then enable a comment:
+        comment: "",
+        deleted: false,
+      },
+
       newPurchase: {
         name: "",
         price: "",
         comment: "",
       },
-      shoppingList: [
-      
-      ],
+      shoppingList: [],
       // used to be OverviewList
       roomies: [
         {
@@ -518,6 +542,12 @@ export default {
           showProfilePage: false,
         },
       ],
+      // Regex for Pricerange:
+      numberRule: (v) => {
+        if (!v.trim()) return true;
+        if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
+        return "Number has to be between 0 and 999";
+      },
     };
   },
 };
@@ -586,5 +616,3 @@ export default {
 
 
         -->
-
-        
