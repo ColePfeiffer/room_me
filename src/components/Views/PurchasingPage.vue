@@ -60,7 +60,7 @@
                         <v-icon @click="item.showEditDialog = true" class="editItemDialog">edit</v-icon>
                       </v-btn>
 
-                      <editItemDialog :item="item" @save-changes="saveChanges"></editItemDialog>
+                      <editItemDialog :item="item" @save-changes="saveChangesInEditPage"></editItemDialog>
                     </td>
                   </tr>
                 </tbody>
@@ -91,7 +91,7 @@
                 <div class="overline">Übersicht</div>
                 <v-list>
                   <v-list-item v-for="roomie in roomies" :key="roomie.id">
-                    <profilePage :roomie="roomie" @save-changes="saveChanges"></profilePage>
+                    <profilePage :roomie="roomie" @save-changes="saveChangesInProfilePage"></profilePage>
                     <div class="text-center">
                       <v-list-item-avatar>
                         <v-img
@@ -258,11 +258,13 @@ export default {
       this.shoppingList.article = editedItemName;
     },
 
-    saveChanges(roomie, changedRoomie) {
-      console.log(roomie.username);
-      console.log(changedRoomie.username);
+    saveChangesInEditPage() {},
+    saveChangesInProfilePage(roomie, changeData) {
+      roomie.username = changeData.username;
+      roomie.description = changeData.description;
+      roomie.profilePicture = changeData.profilePicture;
+      roomie.color = changeData.color;
 
-      roomie = changedRoomie;
       roomie.showProfilePage = false;
     },
     acceptItem(item) {
