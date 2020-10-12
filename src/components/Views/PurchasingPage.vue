@@ -11,33 +11,25 @@
                     <th class="text-left">Bezeichnung</th>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">
-                          Annehmen
-                        </th>
+                        <th class="text-left" v-bind="attrs" v-on="on">Annehmen</th>
                       </template>
                       <span>Was bedeutet Annehmen?</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">
-                          Abrechnen
-                        </th>
+                        <th class="text-left" v-bind="attrs" v-on="on">Abrechnen</th>
                       </template>
                       <span>Was bedeutet Abrechnen?</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">
-                          Ablehnen
-                        </th>
+                        <th class="text-left" v-bind="attrs" v-on="on">Ablehnen</th>
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
                     <v-tooltip top>
                       <template v-slot:activator="{ on, attrs }">
-                        <th class="text-left" v-bind="attrs" v-on="on">
-                          Bearbeiten
-                        </th>
+                        <th class="text-left" v-bind="attrs" v-on="on">Bearbeiten</th>
                       </template>
                       <span>Meeeeeeeeeeta</span>
                     </v-tooltip>
@@ -47,10 +39,7 @@
 
                 <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
                   <tr v-for="item in openItems" :key="item.article">
-                   
-                    <td>
-                      {{ item.article }}
-                    </td>
+                    <td>{{ item.article }}</td>
                     <td>
                       <v-btn text>
                         <v-icon @click="acceptItem(item)">mdi-check</v-icon>
@@ -67,20 +56,11 @@
                       </v-btn>
                     </td>
                     <td>
-                    
- 
                       <v-btn text>
-                        <v-icon 
-                        @click="item.showEditDialog = true"
-                        class="editItemDialog"
-                          >edit</v-icon
-                        >
+                        <v-icon @click="item.showEditDialog = true" class="editItemDialog">edit</v-icon>
                       </v-btn>
 
-                       <editItemDialog
-                      :item="item"
-                      @save-changes="saveChanges"
-                    ></editItemDialog>
+                      <editItemDialog :item="item" @save-changes="saveChangesInEditPage"></editItemDialog>
                     </td>
                   </tr>
                 </tbody>
@@ -90,9 +70,9 @@
               <v-row>
                 <v-col cols="12" sm="12" xs="12">
                   <!--Appears if shoppingList is empty!-->
-                  <p v-if="shoppingList.length === 0">
-                    No supplies added yet. Please start adding something.
-                  </p>
+                  <p
+                    v-if="shoppingList.length === 0"
+                  >No supplies added yet. Please start adding something.</p>
                   <v-text-field
                     v-on:keydown.enter="addItem"
                     v-model="enteredItem"
@@ -111,10 +91,7 @@
                 <div class="overline">Übersicht</div>
                 <v-list>
                   <v-list-item v-for="roomie in roomies" :key="roomie.id">
-                    <profilePage
-                      :roomie="roomie"
-                      @save-changes="saveChanges"
-                    ></profilePage>
+                    <profilePage :roomie="roomie" @save-changes="saveChangesInProfilePage"></profilePage>
                     <div class="text-center">
                       <v-list-item-avatar>
                         <v-img
@@ -130,22 +107,15 @@
                     </div>
                     <!--Übersicht des aktuellen Guthabens-->
                     <v-list-item-content>
-                      <v-list-item-title>
-                        {{ roomie.username }}
-                      </v-list-item-title>
+                      <v-list-item-title>{{ roomie.username }}</v-list-item-title>
                       <v-list-item-subtitle>
-                        <span v-if="roomie.balance >= 0" class="balance-plus">
-                          {{ "+" + roomie.balance + currencySymbol }}
-                        </span>
-                        <span v-else class="balance-minus">
-                          {{ roomie.balance + currencySymbol }}
-                        </span>
+                        <span
+                          v-if="roomie.balance >= 0"
+                          class="balance-plus"
+                        >{{ "+" + roomie.balance + currencySymbol }}</span>
+                        <span v-else class="balance-minus">{{ roomie.balance + currencySymbol }}</span>
                       </v-list-item-subtitle>
-                      <v-divider
-                        class="ma-1"
-                        horizontal
-                        color="pink"
-                      ></v-divider>
+                      <v-divider class="ma-1" horizontal color="pink"></v-divider>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -162,15 +132,12 @@
                       class="ma-2"
                       color="pink"
                       label="addMoney"
-                      >Bought already?</v-btn
-                    >
+                    >Bought already?</v-btn>
                   </template>
 
                   <!--Dialog To Enter Bought Supplies:-->
                   <v-card>
-                    <v-card-title class="headline ighten-2"
-                      >Add your bought supplies here</v-card-title
-                    >
+                    <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
                     <v-card-text cols="12" sm="12">
                       <v-row>
                         <v-col>
@@ -206,16 +173,8 @@
                         </v-col>
                       </v-row>
                       <!-- Roomie Chip -->
-                      <v-chip-group
-                        column
-                        multiple
-                        active-class="primary--text"
-                      >
-                        <v-row
-                          class="mx-2"
-                          v-for="roomie in roomies"
-                          :key="roomie.id"
-                        >
+                      <v-chip-group column multiple active-class="primary--text">
+                        <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
                           <v-chip
                             :color="roomie.color"
                             :outlined="roomieChipOutlined(roomie)"
@@ -224,19 +183,13 @@
                             <v-avatar left>
                               <v-img v-bind:src="roomie.profilePicture"></v-img>
                             </v-avatar>
-                            <strong>{{ roomie.username }}</strong
-                            >&nbsp;
+                            <strong>{{ roomie.username }}</strong>&nbsp;
                           </v-chip>
                         </v-row>
                       </v-chip-group>
 
                       <v-row class="justify-center">
-                        <v-btn
-                          color="#FF6F00"
-                          justify-center
-                          @click="addPurchase"
-                          >Split!</v-btn
-                        >
+                        <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
                       </v-row>
                     </v-card-text>
                     <v-card-actions></v-card-actions>
@@ -265,12 +218,12 @@
             <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
               <v-card flat v-for="item in shoppingList" :key="item.article">
                 <v-card-text>
-                   {{ item.article }} accepted by: {{ item.acceptedBy }}
+                  {{ item.article }} accepted by: {{ item.acceptedBy }}
                   {{ pendingItems }} pendingItems
                 </v-card-text>
-                <v-card-text v-if="item.status === 2">
-                  {{ item.article }} bought by: {{ item.boughtBy }}
-                </v-card-text>
+                <v-card-text
+                  v-if="item.status === 2"
+                >{{ item.article }} bought by: {{ item.boughtBy }}</v-card-text>
               </v-card>
             </v-tab-item>
           </v-tabs>
@@ -298,18 +251,20 @@ import editItemDialog from "../editItemDialog";
 export default {
   components: {
     profilePage,
-    editItemDialog,
+    editItemDialog
   },
   methods: {
     editItemName(editedItemName) {
       this.shoppingList.article = editedItemName;
     },
 
-    saveChanges(roomie, changedRoomie) {
-      console.log(roomie.username);
-      console.log(changedRoomie.username);
+    saveChangesInEditPage() {},
+    saveChangesInProfilePage(roomie, changeData) {
+      roomie.username = changeData.username;
+      roomie.description = changeData.description;
+      roomie.profilePicture = changeData.profilePicture;
+      roomie.color = changeData.color;
 
-      roomie = changedRoomie;
       roomie.showProfilePage = false;
     },
     acceptItem(item) {
@@ -317,8 +272,6 @@ export default {
       item.status = 1;
       item.acceptedBy = this.currentUser.username;
     },
-
-   
 
     cashUpItem(item) {
       this.completedPurchase = false;
@@ -331,17 +284,16 @@ export default {
       this.shoppingList.push({
         article: this.enteredItem,
         status: 0,
-        showEditDialog: false,
+        showEditDialog: false
       });
       console.log("hi");
     },
     // Should be an option if item is edited!
     removeItem(index) {
       this.shoppingList.splice(index, 1);
-    // beim Aufrufen IN DEM CLICK EVENT!!
-    // v-for="(goal, index) in goals @click="removeGoal(index)"
+      // beim Aufrufen IN DEM CLICK EVENT!!
+      // v-for="(goal, index) in goals @click="removeGoal(index)"
     },
-
 
     addPurchase() {
       //let vn = this;
@@ -381,7 +333,7 @@ export default {
       // checks if this dialog was opened via the cash up-option
 
       if (this.completedPurchase === false) {
-        this.openItems.forEach((element) => {
+        this.openItems.forEach(element => {
           if (element === this.currentItemForCashingUp) {
             element.acceptedBy = this.currentUser.username;
             element.boughtBy = this.currentUser.username;
@@ -419,14 +371,13 @@ export default {
       } else {
         return true;
       }
-    },
+    }
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
     openItems() {
       // Javascript-Funktion zum Filtern von Arrays
       return this.shoppingList.filter(function(value) {
-
         return value.status === 0;
       });
     },
@@ -441,7 +392,7 @@ export default {
       return this.shoppingList.filter(function(value) {
         return value.status === 99;
       });
-    },
+    }
   },
   data() {
     return {
@@ -454,7 +405,7 @@ export default {
         balance: +3,
         balancePlus: true,
         selected: true,
-        color: "#1F85DE",
+        color: "#1F85DE"
       },
       // Supply: Item that User enters for shoppingList:
       enteredItem: "",
@@ -477,13 +428,13 @@ export default {
         name: "",
         // if deleted true, then enable a comment:
         comment: "",
-        deleted: false,
+        deleted: false
       },
 
       newPurchase: {
         name: "",
         price: "",
-        comment: "",
+        comment: ""
       },
       shoppingList: [],
       // used to be OverviewList
@@ -542,13 +493,13 @@ export default {
         }
       ],
       // Regex for Pricerange:
-      numberRule: (v) => {
+      numberRule: v => {
         if (!v.trim()) return true;
         if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
         return "Number has to be between 0 and 999";
-      },
+      }
     };
-  },
+  }
 };
 </script>
 

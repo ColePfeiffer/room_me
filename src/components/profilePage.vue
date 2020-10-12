@@ -10,7 +10,7 @@
             max-width="160"
             max-height="160"
             class="profile-picture ma-2 rounded-circle"
-            :src="changedRoomie.profilePicture"
+            :src="changeData.profilePicture"
           >
             <input type="file" @change="uploadPicture" accept="image/*" v-if="roomie.isLoggedIn" />
             <v-icon>mdi-plus</v-icon>
@@ -22,7 +22,7 @@
             <v-textarea
               class="mx-2"
               placeholder="Name"
-              v-model="changedRoomie.username"
+              v-model="changeData.username"
               :disabled="!roomie.isLoggedIn"
               rows="1"
               append-outer-icon="edit"
@@ -33,7 +33,7 @@
               class="mx-2"
               label="Info"
               placeholder="Write something about yourself!"
-              v-model="changedRoomie.description"
+              v-model="changeData.description"
               :disabled="!roomie.isLoggedIn"
               rows="1"
               append-outer-icon="edit"
@@ -61,7 +61,6 @@ export default {
   computed: {},
   data() {
     return {
-      changedRoomie: this.roomie,
       changeData: {
         username: this.roomie.username,
         description: this.roomie.description,
@@ -72,13 +71,17 @@ export default {
   },
   methods: {
     saveChanges() {
-      this.$emit("save-changes", this.roomie, this.changedRoomie);
+      this.$emit("save-changes", this.roomie, this.changeData);
     },
 
     closeDialog() {
-      this.changedRoomie = this.roomie;
-      console.log(this.changedRoomie.username, this.roomie.username);
       this.roomie.showProfilePage = false;
+
+      // reset displayed data to roomies data
+      this.changeData.username = this.roomie.username;
+      this.changeData.description = this.roomie.description;
+      this.changeData.profilePicture = this.roomie.profilePicture;
+      this.changeData.color = this.roomie.color;
     },
 
     uploadPicture: function(event) {
