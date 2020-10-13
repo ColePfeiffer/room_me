@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="item.showEditDialog"  max-width="500">
+  <v-dialog v-model="item.showEditDialog" persistent max-width="500">
     <v-card>
       <v-card-title>
         <span class="headline">Edit Item</span>
@@ -9,7 +9,7 @@
           <v-row>
             <v-col cols="12" sm="6" md="4">
               <v-text-field
-                :value="item.article"
+               v-model="changeData.article"
                 persistent-hint
      
                 hint="edit name of article here"
@@ -38,8 +38,9 @@
       <v-card-actions>
         <v-spacer></v-spacer>
 
-
+         <v-btn color="primary" @click="closeDialog">Cancel</v-btn>
         <v-btn color="primary" @click="saveChanges">Save</v-btn>
+       
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -52,30 +53,25 @@ export default {
   props: {
     ["item"]: Object,
   },
-  /*{
-    'id': Number,
-    'username': String,
-    'description': String,
-    'profilePicture': String,
-    'balance': Number,
-    'balancePlus': Boolean,
-    'selected': Boolean,
-    'color': String
-  }*/
   computed: {},
   data() {
     return {
-      
+      changeData: {
+        article: this.item.article,
+      },
       disabled: true,
     };
   },
   methods: {
     saveChanges() {
-      this.$emit("save-changes", this.item.article);
+      this.$emit("save-changes", this.item, this.changeData);
     },
 
-    changeItemName() {
-       
+    closeDialog() {
+       this.item.showEditDialog = false;
+
+      // reset displayed data to item/shoppingList data
+      this.changeData.article = this.item.article;
     }
   },
 };
