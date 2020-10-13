@@ -78,7 +78,7 @@ import PurchasingDialogEditItem from "./PurchasingDialogEditItem";
 
 export default {
   name: "PurchasingTable",
-  emits: [],
+  emits: ["set-newPurchaseName", "toggle-dialogCashUp"],
   props: {
     ["shoppingList"]: Array,
     currencySymbol: String,
@@ -125,9 +125,8 @@ export default {
 
     cashUpItem(item) {
       this.completedPurchase = false;
-      this.newPurchase.name = item.article;
-      this.showDialogCashUp = true;
-
+      this.$emit("set-newPurchaseName", item.article);
+      this.$emit("toggle-dialogCashUp", true);
       this.currentItemForCashingUp = item;
     },
     addItem() {

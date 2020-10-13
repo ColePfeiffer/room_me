@@ -2,7 +2,11 @@
   <div class="purchasing">
     <v-container class="my-5">
       <v-row wrap justify-space-around>
-        <PurchasingTable :shoppingList="shoppingList"></PurchasingTable>
+        <PurchasingTable
+          :shoppingList="shoppingList"
+          @toggle-dialogCashUp="toggleShowDialogCashUp"
+          @set-newPurchaseName="setNewPurchaseName"
+        ></PurchasingTable>
 
         <PurchasingDialogCashUp
           :showDialogCashUp="showDialogCashUp"
@@ -40,7 +44,9 @@ export default {
   },
   methods: {
     toggleShowDialogCashUp(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogCashUp);
       this.showDialogCashUp = newState;
+      if (this.debug) console.log("new state: " + this.showDialogCashUp);
     },
     resetNewPurchase() {
       this.newPurchase = {
@@ -48,6 +54,9 @@ export default {
         price: "",
         comment: ""
       };
+    },
+    setNewPurchaseName(name) {
+      this.newPurchase.name = name;
     }
   },
   computed: {},
