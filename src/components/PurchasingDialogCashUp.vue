@@ -1,79 +1,83 @@
 <template>
-  <v-dialog v-model="showDialogCashUp" width="500">
-    <v-card>
-      <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
-      <v-card-text cols="12" sm="12">
-        <v-row>
-          <v-col>
-            <v-row class="mx-2">
-              <v-text-field
-                v-model="newPurchase.name"
-                sm="12"
-                m="12"
-                label="Product"
-                :counter="15"
-                prepend-icon="add_shopping_cart"
-                color="#FF6F00"
-              ></v-text-field>
-              <v-text-field
-                v-model="newPurchase.price"
-                :rules="[numberRule]"
-                sm="6"
-                m="6"
-                :counter="5"
-                label="Price"
-                prepend-icon="euro"
-                color="#FF6F00"
-              ></v-text-field>
-            </v-row>
-            <v-text-field
-              v-model="newPurchase.comment"
-              class="mx-2"
-              label="Comment"
-              placeholder="Add an optional comment about this product."
-              prepend-icon="comment"
-              color="#FF6F00"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <!-- Roomie Chip -->
-        <v-chip-group column multiple active-class="primary--text">
-          <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
-            <v-chip
-              :color="roomie.color"
-              :outlined="roomieChipOutlined(roomie)"
-              @click="selectRoomie(roomie)"
-            >
-              <v-avatar left>
-                <v-img v-bind:src="roomie.profilePicture"></v-img>
-              </v-avatar>
-              <strong>{{ roomie.username }}</strong>&nbsp;
-            </v-chip>
-          </v-row>
-        </v-chip-group>
+  <div>
+    <v-btn class="ma-2" color="pink" @click="localShowDialog = true">Split!</v-btn>
 
-        <v-row class="justify-center">
-          <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
-        </v-row>
-      </v-card-text>
-      <v-card-actions></v-card-actions>
-    </v-card>
-  </v-dialog>
+    <v-dialog v-model="localShowDialog" persistent width="500">
+      <v-card>
+        <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
+        <v-card-text cols="12" sm="12">
+          <v-row>
+            <v-col>
+              <v-row class="mx-2">
+                <v-text-field
+                  v-model="newPurchase.name"
+                  sm="12"
+                  m="12"
+                  label="Product"
+                  :counter="15"
+                  prepend-icon="add_shopping_cart"
+                  color="#FF6F00"
+                ></v-text-field>
+                <v-text-field
+                  v-model="newPurchase.price"
+                  :rules="[numberRule]"
+                  sm="6"
+                  m="6"
+                  :counter="5"
+                  label="Price"
+                  prepend-icon="euro"
+                  color="#FF6F00"
+                ></v-text-field>
+              </v-row>
+              <v-text-field
+                v-model="newPurchase.comment"
+                class="mx-2"
+                label="Comment"
+                placeholder="Add an optional comment about this product."
+                prepend-icon="comment"
+                color="#FF6F00"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <!-- Roomie Chip -->
+          <v-chip-group column multiple active-class="primary--text">
+            <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+              <v-chip
+                :color="roomie.color"
+                :outlined="roomieChipOutlined(roomie)"
+                @click="selectRoomie(roomie)"
+              >
+                <v-avatar left>
+                  <v-img v-bind:src="roomie.profilePicture"></v-img>
+                </v-avatar>
+                <strong>{{ roomie.username }}</strong>&nbsp;
+              </v-chip>
+            </v-row>
+          </v-chip-group>
+
+          <v-row class="justify-center">
+            <v-btn color="primary" @click="closeDialog">Close</v-btn>
+            <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
+          </v-row>
+        </v-card-text>
+        <v-card-actions></v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
 export default {
   name: "PurchasingDialogCashUp",
-  emits: [],
+  emits: ["toggle-dialogCashUp", "reset-newPurchase"],
   props: {
     showDialogCashUp: Boolean,
     ["roomies"]: Array,
     newPurchase: Object
   },
-  computed: {},
   data() {
     return {
-      changeData: {},
+      localShowDialog: this.showDialogCashUp,
       // Regex for Pricerange:
       numberRule: v => {
         if (!v.trim()) return true;
@@ -98,13 +102,21 @@ export default {
         return true;
       }
     },
+    closeDialog() {
+      this.localShowDialog = false;
+      this.$emit("toggle-dialogCashUp", false);
+      this.$emit("reset-newPurchase");
+      // reset displayed data to roomies data
+    },
     addPurchase() {
       //let vn = this;
 
       if (this.debug) console.log("Preis: " + this.newPurchase.price);
 
       // hide dialoge
-      this.showDialogCashUp = false;
+      this.localShowDialog = false;
+      this.$emit("toggle-dialogCashUp", false);
+      this.$emit("reset-newPurchase");
 
       /*
       var sharedByNumber = 0;

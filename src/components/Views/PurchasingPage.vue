@@ -2,21 +2,21 @@
   <div class="purchasing">
     <v-container class="my-5">
       <v-row wrap justify-space-around>
+        <PurchasingTable :shoppingList="shoppingList"></PurchasingTable>
+
         <PurchasingDialogCashUp
           :showDialogCashUp="showDialogCashUp"
           :roomies="roomies"
           :newPurchase="newPurchase"
+          @toggle-dialogCashUp="toggleShowDialogCashUp"
+          @reset-newPurchase="resetNewPurchase"
         ></PurchasingDialogCashUp>
-        <v-btn class="ma-2" color="pink" @click="showDialogCashUp = true">Split!</v-btn>
-        <PurchasingTable :shoppingList="shoppingList"></PurchasingTable>
 
         <PurchasingBillingOverview
           :roomies="roomies"
           :currencySymbol="currencySymbol"
           :newPurchase="newPurchase"
         ></PurchasingBillingOverview>
-
-        <!--My Tabs:-->
         <PurchasingTabs :shoppingList="shoppingList"></PurchasingTabs>
       </v-row>
     </v-container>
@@ -25,9 +25,11 @@
 
 <script>
 import PurchasingBillingOverview from "../PurchasingBillingOverview";
-import PurchasingDialogCashUp from "../PurchasingDialogCashUp";
 import PurchasingTable from "../PurchasingTable";
 import PurchasingTabs from "../PurchasingTabs";
+
+// Dialogs
+import PurchasingDialogCashUp from "../PurchasingDialogCashUp";
 
 export default {
   components: {
@@ -37,11 +39,16 @@ export default {
     PurchasingTabs
   },
   methods: {
-    editItemName(editedItemName) {
-      this.shoppingList.article = editedItemName;
+    toggleShowDialogCashUp(newState) {
+      this.showDialogCashUp = newState;
     },
-
-    saveChangesInEditPage() {}
+    resetNewPurchase() {
+      this.newPurchase = {
+        name: "",
+        price: "",
+        comment: ""
+      };
+    }
   },
   computed: {},
   data() {
@@ -58,28 +65,65 @@ export default {
         selected: true,
         color: "#1F85DE"
       },
-
-      /*profilePicture:
-        "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png",*/
       currencySymbol: " €",
       debug: true,
-      tab: null,
-      text: "Lorem ipsum",
-
-      editedItemName: {
-        name: "",
-        // if deleted true, then enable a comment:
-        comment: "",
-        deleted: false
-      },
-
       newPurchase: {
         name: "",
         price: "",
         comment: ""
       },
       shoppingList: [],
-      // used to be OverviewList
+      /* shoppingList: [
+        {
+          article: "Spüli",
+          // Status: 0 - offen, 1 - pending,
+          price: 0,
+          status: 0,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
+        },
+        {
+          article: "Müllsäcke",
+          price: 0,
+          status: 0,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
+        },
+        {
+          article: "Ingwerbröd",
+          price: 0,
+          status: 0,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
+        },
+        {
+          article: "Aluhut",
+          price: 0,
+          status: 1,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
+        },
+        {
+          article: "Seife",
+          price: 0,
+          status: 1,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
+        },
+        {
+          article: "Wlan Repeater",
+          price: 2.7,
+          status: 99,
+          acceptedBy: "",
+          boughtBy: "",
+          declinedBy: []
+        }
+],*/
       roomies: [
         {
           id: 0,
@@ -148,57 +192,3 @@ export default {
   color: red;
 }
 </style>
-<!-- 
-
-   {
-          article: "Spüli",
-          // Status: 0 - offen, 1 - pending,
-          price: 0,
-          status: 0,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: [],
-        },
-        {
-          article: "Müllsäcke",
-          price: 0,
-          status: 0,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: [],
-        },
-        {
-          article: "Ingwerbröd",
-          price: 0,
-          status: 0,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: [],
-        },
-        {
-          article: "Aluhut",
-          price: 0,
-          status: 1,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: [],
-        },
-        {
-          article: "Seife",
-          price: 0,
-          status: 1,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: [],
-        },
-        {
-          article: "Wlan Repeater",
-          price: 2.7,
-          status: 99,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: [],
-        },
-
-
-        -->
