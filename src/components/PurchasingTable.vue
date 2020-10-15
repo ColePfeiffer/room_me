@@ -31,7 +31,10 @@
 
           <tbody :class="`pl-3 shoppingList ${shoppingList.status}`">
             <tr v-for="item in openItems" :key="item.article">
-              <PurchasingDialogEditItem :item="item" @save-changes="saveChangesInEditPage"></PurchasingDialogEditItem>
+              <PurchasingDialogEditItem
+                :item="item"
+                @save-changes="saveChangesInEditPage"
+              ></PurchasingDialogEditItem>
               <td>{{ item.article }}</td>
               <td>
                 <v-btn text>
@@ -45,7 +48,7 @@
               </td>
               <td>
                 <v-btn text>
-                  <v-icon @click="item.showEditDialog = true" class="PurchasingDialogEditItem">edit</v-icon>
+                  <v-icon @click="item.showEditDialog = true">edit</v-icon>
                 </v-btn>
               </td>
             </tr>
@@ -55,11 +58,11 @@
 
       <v-container>
         <v-row>
-          <v-col cols="12" sm="12" xs="12">
+          <v-col md="12" sm="12" xs="12">
             <!--Appears if shoppingList is empty!-->
-            <p
-              v-if="shoppingList.length === 0"
-            >No supplies added yet. Please start adding something.</p>
+            <p v-if="openItems.length === 0">
+              No supplies added yet. Please start adding something.
+            </p>
             <v-text-field
               v-on:keydown.enter="addItem"
               v-model="submittedItem"
@@ -121,7 +124,10 @@ export default {
       item.acceptedBy = this.currentUser.username;
     },
 
-    saveChangesInEditPage() {},
+    saveChangesInEditPage(item, changeData) {
+      item.article = changeData.article;
+      item.showEditDialog = false;
+    },
 
     cashUpItem(item) {
       this.completedPurchase = false;
@@ -147,5 +153,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

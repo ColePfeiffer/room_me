@@ -14,12 +14,17 @@
       </v-tab>
 
       <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
-        <v-card flat v-for="item in shoppingList" :key="item.article">
-          <v-card-text>
-            {{ item.article }} accepted by: {{ item.acceptedBy }}
-            {{ pendingItems }} pendingItems
-          </v-card-text>
-          <v-card-text v-if="item.status === 2">{{ item.article }} bought by: {{ item.boughtBy }}</v-card-text>
+        <v-card flat>
+          <div v-if="i == 1">
+            <v-card-text v-for="item in pendingItems" :key="item.article">
+              {{ item.article }} accepted by: {{ item.acceptedBy }}
+            </v-card-text>
+          </div>
+          <div v-if="i == 2">
+            <v-card-text v-for="item in doneItems" :key="item.article">
+              {{ item.article }} bought by: {{ item.boughtBy }}
+            </v-card-text>
+          </div>
         </v-card>
       </v-tab-item>
     </v-tabs>
@@ -44,13 +49,13 @@ export default {
     pendingItems() {
       // Javascript-Funktion zum Filtern von Arrays
       return this.shoppingList.filter(function(value) {
-        return value.status === status;
+        return value.status === 1;
       });
     },
-    billedItems() {
+    doneItems() {
       // Javascript-Funktion zum Filtern von Arrays
       return this.shoppingList.filter(function(value) {
-        return value.status === 99;
+        return value.status === 2;
       });
     }
   },
@@ -61,5 +66,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
