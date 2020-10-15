@@ -54,14 +54,10 @@ export default {
   },
   props: {
     ["roomies"]: Array,
-    currencySymbol: String,
-    newPurchase: Object
+    currencySymbol: String
   },
-  computed: {},
   data() {
-    return {
-      changeData: {}
-    };
+    return {};
   },
   methods: {
     saveChangesInProfilePage(roomie, changeData) {

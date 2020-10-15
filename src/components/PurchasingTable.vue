@@ -185,8 +185,14 @@ export default {
       item.acceptedBy = this.currentUser.username;
     },
 
-    saveChangesInEditPage(item, changeData) {
-      item.article = changeData.article;
+    saveChangesInEditPage(item, changeData, keepAlive) {
+      if (keepAlive) {
+        item.article = changeData.article;
+      } else {
+        const position = this.shoppingList.indexOf(item);
+        console.log(position);
+        this.shoppingList.splice(position, 1);
+      }
       item.showEditDialog = false;
     },
 
