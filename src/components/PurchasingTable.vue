@@ -202,7 +202,7 @@ export default {
         status: 0,
         showEditDialog: false
       });
-      console.log("hi");
+      this.submittedItem = "";
     },
     // Should be an option if item is edited!
     removeItem(index) {
