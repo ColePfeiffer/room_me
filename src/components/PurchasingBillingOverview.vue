@@ -34,6 +34,11 @@
           </v-list>
         </v-list-item-content>
       </v-list-item>
+
+      <div class="text-center">
+        <v-btn color="pink" @click="toggleDialogCashUp">Split!</v-btn>
+      </div>
+      <br />
     </v-card>
   </v-col>
 </template>
@@ -43,7 +48,7 @@ import DialogProfilePage from "./DialogProfilePage";
 
 export default {
   name: "PurchasingBillingOverview",
-  emits: [],
+  emits: ["save-changes", "toggle-dialogCashUp"],
   components: {
     DialogProfilePage
   },
@@ -70,6 +75,10 @@ export default {
 
     saveChanges() {
       this.$emit("save-changes", this.roomie, this.changeData);
+    },
+
+    toggleDialogCashUp() {
+      this.$emit("toggle-dialogCashUp", true);
     }
   }
 };

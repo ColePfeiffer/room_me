@@ -1,5 +1,5 @@
 <template>
-  <v-col xs="12" sm="12" md="6">
+  <v-col xs="12" sm="6" md="3">
     <v-card flat class="pa-3">
       <div class="overline">Shopping List</div>
 
@@ -18,7 +18,7 @@
           <thead>
             <tr>
               <th class="text-left">name</th>
-              <th class="text-left">actions</th>
+              <th class="text-center">actions</th>
             </tr>
           </thead>
 

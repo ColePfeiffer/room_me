@@ -1,7 +1,5 @@
 <template>
   <div>
-    <v-btn class="ma-2" color="pink" @click="showDialogCashUp = true">Split!</v-btn>
-
     <v-dialog v-model="showDialogCashUp" persistent width="500">
       <v-card>
         <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>

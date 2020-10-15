@@ -20,6 +20,7 @@
           :roomies="roomies"
           :currencySymbol="currencySymbol"
           :newPurchase="newPurchase"
+          @toggle-dialogCashUp="toggleShowDialogCashUp"
         ></PurchasingBillingOverview>
         <PurchasingTabs :shoppingList="shoppingList"></PurchasingTabs>
       </v-row>
