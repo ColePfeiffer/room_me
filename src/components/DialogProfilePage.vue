@@ -54,7 +54,8 @@
 
 <script>
 export default {
-  name: "profilePage",
+  name: "DialogProfilePage",
+  emits: ["save-changes"],
   props: {
     ["roomie"]: Object
   },
