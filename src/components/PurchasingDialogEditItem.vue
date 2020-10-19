@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     saveChanges() {
-      this.$emit("save-changes", this.item, this.changeData);
+      this.$emit("save-changes", this.item, this.changeData, this.disabled);
     },
     closeDialog() {
       this.item.showEditDialog = false;
