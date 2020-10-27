@@ -40,7 +40,7 @@ export default {
     PurchasingBillingOverview,
     PurchasingDialogCashUp,
     PurchasingTable,
-    PurchasingTabs
+    PurchasingTabs,
   },
   methods: {
     toggleShowDialogCashUp(newState) {
@@ -52,12 +52,12 @@ export default {
       this.newPurchase = {
         name: "",
         price: "",
-        comment: ""
+        comment: "",
       };
     },
     setNewPurchaseName(name) {
       this.newPurchase.name = name;
-    }
+    },
   },
   computed: {},
   data() {
@@ -72,14 +72,14 @@ export default {
         balance: +3,
         balancePlus: true,
         selected: true,
-        color: "#1F85DE"
+        color: "#1F85DE",
       },
       currencySymbol: " €",
       debug: true,
       newPurchase: {
         name: "",
         price: "",
-        comment: ""
+        comment: "",
       },
       shoppingList: [],
       /* shoppingList: [
@@ -145,7 +145,7 @@ export default {
           selected: true,
           color: "#1F85DE",
           showProfilePage: false,
-          isLoggedIn: true
+          isLoggedIn: true,
         },
         {
           id: 1,
@@ -158,7 +158,7 @@ export default {
           selected: true,
           color: "#DE591F",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 2,
@@ -171,7 +171,7 @@ export default {
           selected: true,
           color: "#BDA0EC",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 3,
@@ -184,11 +184,11 @@ export default {
           selected: true,
           color: "#EBE386",
           showProfilePage: false,
-          isLoggedIn: false
-        }
-      ]
+          isLoggedIn: false,
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 

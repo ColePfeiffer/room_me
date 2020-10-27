@@ -16,14 +16,24 @@
       <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i">
         <v-card flat>
           <div v-if="i == 1">
-            <v-card-text v-for="item in pendingItems" :key="item.article">
-              {{ item.article }} accepted by: {{ item.acceptedBy }}
-            </v-card-text>
+            <div v-if="pendingItems.length === 0">
+              <v-card-text> No items pending yet.</v-card-text>
+            </div>
+            <div v-else>
+              <v-card-text v-for="item in pendingItems" :key="item.article">
+                {{ item.article }} accepted by: {{ item.acceptedBy }}
+              </v-card-text>
+            </div>
           </div>
           <div v-if="i == 2">
-            <v-card-text v-for="item in doneItems" :key="item.article">
-              {{ item.article }} bought by: {{ item.boughtBy }}
-            </v-card-text>
+            <div v-if="doneItems.length === 0">
+              <v-card-text> No items done yet.</v-card-text>
+            </div>
+            <div v-else>
+              <v-card-text v-for="item in doneItems" :key="item.article">
+                {{ item.article }} bought by: {{ item.boughtBy }}
+              </v-card-text>
+            </div>
           </div>
         </v-card>
       </v-tab-item>
@@ -36,33 +46,33 @@ export default {
   name: "PurchasingTabs",
   emits: [],
   props: {
-    ["shoppingList"]: Array
+    ["shoppingList"]: Array,
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
     openItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function(value) {
+      return this.shoppingList.filter(function (value) {
         return value.status === 0;
       });
     },
     pendingItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function(value) {
+      return this.shoppingList.filter(function (value) {
         return value.status === 1;
       });
     },
     doneItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function(value) {
+      return this.shoppingList.filter(function (value) {
         return value.status === 2;
       });
-    }
+    },
   },
   data() {
     return {};
   },
-  methods: {}
+  methods: {},
 };
 </script>
 
