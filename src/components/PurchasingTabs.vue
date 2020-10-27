@@ -20,19 +20,19 @@
               <v-card-text> No items pending yet.</v-card-text>
             </div>
             <div v-else>
-            <v-card-text v-for="item in pendingItems" :key="item.article">
-              {{ item.article }} accepted by: {{ item.acceptedBy }}
-            </v-card-text>
+              <v-card-text v-for="item in pendingItems" :key="item.article">
+                {{ item.article }} accepted by: {{ item.acceptedBy }}
+              </v-card-text>
             </div>
           </div>
           <div v-if="i == 2">
-          <div v-if="doneItems.length === 0">
+            <div v-if="doneItems.length === 0">
               <v-card-text> No items done yet.</v-card-text>
             </div>
             <div v-else>
-            <v-card-text v-for="item in doneItems" :key="item.article">
-              {{ item.article }} bought by: {{ item.boughtBy }}
-            </v-card-text>
+              <v-card-text v-for="item in doneItems" :key="item.article">
+                {{ item.article }} bought by: {{ item.boughtBy }}
+              </v-card-text>
             </div>
           </div>
         </v-card>
