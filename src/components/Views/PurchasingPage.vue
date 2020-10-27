@@ -40,7 +40,7 @@ export default {
     PurchasingBillingOverview,
     PurchasingDialogCashUp,
     PurchasingTable,
-    PurchasingTabs
+    PurchasingTabs,
   },
   methods: {
     toggleShowDialogCashUp(newState) {
@@ -52,12 +52,12 @@ export default {
       this.newPurchase = {
         name: "",
         price: "",
-        comment: ""
+        comment: "",
       };
     },
     setNewPurchaseName(name) {
       this.newPurchase.name = name;
-    }
+    },
   },
   computed: {},
   data() {
@@ -184,9 +184,9 @@ export default {
           selected: true,
           color: "#EBE386",
           showProfilePage: false,
-          isLoggedIn: false
-        }
-      ]
+          isLoggedIn: false,
+        },
+      ],
     };
   },
 };
