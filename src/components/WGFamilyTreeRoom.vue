@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div id="wrapper">
     Family Tree Room
-    <WGFamilyTreeRoomie></WGFamilyTreeRoomie>
+    <WGFamilyTreeRoomie :roomie="roomies[0]"></WGFamilyTreeRoomie>
+    <WGFamilyTreeRoomie :roomie="roomies[1]"></WGFamilyTreeRoomie>
+    <WGFamilyTreeRoomie :roomie="roomies[2]"></WGFamilyTreeRoomie>
   </div>
 </template>
 
@@ -14,7 +16,7 @@ export default {
   components: {
     WGFamilyTreeRoomie
   },
-  props: {},
+  props: { roomies: Array },
   data() {
     return {
       rooms: []
@@ -25,4 +27,8 @@ export default {
 </script>
 
 <style>
+#wrapper {
+  display: flex;
+  flex-direction: column;
+}
 </style>

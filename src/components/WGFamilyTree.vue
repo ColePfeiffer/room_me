@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="overline">Room History</div>
-    <WGFamilyTreeRoom></WGFamilyTreeRoom>
+    <WGFamilyTreeRoom :roomies="roomies"></WGFamilyTreeRoom>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   components: {
     WGFamilyTreeRoom
   },
-  props: {},
+  props: { roomies: Array },
   data() {
     return {
       rooms: []

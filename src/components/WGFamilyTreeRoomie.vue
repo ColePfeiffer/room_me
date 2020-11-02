@@ -1,23 +1,24 @@
 <template>
   <div id="FamilyTreeRoomie">
     <div id="Roomie">
-      <v-list-item-avatar class="avatar" width="100" height="100">
-        <v-img
-          @click="roomie.showProfilePage = true"
-          class="profilePicture"
-          max-width="100"
-          max-height="100"
-          v-bind:src="roomie.profilePicture"
-        ></v-img>
-      </v-list-item-avatar>
-      <v-list-item-icon>
-        <div id="floatingIcon">
-          <v-icon color="yellow">mdi-beach</v-icon>
-        </div>
-      </v-list-item-icon>
+      <div id="avatarWrapper">
+        <v-list-item-icon>
+          <v-icon id="floatingIcon" v-if="!roomie.moveOut">mdi-island</v-icon>
+        </v-list-item-icon>
 
+        <v-list-item-avatar id="avatar" width="100" height="100">
+          <v-img
+            @click="roomie.showProfilePage = true"
+            class="profilePicture"
+            max-width="100"
+            max-height="100"
+            v-bind:src="roomie.profilePicture"
+          ></v-img>
+        </v-list-item-avatar>
+      </div>
       <v-list-item-content>
         <v-list-item-title>{{ roomie.username }}</v-list-item-title>
+
         <v-divider class="ma-1" horizontal color="white"></v-divider>
         <v-list-item-subtitle>
           <span>{{"since " + roomie.moveInDate.getFullYear()}}</span>
@@ -27,8 +28,12 @@
 
         <v-divider class="ma-1" horizontal color="white"></v-divider>
       </v-list-item-content>
+
+      <div class="verticalLine"></div>
+      <div class="text-xs-center">
+        <v-btn v-if="!roomie.movedOut" centered id="button" elevation="2">+</v-btn>
+      </div>
     </div>
-    <div class="vl"></div>
   </div>
 </template>
 
@@ -36,11 +41,11 @@
 export default {
   name: "WGFamilyTreeRomie",
   emits: [],
-  props: {},
+  props: { roomie: Object },
   data() {
     return {
       rooms: [],
-      roomie: {
+      roomieDummy: {
         id: 0,
         username: "Chris",
         description: "Hi there!",
@@ -65,28 +70,57 @@ export default {
 
 <style scoped>
 #FamilyTreeRoomie {
-  max-width: 140px;
-  height: 450px;
-  background-color: black;
+  width: 120px;
+  height: 350px;
 }
 #Roomie {
   width: 70%;
   margin: 0 auto;
 }
 
-.vl {
+.verticalLine {
   border-left: 1.5px solid white;
   height: 100px;
   position: relative;
   left: 50%;
   top: 0;
-
   margin: 0 auto;
 }
 
-.avatar {
+#avatarWrapper {
+  /* become a flex container */
+  /* its children will be flex items */
+  display: flex;
+  /* place items in column */
+  flex-direction: column;
+  /* center flex items horizontally */
+  align-items: center;
+  /* center all content vertically */
+  justify-content: center;
 }
 
-.profilePicture {
+#avatar {
+  padding: 14px;
+  width: 100%;
+}
+
+#floatingIcon {
+  position: relative;
+  bottom: -140px;
+  right: -80px;
+  cursor: pointer;
+
+  width: 28px;
+  height: 28px;
+  font-family: Raleway;
+  border-radius: 50%;
+  margin: 0 auto;
+  color: white;
+}
+
+#button {
+  top: 10px;
+  padding: 14px;
+  margin: 0 auto;
 }
 </style>
