@@ -1,5 +1,5 @@
 <template>
-  <div id="FamilyTreeRoomie">
+  <v-container id="FamilyTreeRoomie">
     <div id="Roomie">
       <div id="avatarWrapper">
         <v-list-item-icon>
@@ -30,11 +30,10 @@
       </v-list-item-content>
 
       <div class="verticalLine"></div>
-      <div class="text-xs-center">
-        <v-btn v-if="!roomie.movedOut" centered id="button" elevation="2">+</v-btn>
-      </div>
+
+      <v-btn v-if="roomie.movedOut" id="button" elevation="2">+</v-btn>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -70,21 +69,11 @@ export default {
 
 <style scoped>
 #FamilyTreeRoomie {
-  width: 120px;
-  height: 350px;
+  width: 130px;
 }
 #Roomie {
   width: 70%;
-  margin: 0 auto;
-}
-
-.verticalLine {
-  border-left: 1.5px solid white;
-  height: 100px;
-  position: relative;
-  left: 50%;
-  top: 0;
-  margin: 0 auto;
+  padding: 5 px;
 }
 
 #avatarWrapper {
@@ -98,9 +87,19 @@ export default {
   /* center all content vertically */
   justify-content: center;
 }
+.verticalLine {
+  border-left: 1.5px solid white;
+  height: 100px;
+  position: relative;
+  left: 50%;
+  top: 0;
+}
+
+#button {
+  top: 10px;
+}
 
 #avatar {
-  padding: 14px;
   width: 100%;
 }
 
@@ -116,11 +115,5 @@ export default {
   border-radius: 50%;
   margin: 0 auto;
   color: white;
-}
-
-#button {
-  top: 10px;
-  padding: 14px;
-  margin: 0 auto;
 }
 </style>

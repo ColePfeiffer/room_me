@@ -1,10 +1,11 @@
 <template>
-  <div id="wrapper">
-    Family Tree Room
-    <WGFamilyTreeRoomie :roomie="roomies[0]"></WGFamilyTreeRoomie>
-    <WGFamilyTreeRoomie :roomie="roomies[1]"></WGFamilyTreeRoomie>
-    <WGFamilyTreeRoomie :roomie="roomies[2]"></WGFamilyTreeRoomie>
-  </div>
+  <v-container>
+    <v-row no-gutters v-for="n in roomies" :key="n">
+      <v-col cols="12" sm="4">
+        <WGFamilyTreeRoomie :roomie="n"></WGFamilyTreeRoomie>
+      </v-col>
+    </v-row>Family Tree Room
+  </v-container>
 </template>
 
 <script>

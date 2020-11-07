@@ -80,7 +80,7 @@ export default {
           color: "#EBE386",
           showProfilePage: false,
           isLoggedIn: false,
-          movedOut: false,
+          movedOut: true,
           moveInDate: new Date(2015, 10, 15),
           moveOutDate: new Date(2017, 5, 3)
         }
