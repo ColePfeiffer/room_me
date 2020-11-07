@@ -1,8 +1,12 @@
 <template>
-  <div>
+  <v-container>
     <div class="overline">Room History</div>
-    <WGFamilyTreeRoom :roomies="roomies"></WGFamilyTreeRoom>
-  </div>
+    <v-row dense>
+      <v-col v-for="i in rooms" :key="i.name" xs="6" sm="6" md="4">
+        <WGFamilyTreeRoom :room="i"></WGFamilyTreeRoom>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -14,11 +18,9 @@ export default {
   components: {
     WGFamilyTreeRoom
   },
-  props: { roomies: Array },
+  props: { rooms: Array },
   data() {
-    return {
-      rooms: []
-    };
+    return {};
   },
   methods: {}
 };

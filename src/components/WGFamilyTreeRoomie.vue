@@ -1,38 +1,48 @@
 <template>
-  <v-container id="FamilyTreeRoomie">
-    <div id="Roomie">
-      <div id="avatarWrapper">
-        <v-list-item-icon>
+  <v-container ma-auto pa-10 id="FamilyTreeRoomie">
+    <v-row no-gutters>
+      <v-col>
+        <div id="IconWrapper">
           <v-icon id="floatingIcon" v-if="!roomie.moveOut">mdi-island</v-icon>
-        </v-list-item-icon>
 
-        <v-list-item-avatar id="avatar" width="100" height="100">
-          <v-img
-            @click="roomie.showProfilePage = true"
-            class="profilePicture"
-            max-width="100"
-            max-height="100"
-            v-bind:src="roomie.profilePicture"
-          ></v-img>
-        </v-list-item-avatar>
-      </div>
-      <v-list-item-content>
-        <v-list-item-title>{{ roomie.username }}</v-list-item-title>
+          <v-list-item-avatar id="avatar" width="100" height="100">
+            <v-img
+              @click="roomie.showProfilePage = true"
+              class="profilePicture"
+              width="100"
+              height="100"
+              v-bind:src="roomie.profilePicture"
+            ></v-img>
+          </v-list-item-avatar>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col>
+        <v-list-item-content id="roomieInformation">
+          <v-list-item-title>{{ roomie.username }}</v-list-item-title>
 
-        <v-divider class="ma-1" horizontal color="white"></v-divider>
-        <v-list-item-subtitle>
-          <span>{{"since " + roomie.moveInDate.getFullYear()}}</span>
-          <br />
-          <span v-if="roomie.movedOut">{{"til " + roomie.moveOutDate.getFullYear()}}</span>
-        </v-list-item-subtitle>
+          <v-divider class="ma-1" horizontal color="white"></v-divider>
+          <v-list-item-subtitle>
+            <span>{{"since " + roomie.moveInDate.getFullYear()}}</span>
+            <br />
+            <span v-if="roomie.movedOut">{{"til " + roomie.moveOutDate.getFullYear()}}</span>
+          </v-list-item-subtitle>
 
-        <v-divider class="ma-1" horizontal color="white"></v-divider>
-      </v-list-item-content>
-
-      <div class="verticalLine"></div>
-
-      <v-btn v-if="roomie.movedOut" id="button" elevation="2">+</v-btn>
-    </div>
+          <v-divider class="ma-1" horizontal color="white"></v-divider>
+        </v-list-item-content>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col>
+        <div class="verticalLine"></div>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col>
+        <v-btn v-if="roomie.movedOut" elevation="2">+</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -68,39 +78,12 @@ export default {
 </script>
 
 <style scoped>
-#FamilyTreeRoomie {
-  width: 130px;
-}
-#Roomie {
-  width: 70%;
-  padding: 5 px;
-}
-
-#avatarWrapper {
-  /* become a flex container */
-  /* its children will be flex items */
-  display: flex;
-  /* place items in column */
-  flex-direction: column;
-  /* center flex items horizontally */
-  align-items: center;
-  /* center all content vertically */
-  justify-content: center;
-}
 .verticalLine {
   border-left: 1.5px solid white;
   height: 100px;
   position: relative;
   left: 50%;
   top: 0;
-}
-
-#button {
-  top: 10px;
-}
-
-#avatar {
-  width: 100%;
 }
 
 #floatingIcon {
