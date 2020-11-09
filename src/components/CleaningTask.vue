@@ -10,7 +10,10 @@
             <v-card-actions>
               <v-col class="text-right">
                 <v-btn text>
-                  <v-icon @click="acceptTask(item)">mdi-check</v-icon>
+                <!--@click="acceptTask(item)"-->
+                  <v-icon 
+                  @click="toggleDialogTaskManager"
+                  >mdi-check</v-icon>
                 </v-btn>
                  <v-btn text>
                   <v-icon>mdi-close</v-icon>
@@ -46,12 +49,16 @@ export default {
     generator: function () {
       this.mycolor = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
     },
+  
     acceptTask(item) {
       item.status = 1;
       item.acceptedBy = this.currentUser.username;
       console.log(item.status);
 
-    }
+    },
+      toggleDialogTaskManager() {
+      this.$emit("toggle-dialogTaskManager", true);
+    },
   },
 };
 </script>

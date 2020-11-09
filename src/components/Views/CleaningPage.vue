@@ -4,10 +4,16 @@
       <!--The event container with padding of 15-->
       <v-row class="fill-height pa-15">
         <CleaningCalendar></CleaningCalendar>
-        <CleaningTabs 
-        :currentUser="currentUser"
-        :taskList="taskList"></CleaningTabs>
-   
+        <CleaningTabs
+          :currentUser="currentUser"
+          :taskList="taskList"
+        ></CleaningTabs>
+        <CleaningDialog
+          :showDialogTaskManager="showDialogTaskManager"
+          @toggle-dialogTaskManager="toggleShowDialogTaskManager"
+        >
+        </CleaningDialog
+        >
       </v-row>
     </v-row>
   </div>
@@ -17,13 +23,25 @@
 import CleaningCalendar from "../CleaningCalendar";
 import CleaningTabs from "../CleaningTabs";
 
+//Dialogs
+import CleaningDialog from "../CleaningDialog";
+
 export default {
   components: {
     CleaningCalendar,
     CleaningTabs,
+    CleaningDialog,
+  },
+  methods: {
+    toggleShowDialogTaskManager(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogTaskManager);
+      this.showDialogTaskManager = newState;
+      if (this.debug) console.log("new state: " + this.showDialogTaskManager);
+    },
   },
   data() {
     return {
+      showDialogTaskManager: false,
       currentUser: {
         id: 0,
         username: "Chris",
@@ -48,7 +66,7 @@ export default {
           /*artist:
             "Die Küche möchte geputzt werden. Kassiere drei Erfahrungspunkte.",*/
         },
-          {
+        {
           id: 5,
           title: "Küche putzen",
           // Status: 0 - offen, accepted: 1, declined: 2, done: 3
@@ -60,7 +78,7 @@ export default {
           /*artist:
             "Die Küche möchte geputzt werden. Kassiere drei Erfahrungspunkte.",*/
         },
-           {
+        {
           id: 6,
           title: "Küche putzen",
           // Status: 0 - offen, accepted: 1, declined: 2, done: 3
@@ -84,7 +102,7 @@ export default {
           /*artist:
             "Die Küche möchte geputzt werden. Kassiere drei Erfahrungspunkte.",*/
         },
-         {
+        {
           id: 3,
           title: "Nix da",
           // Status: 0 - offen, declined: 1, done: 2

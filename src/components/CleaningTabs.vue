@@ -29,6 +29,7 @@
               :taskList="taskList"
               :item="item"
               :currentUser="currentUser"
+        
             >
             </CleaningTask>
           </div>
@@ -43,6 +44,7 @@
             :item="item"
             :taskList="taskList"
             :currentUser="currentUser"
+
           ></CleaningTask>
         </div>
       </div>
