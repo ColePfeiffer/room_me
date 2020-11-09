@@ -1,14 +1,9 @@
 <template>
   <v-container ma-auto pa-10 id="FamilyTreeRoomie">
-    <v-row v-if="inversed" no-gutters>
-      <v-col>
-        <div class="verticalLine"></div>
-      </v-col>
-    </v-row>
     <v-row no-gutters>
       <v-col>
         <div id="IconWrapper">
-          <v-icon id="floatingIcon" v-if="!roomie.moveOut">mdi-island</v-icon>
+          <v-icon id="floatingIcon" v-if="!roomie.movedOut">mdi-island</v-icon>
 
           <v-list-item-avatar id="avatar" width="100" height="100">
             <v-img
@@ -36,11 +31,6 @@
 
           <v-divider class="ma-1" horizontal color="white"></v-divider>
         </v-list-item-content>
-      </v-col>
-    </v-row>
-    <v-row v-if="inversed==false" no-gutters>
-      <v-col>
-        <div class="verticalLine"></div>
       </v-col>
     </v-row>
   </v-container>

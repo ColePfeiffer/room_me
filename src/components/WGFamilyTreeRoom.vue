@@ -17,6 +17,7 @@
     <v-row no-gutters id="wrapperForFTRoom" v-for="n in room.roomies" :key="n.id">
       <v-col cols="12" class="black lighten-5">
         <WGFamilyTreeRoomie :roomie="n" :inversed="inversed"></WGFamilyTreeRoomie>
+        <div v-if="n.movedOut" class="verticalLine"></div>
       </v-col>
     </v-row>
   </v-container>
@@ -35,7 +36,7 @@ export default {
   data() {
     return {
       rooms: [],
-      inversed: true
+      inversed: false
     };
   },
   methods: {}
@@ -46,5 +47,13 @@ export default {
 #vContainer {
   width: 200px;
   max-width: 300px;
+}
+
+.verticalLine {
+  border-left: 1.5px solid white;
+  height: 80px;
+  position: relative;
+  left: 50%;
+  top: 0;
 }
 </style>

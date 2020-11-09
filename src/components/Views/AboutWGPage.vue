@@ -180,6 +180,111 @@ export default {
               moveOutDate: new Date(2017, 5, 3)
             }
           ]
+        },
+        {
+          name: "room 4",
+          roomies: [
+            {
+              id: 0,
+              username: "Marlon",
+              description: "Hi there!",
+              profilePicture: "https://i.imgur.com/0y9cTae.gif",
+              balance: +3,
+              balancePlus: true,
+              selected: true,
+              color: "#1F85DE",
+              showProfilePage: false,
+              isLoggedIn: true,
+              movedOut: true,
+              moveInDate: new Date(2013, 10, 15),
+              moveOutDate: new Date(2017, 5, 3)
+            },
+            {
+              id: 1,
+              username: "Max",
+              description: "Möpp",
+              profilePicture: "https://i.imgur.com/8fS7ZkO.gif",
+              balance: -3,
+              balancePlus: false,
+              selected: true,
+              color: "#DE591F",
+              showProfilePage: false,
+              isLoggedIn: false,
+              movedOut: false,
+              moveInDate: new Date(2015, 10, 15),
+              moveOutDate: new Date(2017, 5, 3)
+            }
+          ]
+        },
+        {
+          name: "room 5",
+          roomies: [
+            {
+              id: 0,
+              username: "Marlon",
+              description: "Hi there!",
+              profilePicture: "https://i.imgur.com/0y9cTae.gif",
+              balance: +3,
+              balancePlus: true,
+              selected: true,
+              color: "#1F85DE",
+              showProfilePage: false,
+              isLoggedIn: true,
+              movedOut: true,
+              moveInDate: new Date(2013, 10, 15),
+              moveOutDate: new Date(2017, 5, 3)
+            },
+            {
+              id: 1,
+              username: "Max",
+              description: "Möpp",
+              profilePicture: "https://i.imgur.com/8fS7ZkO.gif",
+              balance: -3,
+              balancePlus: false,
+              selected: true,
+              color: "#DE591F",
+              showProfilePage: false,
+              isLoggedIn: false,
+              movedOut: false,
+              moveInDate: new Date(2015, 10, 15),
+              moveOutDate: new Date(2017, 5, 3)
+            }
+          ]
+        },
+        {
+          name: "room 6",
+          roomies: [
+            {
+              id: 0,
+              username: "Marlon",
+              description: "Hi there!",
+              profilePicture: "https://i.imgur.com/0y9cTae.gif",
+              balance: +3,
+              balancePlus: true,
+              selected: true,
+              color: "#1F85DE",
+              showProfilePage: false,
+              isLoggedIn: true,
+              movedOut: true,
+              moveInDate: new Date(2013, 10, 15),
+              moveOutDate: new Date(2017, 5, 3)
+            },
+            {
+              id: 1,
+              username: "Max",
+              description: "Möpp",
+              profilePicture: "https://i.imgur.com/8fS7ZkO.gif",
+              balance: -3,
+              balancePlus: false,
+              selected: true,
+              color: "#DE591F",
+              showProfilePage: false,
+              isLoggedIn: false,
+              movedOut: false,
+              moveInDate: new Date(2015, 10, 15),
+              moveOutDate: new Date(2017, 5, 3)
+            }
+          ]
         }
       ]
     };
