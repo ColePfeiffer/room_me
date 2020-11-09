@@ -1,15 +1,38 @@
 <template>
   <v-container ma-0 pa-0 fluid id="vContainer">
     <v-row>
+      <v-col cols="12" class="d-flex justify-center align-center">
+        <v-card class="mx-auto" max-width="344" style="background-color: #a83250;">
+          <v-card-title fluid primary-title style="height: 70px;">
+            <div>
+              {{room.name}}
+              <h3 class="headline mb-0"></h3>
+              <v-btn color="pink" dark small absolute bottom right fab>
+                <v-icon>add</v-icon>
+              </v-btn>
+            </div>
+          </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row>
       <v-col
         cols="12"
         class="d-flex justify-center align-center"
         style="background-color: #a83250;"
-      >{{room.name}}</v-col>
+      >
+        <div>
+          {{room.name}}
+          <v-btn color="pink" dark small absolute bottom right fab>
+            <v-icon>add</v-icon>
+          </v-btn>
+        </div>
+      </v-col>
     </v-row>
     <v-row no-gutters id="wrapperForFTRoom" v-for="n in room.roomies" :key="n.id">
       <v-col cols="12" class="black lighten-5">
-        <WGFamilyTreeRoomie :roomie="n"></WGFamilyTreeRoomie>
+        <WGFamilyTreeRoomie :roomie="n" :inversed="inversed"></WGFamilyTreeRoomie>
       </v-col>
     </v-row>
   </v-container>
@@ -27,7 +50,8 @@ export default {
   props: { room: Object },
   data() {
     return {
-      rooms: []
+      rooms: [],
+      inversed: true
     };
   },
   methods: {}

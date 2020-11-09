@@ -1,5 +1,10 @@
 <template>
   <v-container ma-auto pa-10 id="FamilyTreeRoomie">
+    <v-row v-if="inversed" no-gutters>
+      <v-col>
+        <div class="verticalLine"></div>
+      </v-col>
+    </v-row>
     <v-row no-gutters>
       <v-col>
         <div id="IconWrapper">
@@ -33,14 +38,9 @@
         </v-list-item-content>
       </v-col>
     </v-row>
-    <v-row no-gutters>
+    <v-row v-if="inversed==false" no-gutters>
       <v-col>
         <div class="verticalLine"></div>
-      </v-col>
-    </v-row>
-    <v-row no-gutters>
-      <v-col>
-        <v-btn v-if="roomie.movedOut" elevation="2">+</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -50,7 +50,7 @@
 export default {
   name: "WGFamilyTreeRomie",
   emits: [],
-  props: { roomie: Object },
+  props: { roomie: Object, inversed: Boolean },
   data() {
     return {
       rooms: [],

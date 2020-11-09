@@ -1,9 +1,10 @@
 <template>
-  <v-container>
+  <v-container justify-center>
     <div class="overline">Room History</div>
     <v-row dense>
       <v-col v-for="i in rooms" :key="i.name" xs="6" sm="6" md="4">
         <WGFamilyTreeRoom :room="i"></WGFamilyTreeRoom>
+        <v-divider></v-divider>
       </v-col>
     </v-row>
   </v-container>

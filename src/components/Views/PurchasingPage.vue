@@ -1,6 +1,6 @@
 <template>
   <div class="purchasing">
-    <v-container class="grey lighten-5">
+    <v-container>
       <v-row wrap justify-space-around>
         <PurchasingTable
           :shoppingList="shoppingList"

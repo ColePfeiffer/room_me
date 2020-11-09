@@ -40,7 +40,7 @@ export default {
               color: "#1F85DE",
               showProfilePage: false,
               isLoggedIn: true,
-              movedOut: false,
+              movedOut: true,
               moveInDate: new Date(2015, 10, 15),
               moveOutDate: new Date(2017, 5, 3)
             },
@@ -56,7 +56,7 @@ export default {
               color: "#DE591F",
               showProfilePage: false,
               isLoggedIn: false,
-              movedOut: false,
+              movedOut: true,
               moveInDate: new Date(2015, 10, 15),
               moveOutDate: new Date(2017, 5, 3)
             },
@@ -72,7 +72,7 @@ export default {
               color: "#BDA0EC",
               showProfilePage: false,
               isLoggedIn: false,
-              movedOut: false,
+              movedOut: true,
               moveInDate: new Date(2015, 10, 15),
               moveOutDate: new Date(2017, 5, 3)
             },
@@ -88,7 +88,7 @@ export default {
               color: "#EBE386",
               showProfilePage: false,
               isLoggedIn: false,
-              movedOut: true,
+              movedOut: false,
               moveInDate: new Date(2015, 10, 15),
               moveOutDate: new Date(2017, 5, 3)
             }
@@ -108,7 +108,7 @@ export default {
               color: "#1F85DE",
               showProfilePage: false,
               isLoggedIn: true,
-              movedOut: false,
+              movedOut: true,
               moveInDate: new Date(2013, 10, 15),
               moveOutDate: new Date(2017, 5, 3)
             },
@@ -124,7 +124,7 @@ export default {
               color: "#DE591F",
               showProfilePage: false,
               isLoggedIn: false,
-              movedOut: false,
+              movedOut: true,
               moveInDate: new Date(2015, 10, 15),
               moveOutDate: new Date(2017, 5, 3)
             },
@@ -160,7 +160,7 @@ export default {
               color: "#1F85DE",
               showProfilePage: false,
               isLoggedIn: true,
-              movedOut: false,
+              movedOut: true,
               moveInDate: new Date(2013, 10, 15),
               moveOutDate: new Date(2017, 5, 3)
             },
