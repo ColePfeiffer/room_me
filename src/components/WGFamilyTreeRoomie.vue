@@ -4,16 +4,20 @@
       <v-col>
         <div id="IconWrapper">
           <v-icon id="floatingIcon" v-if="!roomie.movedOut">mdi-island</v-icon>
-
-          <v-list-item-avatar id="avatar" width="100" height="100">
-            <v-img
-              @click="roomie.showProfilePage = true"
-              class="profilePicture"
-              width="100"
-              height="100"
-              v-bind:src="roomie.profilePicture"
-            ></v-img>
-          </v-list-item-avatar>
+          <template>
+            <v-btn color="pink" fab dark x-small absolute bottom right>
+              <v-icon>mdi-island</v-icon>
+            </v-btn>
+            <v-list-item-avatar id="avatar" width="100" height="100">
+              <v-img
+                @click="roomie.showProfilePage = true"
+                class="profilePicture"
+                width="100"
+                height="100"
+                v-bind:src="roomie.profilePicture"
+              ></v-img>
+            </v-list-item-avatar>
+          </template>
         </div>
       </v-col>
     </v-row>

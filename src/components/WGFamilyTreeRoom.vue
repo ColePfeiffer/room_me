@@ -6,12 +6,7 @@
         class="d-flex justify-center align-center"
         style="background-color: #a83250;"
       >
-        <div>
-          {{room.name}}
-          <v-btn color="pink" dark small absolute bottom right fab>
-            <v-icon>add</v-icon>
-          </v-btn>
-        </div>
+        <div>{{room.name}}</div>
       </v-col>
     </v-row>
     <v-row no-gutters id="wrapperForFTRoom" v-for="n in room.roomies" :key="n.id">
