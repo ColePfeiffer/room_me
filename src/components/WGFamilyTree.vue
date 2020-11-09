@@ -1,6 +1,9 @@
 <template>
   <v-container justify-center>
     <div class="overline">Room History</div>
+    <v-btn color="pink" dark big fixed bottom right fab v-on="openMenu">
+      <v-icon>add</v-icon>
+    </v-btn>
     <v-row dense>
       <v-col v-for="i in rooms" :key="i.name" xs="6" sm="6" md="4">
         <WGFamilyTreeRoom :room="i"></WGFamilyTreeRoom>

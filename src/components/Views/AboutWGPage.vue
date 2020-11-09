@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row class="d-flex align-start">
-      <v-col wrap xs="12" sm="6" md="12">
+      <v-col wrap xs="12" sm="6" md="6">
         <WGFamilyTree :rooms="rooms"></WGFamilyTree>
       </v-col>
     </v-row>

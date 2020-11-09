@@ -1,22 +1,6 @@
 <template>
   <v-container ma-0 pa-0 fluid id="vContainer">
     <v-row>
-      <v-col cols="12" class="d-flex justify-center align-center">
-        <v-card class="mx-auto" max-width="344" style="background-color: #a83250;">
-          <v-card-title fluid primary-title style="height: 70px;">
-            <div>
-              {{room.name}}
-              <h3 class="headline mb-0"></h3>
-              <v-btn color="pink" dark small absolute bottom right fab>
-                <v-icon>add</v-icon>
-              </v-btn>
-            </div>
-          </v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <v-row>
       <v-col
         cols="12"
         class="d-flex justify-center align-center"
