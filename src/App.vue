@@ -46,15 +46,6 @@
             <v-list-item-title>Settings</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
-        <v-list-item to="/todo">
-          <v-list-item-action>
-            <v-icon>mdi-pencil</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>ToDo</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -69,15 +60,15 @@
           <v-icon color="grey">mdi-account</v-icon>
         </v-btn>
         <v-btn text color="grey">
-        <span>Ausloggen</span>
-        <v-icon right>mdi-exit-to-app</v-icon>
+          <span>Ausloggen</span>
+          <v-icon right>mdi-exit-to-app</v-icon>
         </v-btn>
       </v-toolbar>
     </v-card>
 
     <v-content class="content">
-            <!--            Hier werden einzelne Seiten reingeladen-->
-            <router-view></router-view>
+      <!--            Hier werden einzelne Seiten reingeladen-->
+      <router-view></router-view>
     </v-content>
 
     <v-footer dark dense color="#211E21">
@@ -93,8 +84,8 @@ export default {
 
   components: {},
   data: () => ({
-    drawer: false,
-  }),
+    drawer: false
+  })
 };
 
 // Colors: EEF5F0 - weiß
@@ -104,7 +95,7 @@ export default {
 <style scoped>
 .header {
   background: #333;
-color: #fff;
+  color: #fff;
   text-align: center;
   padding: 10px;
 }
