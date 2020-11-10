@@ -25,12 +25,7 @@
         </div>
         <div v-else>
           <div v-for="item in openTasks" :key="item.id">
-            <CleaningTask
-              :taskList="taskList"
-              :item="item"
-              :currentUser="currentUser"
-        
-            >
+            <CleaningTask :item="item" :currentUser="currentUser">
             </CleaningTask>
           </div>
         </div>
@@ -40,12 +35,7 @@
           <v-card-text> No items pending yet.</v-card-text>
         </div>
         <div v-for="item in doneTasks" :key="item.id">
-          <CleaningTask
-            :item="item"
-            :taskList="taskList"
-            :currentUser="currentUser"
-
-          ></CleaningTask>
+          <CleaningTask :item="item" :currentUser="currentUser"></CleaningTask>
         </div>
       </div>
     </v-tab-item>
@@ -62,6 +52,10 @@ export default {
     ["taskList"]: Array,
     ["currentUser"]: Object,
   },
+  data() {
+    return {};
+  },
+  methods: {},
   components: {
     CleaningTask,
   },

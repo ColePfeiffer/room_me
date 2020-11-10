@@ -1,33 +1,37 @@
 <template>
   <!--Card on the right!, background: orange -->
 
+  <v-row dense class="paddingCards">
+    <CleaningDialogFinishUp
+      :item="item"
+      :showDialogFinishUp="showDialogFinishUp"
+      @toggle-showDialogFinishUp="toggleShowDialogFinishUp"
+    >
+    </CleaningDialogFinishUp>
 
-      <v-row dense class="paddingCards">
-        <v-col cols="12">
-          <v-card class="cleaningCards">
-            <v-card-title class="headline">{{ item.title }}</v-card-title>
-            <v-card-subtitle>{{ item.description }} </v-card-subtitle>
-            <v-card-actions>
-              <v-col class="text-right">
-                <v-btn text>
-                <!--@click="acceptTask(item)"-->
-                  <v-icon 
-                  @click="toggleDialogTaskManager"
-                  >mdi-check</v-icon>
-                </v-btn>
-                 <v-btn text>
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </v-col>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-
-
+    <v-col cols="12">
+      <v-card class="cleaningCards">
+        <v-card-title class="headline">{{ item.title }}</v-card-title>
+        <v-card-subtitle>{{ item.description }} </v-card-subtitle>
+        <v-card-subtitle>{{ item.date }} </v-card-subtitle>
+        <v-card-actions>
+          <v-col class="text-right">
+            <v-btn text>
+              <!--@click="acceptTask(item)"-->
+              <v-icon @click="toggleShowDialogFinishUp(true)">mdi-check</v-icon>
+            </v-btn>
+            <v-btn text>
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-col>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
+import CleaningDialogFinishUp from "./CleaningDialogFinishUp";
 
 export default {
   name: "CleaningTask",
@@ -37,36 +41,44 @@ export default {
     ["currentUser"]: Object,
   },
   components: {
+    CleaningDialogFinishUp,
   },
   data() {
     return {
+      showDialogFinishUp: false,
+      debug: true,
       mycolor: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
-      // Dummy Data for Cards:
     };
   },
   methods: {
+    toggleShowDialogFinishUp(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogFinishUp);
+      this.showDialogFinishUp = newState;
+      if (this.debug) console.log("new state: " + this.showDialogFinishUp);
+    },
     // Color generator:
     generator: function () {
       this.mycolor = "#" + ((Math.random() * 0xffffff) << 0).toString(16);
     },
-  
-    acceptTask(item) {
+    /* acceptTask(item){
+      this.completedTask = false;
+        this.$emit("toggle-dialogTaskManager", true);
+        this.currentItemTaskManager = item;
+    },*/
+
+
+    /* acceptTask(item) {
       item.status = 1;
       item.acceptedBy = this.currentUser.username;
       console.log(item.status);
 
-    },
-      toggleDialogTaskManager() {
-      this.$emit("toggle-dialogTaskManager", true);
-    },
+    },*/
   },
 };
 </script>
 
 <style>
-
 .cleaningCards {
   width: 100%;
 }
-
 </style>

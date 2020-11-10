@@ -8,12 +8,6 @@
           :currentUser="currentUser"
           :taskList="taskList"
         ></CleaningTabs>
-        <CleaningDialog
-          :showDialogTaskManager="showDialogTaskManager"
-          @toggle-dialogTaskManager="toggleShowDialogTaskManager"
-        >
-        </CleaningDialog
-        >
       </v-row>
     </v-row>
   </div>
@@ -23,25 +17,14 @@
 import CleaningCalendar from "../CleaningCalendar";
 import CleaningTabs from "../CleaningTabs";
 
-//Dialogs
-import CleaningDialog from "../CleaningDialog";
-
 export default {
   components: {
     CleaningCalendar,
     CleaningTabs,
-    CleaningDialog,
   },
-  methods: {
-    toggleShowDialogTaskManager(newState) {
-      if (this.debug) console.log("old state: " + this.showDialogTaskManager);
-      this.showDialogTaskManager = newState;
-      if (this.debug) console.log("new state: " + this.showDialogTaskManager);
-    },
-  },
+  methods: {},
   data() {
     return {
-      showDialogTaskManager: false,
       currentUser: {
         id: 0,
         username: "Chris",
@@ -57,62 +40,30 @@ export default {
         {
           id: 1,
           title: "Küche putzen",
+          description: "Küche muss geschrubbat werdn.",
+          endDate: "22.10.20",
+          startDate: "",
+          completedOn: "",
+          intervallDays: 2,
           // Status: 0 - offen, accepted: 1, declined: 2, done: 3
           status: 0,
-          acceptedBy: "",
-          declinedBy: [{ roomie: "", comment: "" }],
+          order: [],
+          swapDecline: [{ roomie: "", type: "", comment: "" }],
           color: "#315458",
-          description: "Küche muss geschrubbat werdn.",
-          /*artist:
-            "Die Küche möchte geputzt werden. Kassiere drei Erfahrungspunkte.",*/
         },
         {
           id: 5,
-          title: "Küche putzen",
+          title: "Müll rausbringen",
+          description: "Bitte",
+          endDate: "",
+          startDate: "",
+          completedOn: "",
+          intervallDays: 2,
           // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 1,
-          acceptedBy: "",
-          declinedBy: [{ roomie: "", comment: "" }],
-          color: "#315458",
-          description: this.acceptedBy + "wurde accepted",
-          /*artist:
-            "Die Küche möchte geputzt werden. Kassiere drei Erfahrungspunkte.",*/
-        },
-        {
-          id: 6,
-          title: "Küche putzen",
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 3,
-          acceptedBy: "",
-          declinedBy: [{ roomie: "", comment: "" }],
-          color: "#315458",
-          description: this.acceptedBy + "wurde accepted",
-          /*artist:
-            "Die Küche möchte geputzt werden. Kassiere drei Erfahrungspunkte.",*/
-        },
-        {
-          id: 2,
-          title: "Bad putzen",
-          // Status: 0 - offen, declined: 1, done: 2
           status: 0,
-          acceptedBy: "",
-          declinedBy: [{ roomie: "", comment: "" }],
+          order: [],
+          swapDecline: [{ roomie: "", type: "", comment: "" }],
           color: "#315458",
-          description: "Bad muss geschrubbat werdn.",
-          /*artist:
-            "Die Küche möchte geputzt werden. Kassiere drei Erfahrungspunkte.",*/
-        },
-        {
-          id: 3,
-          title: "Nix da",
-          // Status: 0 - offen, declined: 1, done: 2
-          status: 2,
-          acceptedBy: "",
-          declinedBy: [{ roomie: "", comment: "" }],
-          color: "#315458",
-          description: "Bad muss geschrubbat werdn.",
-          /*artist:
-            "Die Küche möchte geputzt werden. Kassiere drei Erfahrungspunkte.",*/
         },
       ],
     };
