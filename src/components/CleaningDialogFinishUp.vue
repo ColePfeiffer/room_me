@@ -7,7 +7,7 @@
           <v-row>
             <v-col>
               <v-row class="mx-0">
-              <!-- Task -->
+                <!-- Task -->
                 <v-text-field
                   :value="item.title"
                   label="Task"
@@ -18,7 +18,7 @@
                   color="#FF6F00"
                 >
                 </v-text-field>
-                  <!-- End Date -->
+                <!-- End Date -->
                 <v-text-field
                   :value="item.endDate"
                   label="End date"
@@ -29,39 +29,39 @@
                   color="#FF6F00"
                 ></v-text-field>
               </v-row>
-                <!-- Completed On -->
-              <v-text-field 
-               :value="timestamp"
-                  label="Completed on"
-                  readonly
-                  sm="6"
-                  m="6"
-              prepend-icon="mdi-calendar" 
-              @click="alert()"
-             >
+              <!-- Completed On -->
+              <v-text-field
+                v-model="fromDateVal"
+                label="Completed on"
+                readonly
+                sm="6"
+                m="6"
+                prepend-icon="mdi-calendar"
+                @click="toggleCalendarCompletedOn(true)"
+              >
               </v-text-field>
 
-                <v-text-field
+              <v-text-field
+                v-model="comment"
                 label="Comment"
                 placeholder="Write a note or just a comment."
                 prepend-icon="comment"
                 color="#FF6F00"
               ></v-text-field>
 
-
-              <v-dialog v-model="showDialogCalendar" persistent max-width="290">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                    Open Dialog
-                  </v-btn>
-                </template>
+              <v-dialog
+                v-model="showDialogCalendarCompletedOn"
+                persistent
+                max-width="290"
+              >
                 <v-card>
-                  <v-card-title class="headline">
-                    Choose finishing date
-                  </v-card-title>
+                  <v-card-title class="headline lighten-2"
+                    >Choose finishing date</v-card-title
+                  >
+
                   <v-date-picker
-                    v-model="picker"
-                    color="gray lighten-1"
+                    v-model="fromDateVal"
+                    color="red lighten-1"
                   ></v-date-picker>
                   <v-card-text
                     >When did you finish your task? Select the date and safe
@@ -69,18 +69,29 @@
                   >
                   <v-card-actions> </v-card-actions>
 
-                  <v-btn color="pink" text @click="closeCalendarDialog">
+                  <v-btn
+                    color="pink"
+                    text
+                    @click="toggleCalendarCompletedOn(false)"
+                  >
                     Close
                   </v-btn>
-                  <v-btn color="pink" text @click="closeDialog"> Safe </v-btn>
+                  <v-btn
+                    color="pink"
+                    text
+                    @click="safeCalendarCompletedOn(completedOnDate)"
+                  >
+                    Safe
+                  </v-btn>
                 </v-card>
               </v-dialog>
-
             </v-col>
           </v-row>
           <v-row justify="space-around">
             <v-btn color="gray" @click="closeDialog">Close</v-btn>
-            <v-btn color="pink" justify-center>Task checkkk!</v-btn>
+            <v-btn color="pink" @click="checkOffTask" justify-center
+              >Task checkkk!</v-btn
+            >
           </v-row>
         </v-card-text>
         <v-card-actions></v-card-actions>
@@ -104,13 +115,19 @@ export default {
   created() {
     setInterval(this.getNow, 1000);
   },
+  fromDateDisp() {
+    return this.fromDateVal;
+    // format/do something with date
+  },
   data() {
     return {
-      localShowCalendar: this.showDialogCalendar,
-      localShowDialog: this.showDialogTaskManager,
-      timestamp: "",
-      intervall: 7,
       // Show Dialog:
+      showDialogCalendarCompletedOn: false,
+      fromDateVal: this.timestamp,
+      //timestamp: "",
+      intervall: 7,
+      completedOnDate: new Date().toISOString().substr(0, 10),
+      comment: "",
 
       // Current User that chooses Task:
       currentUser: {
@@ -127,33 +144,27 @@ export default {
     };
   },
   methods: {
-    openCalendar() {
-      this.localShowCalendar = true;
+    safeCalendarCompletedOn(completedOnDate) {
+      this.timestamp = completedOnDate;
+      this.toggleCalendarCompletedOn(false);
     },
-    closeCalendarDialog() {
-      this.localShowCalendar = false;
+    toggleCalendarCompletedOn(newState) {
+      this.showDialogCalendarCompletedOn = newState;
     },
-
+    checkOffTask() {
+      this.closeDialog();
+      console.log(this.comment + this.completedOnDate + this.currentUser);
+      // emit muss comments und completed date noch weitergeben:
+      this.$emit("checkOffTask", this.comment, this.completedOnDate, this.status = 3);
+    },
     closeDialog() {
       this.$emit("toggle-showDialogFinishUp", false);
+      this.comment = "";
+      this.completed = null;
+      this.currentUser = "";
     },
-    getNow: function () {
-      const today = new Date();
-      const date =
-        today.getDate() +
-        "." +
-        (today.getMonth() + 1) +
-        "." +
-        today.getFullYear();
-
-      const dateTime = date;
-      this.timestamp = dateTime;
-    },
-    calculateNextCleaningIntervall: function (date, days) {
-      var result = new Date(date);
-      result.setDate(result.getDate() + days);
-      return result;
-    },
+   
+  
   },
 };
 </script>
