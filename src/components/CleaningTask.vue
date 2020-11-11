@@ -11,37 +11,62 @@
 
     <v-col cols="12">
       <v-card class="cleaningCards">
-        <v-row>
-          <v-img
-            class="profile-picture"
-            max-width="60"
-            max-height="60"
-            v-bind:src="currentUser.profilePicture"
-          ></v-img>
-
-          <v-card-title class="headline">{{ item.title }}</v-card-title>
-        </v-row>
-
-        <v-card-subtitle>
-          <h3>End date: {{ item.endDate }}</h3>
-        </v-card-subtitle>
-        <v-card-text>
+        <v-col class="profileAndTitleCol">
           <v-row>
-            {{ item.description }}
+            <v-img
+              class="profile-picture rounded-circle"
+              max-width="60"
+              max-height="60"
+              v-bind:src="currentUser.profilePicture"
+            ></v-img>
+
+            <v-col>
+              <v-card-text class="stylingTextHeadline"
+                >{{ item.title }}
+              </v-card-text>
+
+              <label class="stylingDate">End date: {{ item.endDate }}</label>
+              <!--If task is done, show completedOnDate: -->
+              <label
+                class="stylingDateComplete"
+                v-if="item.completedOnDate != null"
+              >
+                Done: {{ item.completedOnDate }}
+              </label>
+            </v-col>
           </v-row>
-        </v-card-text>
-        <v-card-subtitle>{{ item.comment }} </v-card-subtitle>
-        <v-card-actions>
-          <v-col class="text-right">
-            <v-btn text>
-              <!--@click="acceptTask(item)"-->
-              <v-icon @click="toggleShowDialogFinishUp(true)">mdi-check</v-icon>
-            </v-btn>
-            <v-btn text>
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-col>
-        </v-card-actions>
+          <div class="stylingTextSubtitle">
+            <label>
+              {{ item.description }}
+            </label>
+          </div>
+
+          <div class="commentBox" v-if="item.status === 3">
+            <!--If item is done, show comment:-->
+            <v-textarea
+              height="40px"
+              outlined
+              readonly
+              name="Comment"
+              :label="currentUser.username"
+              :value="item.comment"
+            ></v-textarea>
+          </div>
+          <div v-if="item.status === 0 || item.status === 1 ">
+          <v-card-actions>
+            <v-col class="text-right">
+              <v-btn text>
+                <v-icon @click="toggleShowDialogFinishUp(true)"
+                  >mdi-check</v-icon
+                >
+              </v-btn>
+              <v-btn text>
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-col>
+          </v-card-actions>
+          </div>
+        </v-col>
       </v-card>
     </v-col>
   </v-row>
@@ -96,5 +121,36 @@ export default {
 <style>
 .cleaningCards {
   width: 100%;
+}
+.commentBox {
+  padding-top: 20px;
+}
+.profile-picture {
+  margin: 1em;
+}
+
+.profileAndTitleCol {
+  margin: 0.2em;
+  padding-top: 10px;
+}
+.stylingTextHeadline {
+  font-size: 1.8rem;
+}
+.stylingDate {
+  font-size: 1rem;
+  padding-left: 18px;
+}
+.stylingDateComplete {
+  font-size: 1rem;
+  padding-left: 18px;
+  color: green;
+}
+.stylingTextSubtitle {
+  font-size: 1.1rem;
+}
+.stylingTextSubtitleBold {
+  font-size: 1.1rem;
+
+  font-weight: bold;
 }
 </style>

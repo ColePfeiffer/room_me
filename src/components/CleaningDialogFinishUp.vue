@@ -148,7 +148,8 @@ export default {
   },
   methods: {
     saveCalendarCompletedOn() {
-      this.$emit("save-calendarCompletedOn", this.timestamp);
+      this.completedOnDate = this.timestamp;
+      this.$emit("save-calendarCompletedOn", this.completedOnDate);
       this.toggleCalendarCompletedOn(false);
       console.log("safed timestamp: " + this.timestamp);
     },
