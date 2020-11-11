@@ -44,7 +44,7 @@
           <div class="commentBox" v-if="item.status === 3">
             <!--If item is done, show comment:-->
             <v-textarea
-              height="40px"
+              height="80px"
               outlined
               readonly
               name="Comment"
