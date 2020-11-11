@@ -11,9 +11,26 @@
 
     <v-col cols="12">
       <v-card class="cleaningCards">
-        <v-card-title class="headline">{{ item.title }}</v-card-title>
-        <v-card-subtitle>{{ item.description }} </v-card-subtitle>
-        <v-card-subtitle>{{ item.date }} </v-card-subtitle>
+        <v-row>
+          <v-img
+            class="profile-picture"
+            max-width="60"
+            max-height="60"
+            v-bind:src="currentUser.profilePicture"
+          ></v-img>
+
+          <v-card-title class="headline">{{ item.title }}</v-card-title>
+        </v-row>
+
+        <v-card-subtitle>
+          <h3>End date: {{ item.endDate }}</h3>
+        </v-card-subtitle>
+        <v-card-text>
+          <v-row>
+            {{ item.description }}
+          </v-row>
+        </v-card-text>
+        <v-card-subtitle>{{ item.comment }} </v-card-subtitle>
         <v-card-actions>
           <v-col class="text-right">
             <v-btn text>
@@ -65,7 +82,6 @@ export default {
         this.$emit("toggle-dialogTaskManager", true);
         this.currentItemTaskManager = item;
     },*/
-
 
     /* acceptTask(item) {
       item.status = 1;

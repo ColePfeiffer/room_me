@@ -31,7 +31,7 @@
               </v-row>
               <!-- Completed On -->
               <v-text-field
-                v-model="fromDateVal"
+                :value="timestamp"
                 label="Completed on"
                 readonly
                 sm="6"
@@ -60,7 +60,7 @@
                   >
 
                   <v-date-picker
-                    v-model="fromDateVal"
+                    v-model="timestamp"
                     color="red lighten-1"
                   ></v-date-picker>
                   <v-card-text
@@ -79,7 +79,7 @@
                   <v-btn
                     color="pink"
                     text
-                    @click="safeCalendarCompletedOn(completedOnDate)"
+                    @click="saveCalendarCompletedOn(completedOnDate)"
                   >
                     Safe
                   </v-btn>
@@ -89,7 +89,7 @@
           </v-row>
           <v-row justify="space-around">
             <v-btn color="gray" @click="closeDialog">Close</v-btn>
-            <v-btn color="pink" @click="checkOffTask" justify-center
+            <v-btn color="pink" @click="checkOffTask(item)" justify-center
               >Task checkkk!</v-btn
             >
           </v-row>
@@ -104,7 +104,7 @@
 export default {
   name: "CleaningDialog",
   //name: "PurchasingDialogCashUp",
-  emits: ["toggle-showDialogFinishUp"],
+  emits: ["toggle-showDialogFinishUp", "save-calendarCompletedOn"],
 
   props: {
     showDialogFinishUp: Boolean,
@@ -115,18 +115,21 @@ export default {
   created() {
     setInterval(this.getNow, 1000);
   },
-  fromDateDisp() {
-    return this.fromDateVal;
-    // format/do something with date
-  },
+
   data() {
     return {
+   /*  changedData: {
+        status: this.item.status,
+        comment: this.item.comment,
+        completedOnDate: this.item.completedOnDate,
+      },*/
+
       // Show Dialog:
       showDialogCalendarCompletedOn: false,
-      fromDateVal: this.timestamp,
-      //timestamp: "",
       intervall: 7,
-      completedOnDate: new Date().toISOString().substr(0, 10),
+      // Shows todays date:
+      timestamp: new Date().toISOString().substr(0, 10),
+      completedOnDate: "",
       comment: "",
 
       // Current User that chooses Task:
@@ -144,27 +147,31 @@ export default {
     };
   },
   methods: {
-    safeCalendarCompletedOn(completedOnDate) {
-      this.timestamp = completedOnDate;
+    saveCalendarCompletedOn() {
+      this.$emit("save-calendarCompletedOn", this.timestamp);
       this.toggleCalendarCompletedOn(false);
+      console.log("safed timestamp: " + this.timestamp);
     },
     toggleCalendarCompletedOn(newState) {
       this.showDialogCalendarCompletedOn = newState;
     },
     checkOffTask() {
-      this.closeDialog();
-      console.log(this.comment + this.completedOnDate + this.currentUser);
+      // Status: 0 - offen, accepted: 1, declined: 2, done: 3
+      this.item.status = 3;
+      this.item.comment = this.comment;
+      this.item.completedOnDate = this.completedOnDate;
+
+
       // emit muss comments und completed date noch weitergeben:
-      this.$emit("checkOffTask", this.comment, this.completedOnDate, this.status = 3);
+      this.$emit("checkOffTask", this.item, this.changedData);
+      this.closeDialog();
     },
     closeDialog() {
       this.$emit("toggle-showDialogFinishUp", false);
-      this.comment = "";
+      // this.comment = "";
       this.completed = null;
       this.currentUser = "";
     },
-   
-  
   },
 };
 </script>
