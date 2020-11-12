@@ -9,12 +9,23 @@
         <div>{{room.name}}</div>
       </v-col>
     </v-row>
-    <v-row no-gutters id="wrapperForFTRoom" v-for="n in room.roomies" :key="n.id">
+
+    <!-- current roomie -->
+    <v-row no-gutters id="wrapperForFTRoom">
       <v-col cols="12" class="black lighten-5">
-        <WGFamilyTreeRoomie :roomie="n" :inversed="inversed"></WGFamilyTreeRoomie>
-        <div v-if="n.movedOut" class="verticalLine"></div>
+        <WGFamilyTreeRoomie :roomie="room.currentRoomie"></WGFamilyTreeRoomie>
       </v-col>
     </v-row>
+    <br />
+    <!-- past Roomies -->
+    <div v-for="(n, index) in room.pastRoomies" :key="n.id">
+      <v-row no-gutters id="wrapperForFTRoom">
+        <v-col cols="12" class="black lighten-5">
+          <WGFamilyTreeRoomie :roomie="n"></WGFamilyTreeRoomie>
+          <div v-if="index != room.pastRoomies.length-1" class="verticalLine"></div>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -31,10 +42,13 @@ export default {
   data() {
     return {
       rooms: [],
-      inversed: false
+      pastRoomiesSize: this.room.pastRoomies.length
     };
   },
-  methods: {}
+  methods: {},
+  mounted() {
+    console.log(this.room.id, this.pastRoomiesSize);
+  }
 };
 </script>
 

@@ -1,16 +1,17 @@
 <template>
-  <div class="cleaning">
-    <v-row xs="12" sm="12" md="6">
+  <v-main>
+    <div class="cleaning">
       <!--The event container with padding of 15-->
       <v-row class="fill-height pa-15">
-        <CleaningCalendar></CleaningCalendar>
-        <CleaningTabs
-          :currentUser="currentUser"
-          :taskList="taskList"
-        ></CleaningTabs>
+        <v-col cols="9">
+          <CleaningCalendar></CleaningCalendar>
+        </v-col>
+        <v-col cols="3">
+          <CleaningTabs :currentUser="currentUser" :taskList="taskList"></CleaningTabs>
+        </v-col>
       </v-row>
-    </v-row>
-  </div>
+    </div>
+  </v-main>
 </template>
 
 <script>
@@ -20,7 +21,7 @@ import CleaningTabs from "../CleaningTabs";
 export default {
   components: {
     CleaningCalendar,
-    CleaningTabs,
+    CleaningTabs
   },
   methods: {},
   data() {
@@ -34,7 +35,7 @@ export default {
         balance: +3,
         balancePlus: true,
         selected: true,
-        color: "#1F85DE",
+        color: "#1F85DE"
       },
       taskList: [
         {
@@ -49,7 +50,7 @@ export default {
           status: 0,
           order: [],
           swapDecline: [{ roomie: "", type: "", comment: "" }],
-          color: "#315458",
+          color: "#315458"
         },
         {
           id: 5,
@@ -63,10 +64,10 @@ export default {
           status: 0,
           order: [],
           swapDecline: [{ roomie: "", type: "", comment: "" }],
-          color: "#315458",
-        },
-      ],
+          color: "#315458"
+        }
+      ]
     };
-  },
+  }
 };
 </script>

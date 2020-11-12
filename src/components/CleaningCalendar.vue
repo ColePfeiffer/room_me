@@ -1,97 +1,94 @@
 <template>
   <!--The event container with padding of 15-->
-  <v-col xs="12" sm="12" md="8">
-    <v-sheet height="64">
-      <v-toolbar flat color="rgb(177, 73, 60, 0.8)">
-        <!-- Puts user back to todays date! EXAMPLE white text and orange btn prop -->
-        <v-btn
-          class="mr-4"
-          color="black--text orange darken-1"
-          @click="setToday"
-          >Today</v-btn
+  <v-container>
+    <v-col xs="12" sm="12" md="8">
+      <v-sheet height="64">
+        <v-toolbar flat color="rgb(177, 73, 60, 0.8)">
+          <!-- Puts user back to todays date! EXAMPLE white text and orange btn prop -->
+          <v-btn class="mr-4" color="black--text orange darken-1" @click="setToday">Today</v-btn>
+          <v-btn fab text small color="black darken-2" @click="prev">
+            <v-icon small>mdi-chevron-left</v-icon>
+          </v-btn>
+          <v-btn fab text small color="black darken-2" @click="next">
+            <v-icon small>mdi-chevron-right</v-icon>
+          </v-btn>
+          <!-- Todays Month! in text: -->
+          <v-toolbar-title v-if="$refs.calendar">
+            {{
+            $refs.calendar.title
+            }}
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-menu bottom right>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="black--text orange darken-1" v-bind="attrs" v-on="on">
+                <span>{{ typeToLabel[type] }}</span>
+                <v-icon right>mdi-menu-down</v-icon>
+              </v-btn>
+            </template>
+            <!-- Drop Down: -->
+            <v-list color="orange">
+              <v-list-item @click="type = 'day'">
+                <v-list-item-title>Day</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="type = 'week'">
+                <v-list-item-title>Week</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="type = 'month'">
+                <v-list-item-title>Month</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="type = '4day'">
+                <v-list-item-title>4 days</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-toolbar>
+      </v-sheet>
+      <v-sheet height="600">
+        <v-calendar
+          ref="calendar"
+          v-model="focus"
+          color="#b1493c"
+          :events="events"
+          :event-color="getEventColor"
+          :type="type"
+          @click:event="showEvent"
+          @click:more="viewDay"
+          @click:date="viewDay"
+          @change="updateRange"
+        ></v-calendar>
+        <v-menu
+          v-model="selectedOpen"
+          :close-on-content-click="false"
+          :activator="selectedElement"
+          offset-x
         >
-        <v-btn fab text small color="black darken-2" @click="prev">
-          <v-icon small>mdi-chevron-left</v-icon>
-        </v-btn>
-        <v-btn fab text small color="black darken-2" @click="next">
-          <v-icon small>mdi-chevron-right</v-icon>
-        </v-btn>
-        <!-- Todays Month! in text: -->
-        <v-toolbar-title v-if="$refs.calendar">{{
-          $refs.calendar.title
-        }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-menu bottom right>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="black--text orange darken-1" v-bind="attrs" v-on="on">
-              <span>{{ typeToLabel[type] }}</span>
-              <v-icon right>mdi-menu-down</v-icon>
-            </v-btn>
-          </template>
-          <!-- Drop Down: -->
-          <v-list color="orange">
-            <v-list-item @click="type = 'day'">
-              <v-list-item-title>Day</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="type = 'week'">
-              <v-list-item-title>Week</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="type = 'month'">
-              <v-list-item-title>Month</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="type = '4day'">
-              <v-list-item-title>4 days</v-list-item-title>
-            </v-list-item>
-          </v-list>
+          <!--Card that opens oon click of event:-->
+          <v-card color="grey lighten-4" min-width="350px" flat>
+            <v-toolbar :color="selectedEvent.color" dark>
+              <v-btn icon>
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn icon>
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
+              <v-btn icon>
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </v-toolbar>
+            <v-card-text>
+              <span v-html="selectedEvent.details"></span>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn text color="secondary" @click="selectedOpen = false">Cancel</v-btn>
+            </v-card-actions>
+          </v-card>
         </v-menu>
-      </v-toolbar>
-    </v-sheet>
-    <v-sheet height="600">
-      <v-calendar
-        ref="calendar"
-        v-model="focus"
-        color="#b1493c"
-        :events="events"
-        :event-color="getEventColor"
-        :type="type"
-        @click:event="showEvent"
-        @click:more="viewDay"
-        @click:date="viewDay"
-        @change="updateRange"
-      ></v-calendar>
-      <v-menu
-        v-model="selectedOpen"
-        :close-on-content-click="false"
-        :activator="selectedElement"
-        offset-x
-      >
-        <!--Card that opens oon click of event:-->
-        <v-card color="grey lighten-4" min-width="350px" flat>
-          <v-toolbar :color="selectedEvent.color" dark>
-            <v-btn icon>
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-            <v-btn icon>
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </v-toolbar>
-          <v-card-text>
-            <span v-html="selectedEvent.details"></span>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn text color="secondary" @click="selectedOpen = false"
-              >Cancel</v-btn
-            >
-          </v-card-actions>
-        </v-card>
-      </v-menu>
-    </v-sheet>
-  </v-col>
+      </v-sheet>
+    </v-col>
+  </v-container>
 </template>
 
 
@@ -104,14 +101,14 @@ export default {
     dropdown_icon: [
       { text: "list", callback: () => console.log("list") },
       { text: "favorite", callback: () => console.log("favorite") },
-      { text: "delete", callback: () => console.log("delete") },
+      { text: "delete", callback: () => console.log("delete") }
     ],
     dropdown_edit: [
       { text: "100%" },
       { text: "75%" },
       { text: "50%" },
       { text: "25%" },
-      { text: "0%" },
+      { text: "0%" }
     ],
     // Data for Event Calender:
     focus: "",
@@ -120,7 +117,7 @@ export default {
       month: "Month",
       week: "Week",
       day: "Day",
-      "4day": "4 Days",
+      "4day": "4 Days"
     },
     selectedEvent: {},
     selectedElement: null,
@@ -133,7 +130,7 @@ export default {
       "cyan",
       "green",
       "orange",
-      "grey darken-1",
+      "grey darken-1"
     ],
     names: [
       "Meeting",
@@ -143,8 +140,8 @@ export default {
       "Event",
       "Birthday",
       "Conference",
-      "Party",
-    ],
+      "Party"
+    ]
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -202,7 +199,7 @@ export default {
           start: first,
           end: second,
           color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
+          timed: !allDay
         });
       }
 
@@ -210,8 +207,8 @@ export default {
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
-    },
-  },
+    }
+  }
 };
 </script>
 
