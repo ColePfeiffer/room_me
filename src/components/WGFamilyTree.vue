@@ -1,7 +1,6 @@
 <template>
   <v-container justify-center>
     <WGFamilyTreeDialogNewRoomie :showDialog="showDialogNewRoomie"></WGFamilyTreeDialogNewRoomie>
-    <div class="overline">Room History</div>
 
     <v-speed-dial
       color="pink"
@@ -21,6 +20,10 @@
         </v-btn>
       </template>
 
+      <v-btn fab dark small color="orange" class="ma-2 white--text" @click="editFamilyTree">
+        <v-icon>mdi-help</v-icon>
+        <div class="fab-text-custom orange">Help</div>
+      </v-btn>
       <v-btn fab dark small color="green" class="ma-2 white--text" @click="editFamilyTree">
         <v-icon>mdi-pencil</v-icon>
         <div class="fab-text-custom green">Edit</div>
@@ -35,6 +38,11 @@
       </v-btn>
     </v-speed-dial>
 
+    <v-row>
+      <v-col>
+        <div class="overline">Room Overview</div>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col v-for="i in rooms" :key="i.name" xs="6" sm="6" md="3">
         <WGFamilyTreeRoom :room="i"></WGFamilyTreeRoom>
