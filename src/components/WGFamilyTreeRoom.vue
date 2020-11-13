@@ -1,6 +1,7 @@
 <template>
   <v-container ma-0 pa-0 fluid id="vContainer">
-    <v-row>
+    <!-- Room name -->
+    <v-row v-show="showRoomName">
       <v-col
         cols="12"
         class="d-flex justify-center align-center"
@@ -40,7 +41,7 @@ export default {
   components: {
     WGFamilyTreeRoomie
   },
-  props: { room: Object },
+  props: { room: Object, showRoomName: Boolean },
   data() {
     return {
       rooms: [],

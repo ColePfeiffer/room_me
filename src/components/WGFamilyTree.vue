@@ -42,14 +42,14 @@
     <div v-if="!debuggingIsMobile">
       <!-- <div v-if="!isMobile()"> -->
       <!-- FOR DESKTOP VIEW -->
-      <v-row>
+      <v-row justify="space-around">
         <v-col>
           <div class="overline">Room Overview</div>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row justify="space-around">
         <v-col v-for="i in rooms" :key="i.id" xs="6" sm="6" md="3">
-          <WGFamilyTreeRoom :room="i"></WGFamilyTreeRoom>
+          <WGFamilyTreeRoom :room="i" :showRoomName="true"></WGFamilyTreeRoom>
         </v-col>
       </v-row>
     </div>
@@ -60,15 +60,32 @@
           <div class="overline">Room Overview</div>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="3">
-          <v-carousel hide-delimiter-background show-arrows height="auto">
+      <v-row justify="space-around">
+        <v-col
+          xs="12"
+          sm="6"
+          md="3"
+          class="d-flex justify-center align-center"
+          style="background-color: #a83250;"
+        >
+          <div>
+            <div>
+              <v-icon @click="model--">mdi-minus</v-icon>
+              room {{model+1}}
+              <v-icon @click="model++">mdi-plus</v-icon>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row justify="space-around">
+        <v-col xs="12" sm="6" md="3">
+          <v-carousel hide-delimiter-background :show-arrows="false" height="auto" v-model="model">
             <v-carousel-item v-for="(room) in rooms" :key="room.id">
               <v-sheet height="100%">
                 <v-row class="fill-height" align="center" justify="center">
                   <div class="posts">
                     <v-card elevation="10" max-width="100%">
-                      <WGFamilyTreeRoom :room="room"></WGFamilyTreeRoom>
+                      <WGFamilyTreeRoom :room="room" :showRoomName="false"></WGFamilyTreeRoom>
                     </v-card>
                   </div>
                 </v-row>
@@ -104,7 +121,8 @@ export default {
         "red lighten-1",
         "deep-purple accent-4"
       ],
-      debuggingIsMobile: false
+      debuggingIsMobile: false,
+      model: 0
     };
   },
   methods: {
@@ -126,6 +144,7 @@ export default {
         return true;
       } else {
         return false;
+        //return true;
       }
     }
   }
