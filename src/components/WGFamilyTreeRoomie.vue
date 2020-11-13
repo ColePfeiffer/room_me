@@ -1,24 +1,31 @@
 <template>
-  <v-container ma-auto pa-10 id="FamilyTreeRoomie">
+  <v-container ma-auto pa-8 id="FamilyTreeRoomie">
     <DialogProfilePage :roomie="roomie" @save-changes="saveChangesInProfilePage"></DialogProfilePage>
     <v-row no-gutters>
       <v-col>
         <div id="IconWrapper">
-          <v-icon id="floatingIcon" v-if="!roomie.movedOut">mdi-island</v-icon>
-          <template>
-            <v-btn color="pink" fab dark x-small absolute bottom right>
-              <v-icon>mdi-island</v-icon>
-            </v-btn>
-            <v-list-item-avatar id="avatar" width="100" height="100">
-              <v-img
-                @click="roomie.showProfilePage = true"
-                class="profilePicture"
-                width="100"
-                height="100"
-                v-bind:src="roomie.profilePicture"
-              ></v-img>
-            </v-list-item-avatar>
-          </template>
+          <v-tooltip right>
+            <template v-slot:activator="{ on, attrs }">
+              <th class="text-left" v-bind="attrs" v-on="on">
+                <v-icon
+                  id="floatingIcon"
+                  v-show="!roomie.movedOut"
+                  @click="toggleVacationMode(roomie)"
+                  :class="[ roomie.vacationMode ? 'pink--text' : 'white--text']"
+                >mdi-island</v-icon>
+              </th>
+            </template>
+            <span>Yolo!</span>
+          </v-tooltip>
+
+          <v-list-item-avatar id="avatar" width="100" height="100">
+            <v-img
+              @click="roomie.showProfilePage = true"
+              width="100"
+              height="100"
+              v-bind:src="roomie.profilePicture"
+            ></v-img>
+          </v-list-item-avatar>
         </div>
       </v-col>
     </v-row>
@@ -80,6 +87,10 @@ export default {
       roomie.profilePicture = changeData.profilePicture;
       roomie.color = changeData.color;
       roomie.showProfilePage = false;
+    },
+
+    toggleVacationMode(roomie) {
+      roomie.vacationMode = !roomie.vacationMode;
     }
   }
 };
@@ -96,8 +107,8 @@ export default {
 
 #floatingIcon {
   position: relative;
-  bottom: -140px;
-  right: -80px;
+  bottom: -130px;
+  right: -85px;
   cursor: pointer;
 
   width: 28px;
@@ -105,6 +116,5 @@ export default {
   font-family: Raleway;
   border-radius: 50%;
   margin: 0 auto;
-  color: white;
 }
 </style>

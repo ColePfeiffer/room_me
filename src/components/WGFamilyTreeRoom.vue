@@ -13,7 +13,9 @@
     <!-- current roomie -->
     <v-row no-gutters id="wrapperForFTRoom">
       <v-col cols="12" class="black lighten-5">
-        <WGFamilyTreeRoomie :roomie="room.currentRoomie"></WGFamilyTreeRoomie>
+        <div>
+          <WGFamilyTreeRoomie :roomie="room.currentRoomie"></WGFamilyTreeRoomie>
+        </div>
       </v-col>
     </v-row>
     <br />

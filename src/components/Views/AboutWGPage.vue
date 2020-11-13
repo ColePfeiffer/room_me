@@ -48,6 +48,7 @@ export default {
             showProfilePage: false,
             isLoggedIn: true,
             movedOut: false,
+            vacationMode: false,
             moveInDate: new Date(2019, 5, 10),
             moveOutDate: new Date(2017, 5, 3)
           },
@@ -81,6 +82,7 @@ export default {
             showProfilePage: false,
             isLoggedIn: false,
             movedOut: false,
+            vacationMode: false,
             moveInDate: new Date(2017, 10, 15),
             moveOutDate: ""
           },
@@ -126,6 +128,7 @@ export default {
             showProfilePage: false,
             isLoggedIn: false,
             movedOut: false,
+            vacationMode: false,
             moveInDate: new Date(2020, 10, 15),
             moveOutDate: new Date(2017, 5, 3)
           },
@@ -170,6 +173,7 @@ export default {
             showProfilePage: false,
             isLoggedIn: false,
             movedOut: false,
+            vacationMode: false,
             moveInDate: new Date(2018, 10, 15),
             moveOutDate: new Date(2017, 5, 3)
           },
