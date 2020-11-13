@@ -38,7 +38,9 @@
       </v-btn>
     </v-speed-dial>
 
-    <div v-if="!isMobile()">
+    <v-btn @click="debuggingIsMobile = !debuggingIsMobile">debug: toggle view mode</v-btn>
+    <div v-if="!debuggingIsMobile">
+      <!-- <div v-if="!isMobile()"> -->
       <!-- FOR DESKTOP VIEW -->
       <v-row>
         <v-col>
@@ -101,7 +103,8 @@ export default {
         "pink darken-2",
         "red lighten-1",
         "deep-purple accent-4"
-      ]
+      ],
+      debuggingIsMobile: false
     };
   },
   methods: {
@@ -123,7 +126,6 @@ export default {
         return true;
       } else {
         return false;
-        //return true;
       }
     }
   }
