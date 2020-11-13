@@ -38,16 +38,44 @@
       </v-btn>
     </v-speed-dial>
 
-    <v-row>
-      <v-col>
-        <div class="overline">Room Overview</div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col v-for="i in rooms" :key="i.name" xs="6" sm="6" md="3">
-        <WGFamilyTreeRoom :room="i"></WGFamilyTreeRoom>
-      </v-col>
-    </v-row>
+    <div v-if="!isMobile()">
+      <!-- FOR DESKTOP VIEW -->
+      <v-row>
+        <v-col>
+          <div class="overline">Room Overview</div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col v-for="i in rooms" :key="i.id" xs="6" sm="6" md="3">
+          <WGFamilyTreeRoom :room="i"></WGFamilyTreeRoom>
+        </v-col>
+      </v-row>
+    </div>
+    <!-- FOR MOBILE VIEW -->
+    <div v-else>
+      <v-row>
+        <v-col>
+          <div class="overline">Room Overview</div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="3">
+          <v-carousel hide-delimiter-background show-arrows height="auto">
+            <v-carousel-item v-for="(room) in rooms" :key="room.id">
+              <v-sheet height="100%">
+                <v-row class="fill-height" align="center" justify="center">
+                  <div class="posts">
+                    <v-card elevation="10" max-width="100%">
+                      <WGFamilyTreeRoom :room="room"></WGFamilyTreeRoom>
+                    </v-card>
+                  </div>
+                </v-row>
+              </v-sheet>
+            </v-carousel-item>
+          </v-carousel>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -66,7 +94,14 @@ export default {
   data() {
     return {
       showDialogNewRoomie: false,
-      fab: false
+      fab: false,
+      colors: [
+        "indigo",
+        "warning",
+        "pink darken-2",
+        "red lighten-1",
+        "deep-purple accent-4"
+      ]
     };
   },
   methods: {
@@ -78,6 +113,18 @@ export default {
     },
     addNewRoomie() {
       this.showDialogNewRoomie = true;
+    },
+    isMobile() {
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+        //return true;
+      }
     }
   }
 };
