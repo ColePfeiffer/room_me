@@ -38,14 +38,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item to="/settings">
-          <v-list-item-action>
-            <v-icon>mdi-account</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Settings</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+
       </v-list>
     </v-navigation-drawer>
 

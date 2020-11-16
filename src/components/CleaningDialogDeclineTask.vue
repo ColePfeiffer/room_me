@@ -38,17 +38,23 @@
 
               <v-row>
                 <v-radio-group>
-                  <v-radio label="Switch" value="radio-1"></v-radio>
-                  <v-radio label="Cancel" value="radio-2"></v-radio>
+                  <v-radio label="Switch" 
+                  :change="switchSelected === true">
+                  </v-radio>
+                  <v-radio 
+                  label="Cancel"
+                  :change="switchSelected === false">
+                  </v-radio>
                 </v-radio-group>
               </v-row>
 
-              <!-- Roomie Chip -->
+              <!-- Roomie Chip if usser selects to switch their task:-->
+              <div v-if="switchSelected === true">
               <v-chip-group column multiple active-class="primary--text">
                 <div class="mx-2" v-for="roomie in roomies" :key="roomie.id">
                   <v-chip
                     :color="roomie.color"
-                    :outlined="roomieChipOutlined(roomie)"
+                    :outlined="roomie.selected"
                     @click="selectRoomie(roomie)"
                   >
                     <v-avatar left>
@@ -59,6 +65,7 @@
                   </v-chip>
                 </div>
               </v-chip-group>
+              </div>
 
               <v-text-field
                 v-model="comment"
@@ -128,12 +135,13 @@ export default {
     return {
       // Show Dialog:
       showDialogCalendarCompletedOn: false,
+      switchSelected: false,
       intervall: 7,
       // Shows todays date:
       timestamp: new Date().toISOString().substr(0, 10),
       completedOnDate: "",
       comment: "",
-
+    
       // Current User that chooses Task:
       currentUser: {
         id: 0,
@@ -159,7 +167,7 @@ export default {
     },
     roomieChipOutlined(roomie) {
       if (roomie.selected) {
-        return false;
+        return true;
       } else {
         return true;
       }
@@ -167,16 +175,18 @@ export default {
 
     checkOffTask() {
       // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-      this.item.status = 3;
+      this.item.status = 2;
       this.item.comment = this.comment;
-      this.item.completedOnDate = this.completedOnDate;
+      //   swapDecline: [{ roomie: "", type: "", comment: "" }],
+      // swap: 1, decline: 2
+      this.item.swapDecline = [{id: this.id, roomie: this.roomie, type: 1, comment: this.comment}];
 
       // emit muss comments und completed date noch weitergeben:
       this.$emit("checkOffTask", this.item);
       this.closeDialog();
     },
     closeDialog() {
-      this.$emit("toggle-showDialogFinishUp", false);
+      this.$emit("toggle-showDialogDeclineTask", false);
       this.comment = "";
       this.completed = this.timestamp;
       this.currentUser = "";
