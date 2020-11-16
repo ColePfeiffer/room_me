@@ -74,14 +74,8 @@ export default {
       return this.taskList.filter(function(value) {
         return value.status === 3;
       });
-<<<<<<< Updated upstream
     }
   }
-=======
-    },
-    
-  },
->>>>>>> Stashed changes
 };
 </script>
 
