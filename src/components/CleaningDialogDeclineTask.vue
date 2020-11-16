@@ -1,8 +1,10 @@
 <template>
   <div>
-    <v-dialog v-model="showDialogFinishUp" persistent width="500">
+    <v-dialog v-model="showDialogDeclineTask" persistent width="500">
       <v-card>
-        <v-card-title class="headline ighten-2">Check your task</v-card-title>
+        <v-card-title class="headline ighten-2"
+          >Decline or swtich task</v-card-title
+        >
         <v-card-text cols="12" sm="12">
           <v-row>
             <v-col>
@@ -29,17 +31,34 @@
                   color="#FF6F00"
                 ></v-text-field>
               </v-row>
-              <!-- Completed On -->
-              <v-text-field
-                :value="timestamp"
-                label="Completed on"
-                readonly
-                sm="6"
-                m="6"
-                prepend-icon="mdi-calendar"
-                @click="toggleCalendarCompletedOn(true)"
-              >
-              </v-text-field>
+              <!-- Radio Button for either Cancel Task or Switch 
+              cancel: takes roomie that would be next for this task
+              switch: lets roomie choose with whom they want to change.
+              -->
+
+              <v-row>
+                <v-radio-group>
+                  <v-radio label="Switch" value="radio-1"></v-radio>
+                  <v-radio label="Cancel" value="radio-2"></v-radio>
+                </v-radio-group>
+              </v-row>
+
+              <!-- Roomie Chip -->
+              <v-chip-group column multiple active-class="primary--text">
+                <div class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+                  <v-chip
+                    :color="roomie.color"
+                    :outlined="roomieChipOutlined(roomie)"
+                    @click="selectRoomie(roomie)"
+                  >
+                    <v-avatar left>
+                      <v-img v-bind:src="roomie.profilePicture"></v-img>
+                    </v-avatar>
+                    <strong>{{ roomie.username }}</strong
+                    >&nbsp;
+                  </v-chip>
+                </div>
+              </v-chip-group>
 
               <v-text-field
                 v-model="comment"
@@ -59,15 +78,7 @@
                     >Choose finishing date</v-card-title
                   >
 
-                  <v-date-picker
-                    v-model="timestamp"
-                    color="red lighten-1"
-                  ></v-date-picker>
-                  <v-card-text
-                    >When did you finish your task? Select the date and safe
-                    it.</v-card-text
-                  >
-                  <v-card-actions>  <v-btn
+                  <v-btn
                     color="pink"
                     text
                     @click="toggleCalendarCompletedOn(false)"
@@ -80,9 +91,7 @@
                     @click="saveCalendarCompletedOn(completedOnDate)"
                   >
                     Safe
-                  </v-btn></v-card-actions>
-
-                 
+                  </v-btn>
                 </v-card>
               </v-dialog>
             </v-col>
@@ -102,12 +111,11 @@
 
 <script>
 export default {
-  name: "CleaningDialog",
-  //name: "PurchasingDialogCashUp",
-  emits: ["toggle-showDialogFinishUp", "save-calendarCompletedOn"],
+  name: "CleaningDialogDecline",
+  emits: ["toggle-showDialogDeclineTask", "save-calendarCompletedOn"],
 
   props: {
-    showDialogFinishUp: Boolean,
+    showDialogDeclineTask: Boolean,
     ["roomies"]: Array,
     item: Object,
     //newPurchase: Object
@@ -141,17 +149,23 @@ export default {
     };
   },
   methods: {
-    saveCalendarCompletedOn() {
-      this.completedOnDate = this.timestamp;
-      this.$emit("save-calendarCompletedOn", this.completedOnDate);
-      this.toggleCalendarCompletedOn(false);
-      console.log("safed timestamp: " + this.timestamp);
+    selectRoomie(selected_roomie) {
+      this.roomies.forEach(function (roomie, index) {
+        if (roomie == selected_roomie) {
+          roomie.selected = !roomie.selected;
+          console.log(roomie.selected, index);
+        }
+      });
     },
-    toggleCalendarCompletedOn(newState) {
-      this.showDialogCalendarCompletedOn = newState;
+    roomieChipOutlined(roomie) {
+      if (roomie.selected) {
+        return false;
+      } else {
+        return true;
+      }
     },
+
     checkOffTask() {
-     
       // Status: 0 - offen, accepted: 1, declined: 2, done: 3
       this.item.status = 3;
       this.item.comment = this.comment;
@@ -159,7 +173,7 @@ export default {
 
       // emit muss comments und completed date noch weitergeben:
       this.$emit("checkOffTask", this.item);
-       this.closeDialog();
+      this.closeDialog();
     },
     closeDialog() {
       this.$emit("toggle-showDialogFinishUp", false);

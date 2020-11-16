@@ -55,6 +55,7 @@ export default {
     CleaningTask
   },
   computed: {
+
     openTasks() {
       // Javascript-Funktion zum Filtern von Arrays
       return this.taskList.filter(function(value) {
@@ -67,13 +68,20 @@ export default {
         return value.status === 1;
       });
     },
+
     doneTasks() {
       // Javascript-Funktion zum Filtern von Arrays
       return this.taskList.filter(function(value) {
         return value.status === 3;
       });
+<<<<<<< Updated upstream
     }
   }
+=======
+    },
+    
+  },
+>>>>>>> Stashed changes
 };
 </script>
 
