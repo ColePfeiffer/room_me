@@ -1,7 +1,6 @@
 <template>
   <v-container justify-center>
     <WGFamilyTreeDialogNewRoomie :showDialog="showDialogNewRoomie"></WGFamilyTreeDialogNewRoomie>
-    <div class="overline">Room History</div>
 
     <v-speed-dial
       color="pink"
@@ -21,6 +20,10 @@
         </v-btn>
       </template>
 
+      <v-btn fab dark small color="orange" class="ma-2 white--text" @click="editFamilyTree">
+        <v-icon>mdi-help</v-icon>
+        <div class="fab-text-custom orange">Help</div>
+      </v-btn>
       <v-btn fab dark small color="green" class="ma-2 white--text" @click="editFamilyTree">
         <v-icon>mdi-pencil</v-icon>
         <div class="fab-text-custom green">Edit</div>
@@ -35,11 +38,63 @@
       </v-btn>
     </v-speed-dial>
 
-    <v-row>
-      <v-col v-for="i in rooms" :key="i.name" xs="6" sm="6" md="3">
-        <WGFamilyTreeRoom :room="i"></WGFamilyTreeRoom>
-      </v-col>
-    </v-row>
+    <v-btn @click="debuggingIsMobile = !debuggingIsMobile">debug: toggle view mode</v-btn>
+    <div v-if="!debuggingIsMobile">
+      <!-- <div v-if="!isMobile()"> -->
+      <!-- FOR DESKTOP VIEW -->
+      <v-row justify="space-around">
+        <v-col>
+          <div class="overline">Room Overview</div>
+        </v-col>
+      </v-row>
+      <v-row justify="space-around">
+        <v-col v-for="i in rooms" :key="i.id" xs="6" sm="6" md="3">
+          <WGFamilyTreeRoom :room="i" :showRoomName="true"></WGFamilyTreeRoom>
+        </v-col>
+      </v-row>
+    </div>
+    <!-- FOR MOBILE VIEW -->
+    <div v-else>
+      <v-row>
+        <v-col>
+          <div class="overline">Room Overview</div>
+        </v-col>
+      </v-row>
+      <v-row justify="space-around">
+        <v-col
+          xs="12"
+          sm="6"
+          md="3"
+          class="d-flex justify-center align-center"
+          style="background-color: #a83250;"
+        >
+          <div>
+            <div>
+              <v-icon @click="model--">mdi-minus</v-icon>
+              room {{model+1}}
+              <v-icon @click="model++">mdi-plus</v-icon>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row justify="space-around">
+        <v-col xs="12" sm="6" md="3">
+          <v-carousel hide-delimiter-background :show-arrows="false" height="auto" v-model="model">
+            <v-carousel-item v-for="(room) in rooms" :key="room.id">
+              <v-sheet height="100%">
+                <v-row class="fill-height" align="center" justify="center">
+                  <div class="posts">
+                    <v-card elevation="10" max-width="100%">
+                      <WGFamilyTreeRoom :room="room" :showRoomName="false"></WGFamilyTreeRoom>
+                    </v-card>
+                  </div>
+                </v-row>
+              </v-sheet>
+            </v-carousel-item>
+          </v-carousel>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -58,7 +113,16 @@ export default {
   data() {
     return {
       showDialogNewRoomie: false,
-      fab: false
+      fab: false,
+      colors: [
+        "indigo",
+        "warning",
+        "pink darken-2",
+        "red lighten-1",
+        "deep-purple accent-4"
+      ],
+      debuggingIsMobile: false,
+      model: 0
     };
   },
   methods: {
@@ -70,6 +134,18 @@ export default {
     },
     addNewRoomie() {
       this.showDialogNewRoomie = true;
+    },
+    isMobile() {
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+        //return true;
+      }
     }
   }
 };
