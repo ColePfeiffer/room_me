@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container justify-center>
     <v-tabs class="cleaningTabs" background-color="dark" centered dark icons-and-text>
       <v-tabs-slider></v-tabs-slider>
 
@@ -55,7 +55,6 @@ export default {
     CleaningTask
   },
   computed: {
-
     openTasks() {
       // Javascript-Funktion zum Filtern von Arrays
       return this.taskList.filter(function(value) {

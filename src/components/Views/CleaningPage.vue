@@ -1,12 +1,11 @@
 <template>
   <v-main>
-    <div class="cleaning">
-      <!--The event container with padding of 15-->
+    <div class="d-flex align-start">
       <v-row class="fill-height pa-15">
-        <v-col cols="9">
+        <v-col wrap xs="12" sm="6" md="6">
           <CleaningCalendar></CleaningCalendar>
         </v-col>
-        <v-col cols="3">
+        <v-col wrap xs="12" sm="6" md="6">
           <CleaningTabs :currentUser="currentUser" :taskList="taskList"></CleaningTabs>
         </v-col>
       </v-row>
@@ -52,7 +51,7 @@ export default {
           swapDecline: [{ roomie: "", type: "", comment: "" }],
           color: "#315458"
         },
-            {
+        {
           id: 2,
           title: "Küche putzen",
           description: "KHallo... ksksk dkdkd",
@@ -64,12 +63,13 @@ export default {
           status: 0,
           order: [],
           swapDecline: [{ roomie: "", type: "", comment: "" }],
-          color: "#315458",
+          color: "#315458"
         },
         {
           id: 5,
           title: "Müll rausbringen",
-          description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ",
+          description:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ",
           endDate: "",
           startDate: "",
           completedOn: "",

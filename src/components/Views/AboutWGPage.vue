@@ -1,10 +1,10 @@
 <template>
   <v-main>
-    <v-row class="d-flex align-start">
-      <v-col wrap xs="12" sm="6" md="6">
+    <v-row class="align-start pa-8">
+      <v-col xs="6" sm="6" md="8">
         <WGFamilyTree :rooms="rooms"></WGFamilyTree>
       </v-col>
-      <v-col wrap xs="12" sm="6" md="6">
+      <v-col xs="6" sm="6" md="4" class="pa-10">
         <WGRules></WGRules>
       </v-col>
     </v-row>
