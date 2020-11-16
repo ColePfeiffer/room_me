@@ -1,5 +1,6 @@
 <template>
   <v-container ma-auto pa-10 id="FamilyTreeRoomie">
+    <DialogProfilePage :roomie="roomie" @save-changes="saveChangesInProfilePage"></DialogProfilePage>
     <v-row no-gutters>
       <v-col>
         <div id="IconWrapper">
@@ -30,7 +31,7 @@
           <v-list-item-subtitle>
             <span>{{"since " + roomie.moveInDate.getFullYear()}}</span>
             <br />
-            <span v-if="roomie.movedOut">{{"til " + roomie.moveOutDate.getFullYear()}}</span>
+            <span v-if="roomie.movedOut">{{"til " + roomie.moveOutDate.getFullYear() }}</span>
           </v-list-item-subtitle>
 
           <v-divider class="ma-1" horizontal color="white"></v-divider>
@@ -41,10 +42,15 @@
 </template>
 
 <script>
+import DialogProfilePage from "./DialogProfilePage";
+
 export default {
   name: "WGFamilyTreeRomie",
+  components: {
+    DialogProfilePage
+  },
   emits: [],
-  props: { roomie: Object, inversed: Boolean },
+  props: { roomie: Object },
   data() {
     return {
       rooms: [],
@@ -67,7 +73,15 @@ export default {
       }
     };
   },
-  methods: {}
+  methods: {
+    saveChangesInProfilePage(roomie, changeData) {
+      roomie.username = changeData.username;
+      roomie.description = changeData.description;
+      roomie.profilePicture = changeData.profilePicture;
+      roomie.color = changeData.color;
+      roomie.showProfilePage = false;
+    }
+  }
 };
 </script>
 
