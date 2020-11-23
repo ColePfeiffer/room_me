@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import DialogProfilePage from "./DialogProfilePage";
+import DialogProfilePage from "../DialogProfilePage";
 
 export default {
   name: "WGFamilyTreeRomie",

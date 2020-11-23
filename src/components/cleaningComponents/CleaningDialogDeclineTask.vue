@@ -3,7 +3,7 @@
     <v-dialog v-model="showDialogDeclineTask" persistent width="500">
       <v-card>
         <v-card-title class="headline ighten-2"
-          >Decline or swtich task</v-card-title
+          >Decline or switch task</v-card-title
         >
         <v-card-text cols="12" sm="12">
           <v-row>
@@ -36,35 +36,42 @@
               switch: lets roomie choose with whom they want to change.
               -->
 
-              <v-row>
-                <v-radio-group>
-                  <v-radio label="Switch" 
-                  :change="switchSelected === true">
-                  </v-radio>
-                  <v-radio 
-                  label="Cancel"
-                  :change="switchSelected === false">
-                  </v-radio>
-                </v-radio-group>
+              <v-row class="radioRowStyling">
+                <section class="fontStyling">
+                  <input
+                    type="radio"
+                    v-model="switchSelected"
+                    v-bind:value="true"
+                  />
+                  Switch
+                  <br/>
+                  <input
+                    type="radio"
+                    
+                    v-model="switchSelected"
+                    v-bind:value="false"
+                  />
+                  Cancel
+                </section>
               </v-row>
 
               <!-- Roomie Chip if usser selects to switch their task:-->
               <div v-if="switchSelected === true">
-              <v-chip-group column multiple active-class="primary--text">
-                <div class="mx-2" v-for="roomie in roomies" :key="roomie.id">
-                  <v-chip
-                    :color="roomie.color"
-                    :outlined="roomie.selected"
-                    @click="selectRoomie(roomie)"
-                  >
-                    <v-avatar left>
-                      <v-img v-bind:src="roomie.profilePicture"></v-img>
-                    </v-avatar>
-                    <strong>{{ roomie.username }}</strong
-                    >&nbsp;
-                  </v-chip>
-                </div>
-              </v-chip-group>
+                <v-chip-group column multiple active-class="primary--text">
+                  <div class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+                    <v-chip
+                      :color="roomie.color"
+                      :outlined="roomie.selected"
+                      @click="selectRoomie(roomie)"
+                    >
+                      <v-avatar left>
+                        <v-img v-bind:src="roomie.profilePicture"></v-img>
+                      </v-avatar>
+                      <strong>{{ roomie.username }}</strong
+                      >&nbsp;
+                    </v-chip>
+                  </div>
+                </v-chip-group>
               </div>
 
               <v-text-field
@@ -74,33 +81,6 @@
                 prepend-icon="comment"
                 color="#FF6F00"
               ></v-text-field>
-
-              <v-dialog
-                v-model="showDialogCalendarCompletedOn"
-                persistent
-                max-width="290"
-              >
-                <v-card>
-                  <v-card-title class="headline lighten-2"
-                    >Choose finishing date</v-card-title
-                  >
-
-                  <v-btn
-                    color="pink"
-                    text
-                    @click="toggleCalendarCompletedOn(false)"
-                  >
-                    Close
-                  </v-btn>
-                  <v-btn
-                    color="pink"
-                    text
-                    @click="saveCalendarCompletedOn(completedOnDate)"
-                  >
-                    Safe
-                  </v-btn>
-                </v-card>
-              </v-dialog>
             </v-col>
           </v-row>
           <v-row justify="space-around">
@@ -141,7 +121,7 @@ export default {
       timestamp: new Date().toISOString().substr(0, 10),
       completedOnDate: "",
       comment: "",
-    
+
       // Current User that chooses Task:
       currentUser: {
         id: 0,
@@ -179,7 +159,9 @@ export default {
       this.item.comment = this.comment;
       //   swapDecline: [{ roomie: "", type: "", comment: "" }],
       // swap: 1, decline: 2
-      this.item.swapDecline = [{id: this.id, roomie: this.roomie, type: 1, comment: this.comment}];
+      this.item.swapDecline = [
+        { id: this.id, roomie: this.roomie, type: 1, comment: this.comment },
+      ];
 
       // emit muss comments und completed date noch weitergeben:
       this.$emit("checkOffTask", this.item);
@@ -194,3 +176,13 @@ export default {
   },
 };
 </script>
+<style>
+.radioRowStyling {
+  padding-left: 18px;
+}
+.fontStyling {
+  
+  padding-bottom: 15px;
+   font-size: 1.0rem;
+}
+</style>

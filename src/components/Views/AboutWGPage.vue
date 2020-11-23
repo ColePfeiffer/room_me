@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import WGFamilyTree from "../WGFamilyTree";
-import WGRules from "../WGRules";
+import WGFamilyTree from "../wgFamilyTreeComponents/WGFamilyTree";
+import WGRules from "../wgFamilyTreeComponents/WGRules";
 
 export default {
   name: "AboutWGPage",

@@ -5,6 +5,7 @@
     <CleaningDialogFinishUp
       :item="item"
       :showDialogFinishUp="showDialogFinishUp"
+      :taskList="taskList"
       @toggle-showDialogFinishUp="toggleShowDialogFinishUp"
     >
     </CleaningDialogFinishUp>
@@ -16,6 +17,40 @@
       @toggle-showDialogDeclineTask="toggleShowDialogDeclineTask"
     >
     </CleaningDialogDeclineTask>
+
+        <CleaningDialogNewTask
+      :showDialog="showDialogNewTask"
+      :currentUser="currentUser"
+      :roomies="roomies"
+        :taskList="taskList"
+     :item="item"
+      @toggle-showDialogNewTask="toggleShowDialogNewTask"
+    ></CleaningDialogNewTask>
+
+      <v-speed-dial
+      color="pink"
+      v-model="fab"
+      dark
+      small
+      absolute
+      fixed
+      bottom
+      right
+      slide-y-reverse-transition
+    >
+      <template v-slot:activator>
+        <v-btn v-model="fab" color="blue darken-2" dark fab>
+          <v-icon v-if="fab">mdi-close</v-icon>
+          <v-icon v-else>mdi-plus</v-icon>
+        </v-btn>
+      </template>
+
+
+      <v-btn fab dark small color="pink" @click="showDialogNewTask = true">
+        <v-icon>mdi-plus</v-icon>
+        <div class="fab-text-custom pink">Add task</div>
+      </v-btn>
+    </v-speed-dial>
 
     <v-col cols="12">
       <v-card class="cleaningCards">
@@ -85,6 +120,7 @@
 <script>
 import CleaningDialogFinishUp from "./CleaningDialogFinishUp";
 import CleaningDialogDeclineTask from "./CleaningDialogDeclineTask";
+import CleaningDialogNewTask from "./CleaningDialogNewTask";
 
 export default {
   name: "CleaningTask",
@@ -92,17 +128,31 @@ export default {
   props: {
     ["item"]: Object,
     ["currentUser"]: Object,
+       ["taskList"]: Array,
   },
   components: {
     CleaningDialogFinishUp,
     CleaningDialogDeclineTask,
+      CleaningDialogNewTask,
   },
   data() {
     return {
+       fab: false,
+      colors: [
+        "indigo",
+        "warning",
+        "pink darken-2",
+        "red lighten-1",
+        "deep-purple accent-4",
+      ],
+
+      model: 0,
+      showDialogNewTask: false,
       showDialogFinishUp: false,
       showDialogDeclineTask: false,
       debug: true,
       mycolor: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
+     
       roomies: [
         {
           id: 0,
@@ -169,6 +219,11 @@ export default {
       if (this.debug) console.log("old state: " + this.showDialogDeclineTask);
       this.showDialogDeclineTask = newState;
       if (this.debug) console.log("new state: " + this.showDialogDeclineTask);
+    },
+     toggleShowDialogNewTask(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogNewTask);
+      this.showDialogNewTask = newState;
+      if (this.debug) console.log("new state: " + this.showDialogNewTask);
     },
     // Color generator:
     generator: function () {

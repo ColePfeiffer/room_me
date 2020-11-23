@@ -13,14 +13,23 @@
         <v-icon>mdi-heart</v-icon>
       </v-tab>
 
-      <v-tab-item class="someStyling" v-for="i in 2" :key="i" :value="'tab-' + i">
+      <v-tab-item
+        class="someStyling"
+        v-for="i in 2"
+        :key="i"
+        :value="'tab-' + i"
+      >
         <div v-if="i == 1">
           <div v-if="openTasks.length === 0 && pendingTasks.length === 0">
             <v-card>No open or pending tasks yet.</v-card>
           </div>
           <div v-else>
             <div v-for="item in openTasks" :key="item.id">
-              <CleaningTask :item="item" :currentUser="currentUser"></CleaningTask>
+              <CleaningTask
+                :item="item"
+                :currentUser="currentUser"
+                :taskList="taskList"
+              ></CleaningTask>
             </div>
           </div>
         </div>
@@ -29,7 +38,12 @@
             <v-card-text>No items pending yet.</v-card-text>
           </div>
           <div v-for="item in doneTasks" :key="item.id">
-            <CleaningTask :item="item" :currentUser="currentUser"></CleaningTask>
+            <CleaningTask
+              :item="item"
+              :currentUser="currentUser"
+                  :taskList="taskList"
+  
+            ></CleaningTask>
           </div>
         </div>
       </v-tab-item>
@@ -45,36 +59,36 @@ export default {
   emits: [],
   props: {
     ["taskList"]: Array,
-    ["currentUser"]: Object
+    ["currentUser"]: Object,
   },
   data() {
     return {};
   },
   methods: {},
   components: {
-    CleaningTask
+    CleaningTask,
   },
   computed: {
     openTasks() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.taskList.filter(function(value) {
+      return this.taskList.filter(function (value) {
         return value.status === 0 || value.status === 1;
       });
     },
     pendingTasks() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.taskList.filter(function(value) {
+      return this.taskList.filter(function (value) {
         return value.status === 1;
       });
     },
 
     doneTasks() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.taskList.filter(function(value) {
+      return this.taskList.filter(function (value) {
         return value.status === 3;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
