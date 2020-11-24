@@ -31,6 +31,20 @@ export default {
         currentRoomie: {},
         PastRoomies: []
       },
+      dummy: {},
+      dummies: [
+        {
+          id: 19,
+          type: "DUMMY",
+          username: "David",
+          description: "Hi there!",
+          profilePicture: "https://i.imgur.com/eCG61tP.jpeg",
+          showProfilePage: false,
+          movedOut: true,
+          moveInDate: new Date(2015, 10, 15),
+          moveOutDate: new Date(2019, 5, 3)
+        }
+      ],
       rooms: [
         {
           id: "1",

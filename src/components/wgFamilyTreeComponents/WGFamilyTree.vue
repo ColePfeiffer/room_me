@@ -1,6 +1,10 @@
 <template>
   <v-container justify-center>
-    <WGFamilyTreeDialogNewRoomie :showDialog="showDialogNewRoomie"></WGFamilyTreeDialogNewRoomie>
+    <WGFamilyTreeDialogNewRoomie
+      :showDialog="showDialogForNewRoomie"
+      :rooms="rooms"
+      @set-showDialog="showDialogForNewRoomie = false"
+    ></WGFamilyTreeDialogNewRoomie>
 
     <v-speed-dial
       color="pink"
@@ -28,11 +32,11 @@
         <v-icon>mdi-pencil</v-icon>
         <div class="fab-text-custom green">Edit</div>
       </v-btn>
-      <v-btn fab dark small color="black" @click="showDialogNewRoomie = true">
+      <v-btn fab dark small color="black" @click="showDialogForNewRoomie = true">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom black">Add roomie</div>
       </v-btn>
-      <v-btn fab dark small color="pink" @click="showDialogNewRoomie = true">
+      <v-btn fab dark small color="pink" @click="showDialogForNewRoom = true">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom pink">Add room</div>
       </v-btn>
@@ -112,7 +116,8 @@ export default {
   props: { rooms: Array },
   data() {
     return {
-      showDialogNewRoomie: false,
+      showDialogForNewRoomie: false,
+      showDialogForNewRoom: false,
       fab: false,
       colors: [
         "indigo",
@@ -131,9 +136,6 @@ export default {
     },
     addNewRoom() {
       // opens dialog
-    },
-    addNewRoomie() {
-      this.showDialogNewRoomie = true;
     },
     isMobile() {
       if (
