@@ -6,7 +6,6 @@ import AboutWGPage from "./components/Views/AboutWGPage";
 import CleaningPage from "./components/Views/CleaningPage";
 import Login from "./components/Views/Login";
 import PurchasingPage from "./components/Views/PurchasingPage";
-import SettingsPage from "./components/Views/SettingsPage";
 
 Vue.use(VueRouter);
 
@@ -17,7 +16,6 @@ const routes = [
     {path: '/home', component: Home},
     {path: '/login', component: Login},
     {path: '/einkaufen', component: PurchasingPage},
-    {path: '/settings', component: SettingsPage},
     {path: '/putzen', component: CleaningPage},
 ];
 

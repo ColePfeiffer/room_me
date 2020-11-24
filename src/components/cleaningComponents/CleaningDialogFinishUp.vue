@@ -67,9 +67,7 @@
                     >When did you finish your task? Select the date and safe
                     it.</v-card-text
                   >
-                  <v-card-actions> </v-card-actions>
-
-                  <v-btn
+                  <v-card-actions>  <v-btn
                     color="pink"
                     text
                     @click="toggleCalendarCompletedOn(false)"
@@ -82,7 +80,9 @@
                     @click="saveCalendarCompletedOn(completedOnDate)"
                   >
                     Safe
-                  </v-btn>
+                  </v-btn></v-card-actions>
+
+                 
                 </v-card>
               </v-dialog>
             </v-col>
@@ -118,12 +118,6 @@ export default {
 
   data() {
     return {
-   /*  changedData: {
-        status: this.item.status,
-        comment: this.item.comment,
-        completedOnDate: this.item.completedOnDate,
-      },*/
-
       // Show Dialog:
       showDialogCalendarCompletedOn: false,
       intervall: 7,
@@ -148,7 +142,8 @@ export default {
   },
   methods: {
     saveCalendarCompletedOn() {
-      this.$emit("save-calendarCompletedOn", this.timestamp);
+      this.completedOnDate = this.timestamp;
+      this.$emit("save-calendarCompletedOn", this.completedOnDate);
       this.toggleCalendarCompletedOn(false);
       console.log("safed timestamp: " + this.timestamp);
     },
@@ -156,20 +151,20 @@ export default {
       this.showDialogCalendarCompletedOn = newState;
     },
     checkOffTask() {
+     
       // Status: 0 - offen, accepted: 1, declined: 2, done: 3
       this.item.status = 3;
       this.item.comment = this.comment;
       this.item.completedOnDate = this.completedOnDate;
 
-
       // emit muss comments und completed date noch weitergeben:
-      this.$emit("checkOffTask", this.item, this.changedData);
-      this.closeDialog();
+      this.$emit("checkOffTask", this.item);
+       this.closeDialog();
     },
     closeDialog() {
       this.$emit("toggle-showDialogFinishUp", false);
-      // this.comment = "";
-      this.completed = null;
+      this.comment = "";
+      this.completed = this.timestamp;
       this.currentUser = "";
     },
   },
