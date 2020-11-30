@@ -1,5 +1,5 @@
 <template>
-  <v-col xs="12" sm="6" md="3">
+  <v-col xs="12" sm="6" md="6">
     <v-card class="ma-auto" max-width="344">
       <v-list-item>
         <v-list-item-content>
