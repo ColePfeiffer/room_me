@@ -4,75 +4,69 @@
       <v-card>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">Room Manager</h3>
-            </div>
+            <h3 class="headline mb-0">Room Manager</h3>
           </v-card-title>
-          <v-card-text cols="12" sm="12">
-            <v-container>
-              <v-row justify="space-around">
-                <v-col xs="12" sm="6" md="3">
-                  <v-carousel height="auto" hide-delimiter-background show-arrows-on-hover>
-                    <v-carousel-item v-for="(room) in rooms" :key="room.id">
-                      <v-sheet :color="room.currentRoomie.color" height="100%">
-                        <v-row class="fill-height" align="center" justify="center">
-                          <div class="rooms">
-                            <v-row>
-                              <v-col>
-                                <h3>{{room.name}}</h3>
-                              </v-col>
-                              <v-col class="text-right">
-                                <v-btn small text>
-                                  <v-icon @click="acceptItem(item)">mdi-delete</v-icon>
-                                </v-btn>
-                              </v-col>
-                            </v-row>
-                            <v-row>
-                              <v-col>
-                                <span class="currentRoomie">{{room.currentRoomie.username}}</span>
-                              </v-col>
-                              <v-col class="text-right">
-                                <v-btn small text>
-                                  <v-icon @click="acceptItem(item)">mdi-delete</v-icon>
-                                </v-btn>
-                              </v-col>
-                            </v-row>
-                            <v-row v-for="pastRoomie in room.pastRoomies" :key="pastRoomie.id">
-                              <v-col>
-                                <span class="pastRoomie">{{pastRoomie.username}}</span>
-                              </v-col>
-                              <v-col class="text-right">
-                                <v-btn small text>
-                                  <v-icon @click="acceptItem(item)">mdi-delete</v-icon>
-                                </v-btn>
-                              </v-col>
-                            </v-row>
-                            <v-card elevation="10" max-width="100%">
-                              <v-card-title>{{ room.name }}</v-card-title>
-                              <v-card-text>{{room.name}}</v-card-text>
-                            </v-card>
-                          </div>
-                        </v-row>
-                      </v-sheet>
-                    </v-carousel-item>
-                  </v-carousel>
-                </v-col>
-              </v-row>
 
-              <div v-for="room in rooms" :key="room.id"></div>
-            </v-container>
-            <!-- Creation Type -->
-            <v-radio-group v-model="creationType">
-              <v-radio label="create roomie by invitation" value="INVITE" :color="color"></v-radio>
-              <v-radio label="create dummy roomie" value="DUMMY" :color="color"></v-radio>
-            </v-radio-group>
-            <div
-              v-if="creationType == 'DUMMY'"
-            >Dummy roomies aren't real roomies. They are used to complete the family tree.</div>
-            <div
-              v-else-if="creationType == 'INVITE'"
-            >Generate an invitation code and send it to your new roommate. While creating an account, they will be asked for their code.</div>
-          </v-card-text>
+          <!-- bla -->
+          <v-container>
+            <v-row justify="space-around">
+              <v-col xs="12" sm="12" md="12">
+                <v-carousel height="auto" hide-delimiters show-arrows-on-hover>
+                  <v-carousel-item v-for="(room) in rooms" :key="room.id">
+                    <v-sheet height="100%">
+                      <v-row class="fill-height" align="center" justify="center">
+                        <v-card elevation="10" max-width="100%" width="280px">
+                          <v-card-title>
+                            <v-row>
+                              <v-col>{{room.name}}</v-col>
+                              <v-col class="text-right">
+                                <v-btn x-small text>
+                                  delete
+                                  <v-icon right dark x-small @click="acceptItem(item)">mdi-delete</v-icon>
+                                </v-btn>
+                              </v-col>
+                            </v-row>
+                          </v-card-title>
+                          <v-card-text>
+                            <div class="rooms">
+                              <v-row>
+                                <v-col>
+                                  <span class="currentRoomie">{{room.currentRoomie.username}}</span>
+                                </v-col>
+                                <v-col class="text-right">
+                                  <v-btn x-small text>
+                                    move out
+                                    <v-icon right dark x-small @click="acceptItem(item)">mdi-home</v-icon>
+                                  </v-btn>
+                                </v-col>
+                              </v-row>
+                              <v-row v-for="pastRoomie in room.pastRoomies" :key="pastRoomie.id">
+                                <v-col>
+                                  <span class="pastRoomie">{{pastRoomie.username}}</span>
+                                </v-col>
+                                <v-col class="text-right">
+                                  <v-btn x-small text>
+                                    delete
+                                    <v-icon right dark x-small @click="acceptItem(item)">mdi-delete</v-icon>
+                                  </v-btn>
+                                </v-col>
+                              </v-row>
+                              <br />
+                            </div>
+                          </v-card-text>
+                        </v-card>
+                      </v-row>
+                    </v-sheet>
+                  </v-carousel-item>
+                </v-carousel>
+              </v-col>
+            </v-row>
+          </v-container>
+
+          <v-card-title primary-title>
+            <h3 class="headline mb-0">Add a new room</h3>
+          </v-card-title>
+
           <!-- Enter name -->
           <v-text-field
             :value="name"
@@ -85,18 +79,20 @@
             maxlength="15"
             required
           ></v-text-field>
-          <!-- Select room -->
-          <v-select
-            :items="rooms"
-            v-model="roomSelection"
-            :color="color"
-            name="roomSelection"
-            item-text="name"
-            label="Select room"
-            prepend-icon="mdi-square-outline"
-            :rules="[rules.required]"
-            required
-          ></v-select>
+
+          <v-card-text cols="12" sm="12">
+            <!-- Creation Type -->
+            <v-radio-group v-model="creationType">
+              <v-radio label="create roomie by invitation" value="INVITE" :color="color"></v-radio>
+              <v-radio label="create dummy roomie" value="DUMMY" :color="color"></v-radio>
+            </v-radio-group>
+            <div
+              v-if="creationType == 'DUMMY'"
+            >Dummy roomies aren't real roomies. They are used to complete the family tree.</div>
+            <div
+              v-else-if="creationType == 'INVITE'"
+            >Generate an invitation code and send it to your new roommate. While creating an account, they will be asked for their code.</div>
+          </v-card-text>
 
           <v-card-actions>
             <v-row justify="space-around">
@@ -153,7 +149,6 @@ export default {
 
 <style>
 .currentRoomie {
-  color: black;
 }
 .pastRoomie {
   color: gray;
