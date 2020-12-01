@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-dialog v-model="showDialog" persistent width="500">
-      <v-card>
+    <v-dialog v-model="showDialog" width="550">
+      <v-card class="removeScrollbar">
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-title primary-title>
             <h3 class="headline mb-0">Room Manager</h3>
@@ -20,9 +20,9 @@
                             <v-row>
                               <v-col>{{room.name}}</v-col>
                               <v-col class="text-right">
-                                <v-btn x-small text>
+                                <v-btn x-small text @click="changeView('DELETE_ROOM')">
                                   delete
-                                  <v-icon right dark x-small @click="acceptItem(item)">mdi-delete</v-icon>
+                                  <v-icon right dark x-small>mdi-delete</v-icon>
                                 </v-btn>
                               </v-col>
                             </v-row>
@@ -34,9 +34,9 @@
                                   <span class="currentRoomie">{{room.currentRoomie.username}}</span>
                                 </v-col>
                                 <v-col class="text-right">
-                                  <v-btn x-small text>
+                                  <v-btn x-small text @click="changeView('NAME')">
                                     move out
-                                    <v-icon right dark x-small @click="acceptItem(item)">mdi-home</v-icon>
+                                    <v-icon right dark x-small>mdi-home</v-icon>
                                   </v-btn>
                                 </v-col>
                               </v-row>
@@ -45,9 +45,9 @@
                                   <span class="pastRoomie">{{pastRoomie.username}}</span>
                                 </v-col>
                                 <v-col class="text-right">
-                                  <v-btn x-small text>
+                                  <v-btn x-small text @click="changeView('DELETE_USER')">
                                     delete
-                                    <v-icon right dark x-small @click="acceptItem(item)">mdi-delete</v-icon>
+                                    <v-icon right dark x-small>mdi-delete</v-icon>
                                   </v-btn>
                                 </v-col>
                               </v-row>
@@ -63,40 +63,35 @@
             </v-row>
           </v-container>
 
-          <v-card-title primary-title>
-            <h3 class="headline mb-0">Add a new room</h3>
-          </v-card-title>
+          <v-container>
+            <v-row align="center" justify="center">
+              <!-- Content that can be hidden -->
 
-          <!-- Enter name -->
-          <v-text-field
-            :value="name"
-            label="Name"
-            sm="6"
-            m="6"
-            prepend-icon="mdi-account"
-            :color="color"
-            :rules="[rules.required]"
-            maxlength="15"
-            required
-          ></v-text-field>
+              <!-- Enter room name, NAME -->
+              <v-text-field
+                v-if="visibleField == 'NAME'"
+                :value="name"
+                label="Name"
+                sm="6"
+                m="6"
+                prepend-icon="mdi-account"
+                :color="color"
+                :rules="[rules.required]"
+                maxlength="15"
+                required
+              ></v-text-field>
 
-          <v-card-text cols="12" sm="12">
-            <!-- Creation Type -->
-            <v-radio-group v-model="creationType">
-              <v-radio label="create roomie by invitation" value="INVITE" :color="color"></v-radio>
-              <v-radio label="create dummy roomie" value="DUMMY" :color="color"></v-radio>
-            </v-radio-group>
-            <div
-              v-if="creationType == 'DUMMY'"
-            >Dummy roomies aren't real roomies. They are used to complete the family tree.</div>
-            <div
-              v-else-if="creationType == 'INVITE'"
-            >Generate an invitation code and send it to your new roommate. While creating an account, they will be asked for their code.</div>
-          </v-card-text>
-
+              <div
+                v-else-if="visibleField == 'DELETE_USER'"
+              >Dummy roomies aren't real roomies. They are used to complete the family tree.</div>
+              <div v-else-if="visibleField == 'DELETE_ROOM'">
+                Generate an invitatio.
+                Blubb.t, they will be asked for their code.
+              </div>
+            </v-row>
+          </v-container>
           <v-card-actions>
             <v-row justify="space-around">
-              <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
               <v-btn color="pink" :disabled="!valid" @click="create">Create</v-btn>
             </v-row>
           </v-card-actions>
@@ -121,6 +116,8 @@ export default {
     return {
       color: "#FF6F00", //dialogColor
       creationType: "INVITE",
+      // NAME, DELETE_USER, DELETE_ROOM
+      visibleField: "",
       name: "",
       roomSelection: "",
       valid: true,
@@ -130,6 +127,10 @@ export default {
     };
   },
   methods: {
+    changeView(viewString) {
+      this.visibleField = viewString;
+      console.log(viewString + this.visibleField);
+    },
     closeDialog() {
       this.$emit("set-showDialog");
     },
@@ -148,6 +149,11 @@ export default {
 </script>
 
 <style>
+.removeScrollbar {
+  overflow: hidden !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 .currentRoomie {
 }
 .pastRoomie {
