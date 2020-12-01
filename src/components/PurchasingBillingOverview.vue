@@ -1,19 +1,19 @@
 <template>
-  <v-col xs="12" sm="6" md="6">
-    <v-card class="ma-auto" max-width="344">
+  <v-col xs="12" sm="9" md="6">
+    <v-card class="ma-auto" max-width="444">
       <v-list-item>
         <v-list-item-content>
           <div class="overline">Overview</div>
           <v-list>
             <v-list-item v-for="roomie in roomies" :key="roomie.id">
               <DialogProfilePage :roomie="roomie" @save-changes="saveChangesInProfilePage"></DialogProfilePage>
-              <div class="text-center">
+              <div  class="text-center">
                 <v-list-item-avatar>
                   <v-img
                     @click="roomie.showProfilePage = true"
                     class="profile-picture"
-                    max-width="60"
-                    max-height="60"
+                    max-width="90"
+                    max-height="90"
                     v-bind:src="roomie.profilePicture"
                   ></v-img>
                 </v-list-item-avatar>
@@ -81,4 +81,5 @@ export default {
 </script>
 
 <style>
+
 </style>

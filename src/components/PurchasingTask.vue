@@ -2,20 +2,26 @@
   <!--Card on the right!, background: orange -->
 
   <v-row dense class="paddingCards">
-  
     <!--Cards for shopping list:-->
     <v-col cols="12">
       <v-card class="purchasingCards">
         <v-col class="profileAndTitleCol">
           <v-row>
+            <v-img
+              class="profile-picture rounded-circle"
+              max-width="100"
+              max-height="100"
+              v-bind:src="item.avatar"
+            ></v-img>
+
             <v-col>
               <v-card-text class="stylingTextHeadline"
                 >{{ item.article }}
               </v-card-text>
             </v-col>
           </v-row>
-          <div class="stylingTextSubtitle">
-            <label>
+          <div class="padding15">
+            <label class="stylingTextSubtitle">
               {{ item.description }}
             </label>
           </div>
@@ -31,13 +37,12 @@
               :value="item.comment"
             ></v-textarea>
           </div>
-            <PurchasingDialogEditItem
-      :item="item"
-      @save-changes="saveChangesInEditPage"
-         :showDialog="showDialogEditItem"
-      @toggle-showDialogEditItem="toggleShowDialogEditItem"
-     
-    ></PurchasingDialogEditItem>
+          <PurchasingDialogEditItem
+            :item="item"
+            @save-changes="saveChangesInEditPage"
+            :showDialog="showDialogEditItem"
+            @toggle-showDialogEditItem="toggleShowDialogEditItem"
+          ></PurchasingDialogEditItem>
           <div v-if="item.status === 0">
             <v-card-actions>
               <v-col class="text-right">
@@ -45,24 +50,22 @@
                   <v-icon @click="acceptItem(item)">mdi-check</v-icon>
                 </v-btn>
                 <v-btn text>
-                  <v-icon @click="cashUpItem(item)">euro</v-icon>
+                  <v-icon @click="toggleShowDialogCashUp(true)">euro</v-icon>
                 </v-btn>
                 <v-btn text>
-                  <v-icon 
-                  @click="toggleShowDialogEditItem(true)">edit</v-icon>
+                  <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
                 </v-btn>
               </v-col>
             </v-card-actions>
           </div>
-           <div v-if="item.status === 1 ">
+          <div v-if="item.status === 1">
             <v-card-actions>
               <v-col class="text-right">
-               <v-btn text>
+                <v-btn text>
                   <v-icon @click="cashUpItem(item)">euro</v-icon>
                 </v-btn>
                 <v-btn text>
-                  <v-icon 
-                  @click="toggleShowDialogEditItem(true)">edit</v-icon>
+                  <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
                 </v-btn>
               </v-col>
             </v-card-actions>
@@ -88,16 +91,16 @@ export default {
     ["shoppingList"]: Array,
     ["item"]: Object,
   },
-  components: { 
-      PurchasingDialogEditItem
-       },
+  components: {
+    PurchasingDialogEditItem,
+  },
   data() {
     return {
       submittedItem: "",
       showDialogEditItem: false,
       completedPurchase: false,
       currentItemForCashingUp: {},
-
+    
       roomies: [
         {
           id: 0,
@@ -176,18 +179,18 @@ export default {
     },
   },
   methods: {
-      acceptItem(item) {
-          this.item.status = 1;
-          console.log("itemhier"+this.item.article);
-            console.log("itemhier"+this.item.status);
-          console.log(item);
-      },
+    acceptItem(item) {
+      this.item.status = 1;
+      console.log("itemhier" + this.item.article);
+      console.log("itemhier" + this.item.status);
+      console.log(item);
+    },
     toggleShowDialogCashUp(newState) {
       if (this.debug) console.log("old state: " + this.showDialogCashUp);
       this.showDialogCashUp = newState;
       if (this.debug) console.log("new state: " + this.showDialogCashUp);
     },
-        toggleShowDialogEditItem(newState) {
+    toggleShowDialogEditItem(newState) {
       if (this.debug) console.log("old state: " + this.showDialogEditItem);
       this.showDialogEditItem = newState;
       if (this.debug) console.log("new state: " + this.showDialogEditItem);
@@ -202,7 +205,6 @@ export default {
     setNewPurchaseName(name) {
       this.newPurchase.name = name;
     },
-
 
     saveChangesInEditPage(item, changeData, keepAlive) {
       if (keepAlive) {
@@ -236,7 +238,6 @@ export default {
       // beim Aufrufen IN DEM CLICK EVENT!!
       // v-for="(goal, index) in goals @click="removeGoal(index)"
     },
-
   },
 };
 </script>
@@ -276,4 +277,8 @@ export default {
 
   font-weight: bold;
 }
+.padding15 {
+  padding-left: 15px;
+}
+
 </style>

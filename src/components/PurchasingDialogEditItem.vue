@@ -22,7 +22,7 @@
             </v-col>
             <v-col v-if="disabled === false" cols="12">
               <v-text-field
-                v-model="commentBox"
+                v-model="comment"
                 :disabled="disabled"
                 label="Inform your roomies about your latest changing."
               ></v-text-field>
@@ -50,6 +50,7 @@ export default {
   emits: ["save-changes", "toggle-showDialogEditItem"],
   data() {
     return {
+      comment: "",
       changeData: {
         article: this.item.article
       },

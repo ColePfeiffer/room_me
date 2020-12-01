@@ -1,21 +1,26 @@
 <template>
   <v-col xs="12" sm="6" md="6" >
-    <v-tabs centered color="cyan" dark icons-and-text>
-      <v-tabs-slider color="yellow"></v-tabs-slider>
+    <v-tabs 
+    
+    fixed-tabs 
+     color="white" dark icons-and-text>
+      <v-tabs-slider color="pink"></v-tabs-slider>
 
-      <v-tab href="#tab-1">
-        <span class="mb-2">Open</span>
-        <v-icon color="pink">mdi-heart</v-icon>
+      <v-tab 
+      
+      href="#tab-1">
+        Open
+        <v-icon color="pink">mdi-note</v-icon>
       </v-tab>
 
       <v-tab href="#tab-2">
-        <span class="mb-2">Pending</span>
-        <v-icon color="pink">mdi-heart</v-icon>
+        Pending
+        <v-icon color="pink">mdi-cart</v-icon>
       </v-tab>
 
       <v-tab href="#tab-3">
         Done
-        <v-icon color="green">euro</v-icon>
+        <v-icon color="green">mdi-checkbox-multiple-marked-circle</v-icon>
       </v-tab>
 
       <v-tab-item
