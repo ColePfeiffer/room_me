@@ -1,75 +1,77 @@
 <template>
-  <div>
-    <v-dialog v-model="showDialog" width="550">
-      <v-card class="removeScrollbar">
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-title primary-title>
-            <h3 class="headline mb-0">Room Manager</h3>
-          </v-card-title>
+  <v-dialog v-model="showDialog" width="550">
+    <v-card class="removeScrollbar">
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-card-title primary-title>
+          <h3 class="headline mb-0">Room Manager</h3>
+        </v-card-title>
 
-          <!-- bla -->
-          <v-container>
-            <v-row justify="space-around">
-              <v-col xs="12" sm="12" md="12">
-                <v-carousel height="auto" hide-delimiters show-arrows-on-hover>
-                  <v-carousel-item v-for="(room) in rooms" :key="room.id">
-                    <v-sheet height="100%">
-                      <v-row class="fill-height" align="center" justify="center">
-                        <v-card elevation="10" max-width="100%" width="280px">
-                          <v-card-title>
+        <!-- bla -->
+        <v-container>
+          <v-row justify="space-around">
+            <v-col xs="12" sm="12" md="12">
+              <v-carousel height="auto" hide-delimiters show-arrows-on-hover>
+                <v-carousel-item v-for="(room) in rooms" :key="room.id">
+                  <v-sheet height="100%">
+                    <v-row class="fill-height" align="center" justify="center">
+                      <v-card elevation="10" max-width="100%" width="280px">
+                        <v-card-title>
+                          <v-row>
+                            <v-col>{{room.name}}</v-col>
+                            <v-col class="text-right">
+                              <v-btn x-small text @click="changeView('DELETE_ROOM')">
+                                delete
+                                <v-icon right dark x-small>mdi-delete</v-icon>
+                              </v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-card-title>
+                        <v-card-text>
+                          <div class="rooms">
                             <v-row>
-                              <v-col>{{room.name}}</v-col>
+                              <v-col>
+                                <span class="currentRoomie">{{room.currentRoomie.username}}</span>
+                              </v-col>
                               <v-col class="text-right">
-                                <v-btn x-small text @click="changeView('DELETE_ROOM')">
+                                <v-btn x-small text @click="changeView('NAME')">
+                                  move out
+                                  <v-icon right dark x-small>mdi-home</v-icon>
+                                </v-btn>
+                              </v-col>
+                            </v-row>
+                            <v-row v-for="pastRoomie in room.pastRoomies" :key="pastRoomie.id">
+                              <v-col>
+                                <span class="pastRoomie">{{pastRoomie.username}}</span>
+                              </v-col>
+                              <v-col class="text-right">
+                                <v-btn x-small text @click="changeView('DELETE_USER')" n>
                                   delete
                                   <v-icon right dark x-small>mdi-delete</v-icon>
                                 </v-btn>
                               </v-col>
                             </v-row>
-                          </v-card-title>
-                          <v-card-text>
-                            <div class="rooms">
-                              <v-row>
-                                <v-col>
-                                  <span class="currentRoomie">{{room.currentRoomie.username}}</span>
-                                </v-col>
-                                <v-col class="text-right">
-                                  <v-btn x-small text @click="changeView('NAME')">
-                                    move out
-                                    <v-icon right dark x-small>mdi-home</v-icon>
-                                  </v-btn>
-                                </v-col>
-                              </v-row>
-                              <v-row v-for="pastRoomie in room.pastRoomies" :key="pastRoomie.id">
-                                <v-col>
-                                  <span class="pastRoomie">{{pastRoomie.username}}</span>
-                                </v-col>
-                                <v-col class="text-right">
-                                  <v-btn x-small text @click="changeView('DELETE_USER')">
-                                    delete
-                                    <v-icon right dark x-small>mdi-delete</v-icon>
-                                  </v-btn>
-                                </v-col>
-                              </v-row>
-                              <br />
-                            </div>
-                          </v-card-text>
-                        </v-card>
-                      </v-row>
-                    </v-sheet>
-                  </v-carousel-item>
-                </v-carousel>
-              </v-col>
-            </v-row>
-          </v-container>
+                          </div>
+                        </v-card-text>
+                      </v-card>
+                    </v-row>
+                  </v-sheet>
+                </v-carousel-item>
+              </v-carousel>
+            </v-col>
+          </v-row>
+        </v-container>
 
-          <v-container>
-            <v-row align="center" justify="center">
-              <!-- Content that can be hidden -->
+        <!-- Content that can be hidden -->
 
-              <!-- Enter room name, NAME -->
+        <!-- Enter room name, NAME -->
+        <v-container v-if="visibleField == 'NAME'">
+          <v-row align="center" justify="center">Enter name and hit create.</v-row>
+          <v-row align="center" justify="center">
+            <v-col cols="6">
               <v-text-field
-                v-if="visibleField == 'NAME'"
+                outlined
+                clearable
+                dense
                 :value="name"
                 label="Name"
                 sm="6"
@@ -80,25 +82,31 @@
                 maxlength="15"
                 required
               ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
 
-              <div
-                v-else-if="visibleField == 'DELETE_USER'"
-              >Dummy roomies aren't real roomies. They are used to complete the family tree.</div>
-              <div v-else-if="visibleField == 'DELETE_ROOM'">
-                Generate an invitatio.
-                Blubb.t, they will be asked for their code.
-              </div>
-            </v-row>
-          </v-container>
-          <v-card-actions>
-            <v-row justify="space-around">
-              <v-btn color="pink" :disabled="!valid" @click="create">Create</v-btn>
-            </v-row>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
-  </div>
+        <v-container v-else-if="visibleField == 'DELETE_USER'">
+          <v-row align="center" justify="center">Das kann nicht rückgänig gemacht werden. OK.</v-row>
+        </v-container>
+
+        <v-container v-else-if="visibleField == 'DELETE_ROOM'">
+          <v-row align="center" justify="center">Wirklich löschen?</v-row>
+        </v-container>
+        <v-card-actions>
+          <v-row justify="space-around">
+            <v-col cols="4"></v-col>
+            <v-col cols="4">
+              <v-btn color="pink" :disabled="!valid" @click="changeView('NAME')">{{ buttonLabel}}</v-btn>
+            </v-col>
+            <v-col cols="4">
+              <v-btn v-if="showCancel" color="gray" @click="changeView('NADA')">cancel</v-btn>
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-form>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -114,9 +122,11 @@ export default {
 
   data() {
     return {
+      showCancel: false,
+      buttonLabel: "new room",
       color: "#FF6F00", //dialogColor
       creationType: "INVITE",
-      // NAME, DELETE_USER, DELETE_ROOM
+      // NAME, DELETE_USER, DELETE_ROOM, NADA
       visibleField: "",
       name: "",
       roomSelection: "",
@@ -127,8 +137,20 @@ export default {
     };
   },
   methods: {
+    createNewRoom() {
+      //roomname, emit
+    },
+
+    // changes View and label of button
     changeView(viewString) {
       this.visibleField = viewString;
+      if (viewString == "NAME") {
+        this.buttonLabel = "create";
+        this.showCancel = true;
+      } else if (viewString == "NADA") {
+        this.buttonLabel = "new room";
+        this.showCancel = false;
+      }
       console.log(viewString + this.visibleField);
     },
     closeDialog() {
