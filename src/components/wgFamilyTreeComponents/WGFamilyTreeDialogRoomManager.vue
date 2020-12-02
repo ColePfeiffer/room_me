@@ -33,7 +33,7 @@
                                 <span class="currentRoomie">{{room.currentRoomie.username}}</span>
                               </v-col>
                               <v-col class="text-right">
-                                <v-btn x-small text @click="changeView('NAME')">
+                                <v-btn x-small text @click="changeView('NEW_ROOM')">
                                   move out
                                   <v-icon right dark x-small>mdi-home</v-icon>
                                 </v-btn>
@@ -64,40 +64,65 @@
         <!-- Content that can be hidden -->
 
         <!-- Enter room name, NAME -->
-        <v-container v-if="visibleField == 'NAME'">
-          <v-row align="center" justify="center">Enter name and hit create.</v-row>
+        <v-container v-if="viewState == 'NEW_ROOM'">
           <v-row align="center" justify="center">
-            <v-col cols="6">
-              <v-text-field
-                outlined
-                clearable
-                dense
-                :value="name"
-                label="Name"
-                sm="6"
-                m="6"
-                prepend-icon="mdi-account"
-                :color="color"
-                :rules="[rules.required]"
-                maxlength="15"
-                required
-              ></v-text-field>
+            <v-col cols="10">
+              <v-card class="ma-0 pa-0">
+                <v-card-text align="center">
+                  Enter name and hit create.
+                  <v-text-field
+                    class="ma-0 pa-0"
+                    outlined
+                    clearable
+                    dense
+                    :value="name"
+                    label="Name"
+                    sm="6"
+                    m="6"
+                    prepend-icon="mdi-account"
+                    :color="color"
+                    :rules="[rules.required]"
+                    maxlength="15"
+                    required
+                  ></v-text-field>
+                </v-card-text>
+              </v-card>
             </v-col>
           </v-row>
         </v-container>
 
-        <v-container v-else-if="visibleField == 'DELETE_USER'">
-          <v-row align="center" justify="center">Das kann nicht rückgänig gemacht werden. OK.</v-row>
+        <v-container v-else-if="viewState == 'DELETE_USER'">
+          <v-row align="center" justify="center">
+            <v-col cols="10">
+              <v-card>
+                <v-card-text align="center">Warning. Deleting a roomie can't be undone.</v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
         </v-container>
 
-        <v-container v-else-if="visibleField == 'DELETE_ROOM'">
-          <v-row align="center" justify="center">Wirklich löschen?</v-row>
+        <v-container v-else-if="viewState == 'DELETE_ROOM'">
+          <v-row align="center" justify="center">
+            <v-col cols="10">
+              <v-card>
+                <v-card-text align="center">
+                  Warning. This can't be undone.
+                  You are going to erase the room's history and you will delete all roomies associated with it.
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
         </v-container>
+
         <v-card-actions>
           <v-row justify="space-around">
             <v-col cols="4"></v-col>
             <v-col cols="4">
-              <v-btn color="pink" :disabled="!valid" @click="changeView('NAME')">{{ buttonLabel}}</v-btn>
+              <v-btn
+                color="pink"
+                :disabled="!valid"
+                @click="changeView('NEW_ROOM')"
+              >{{ buttonLabel}}</v-btn>
             </v-col>
             <v-col cols="4">
               <v-btn v-if="showCancel" color="gray" @click="changeView('NADA')">cancel</v-btn>
@@ -127,7 +152,7 @@ export default {
       color: "#FF6F00", //dialogColor
       creationType: "INVITE",
       // NAME, DELETE_USER, DELETE_ROOM, NADA
-      visibleField: "",
+      viewState: "NADA",
       name: "",
       roomSelection: "",
       valid: true,
@@ -142,16 +167,46 @@ export default {
     },
 
     // changes View and label of button
-    changeView(viewString) {
-      this.visibleField = viewString;
-      if (viewString == "NAME") {
-        this.buttonLabel = "create";
-        this.showCancel = true;
-      } else if (viewString == "NADA") {
-        this.buttonLabel = "new room";
-        this.showCancel = false;
+    // WIP, bug test and usage of reset
+    changeView(newState) {
+      switch (newState) {
+        case "NEW_ROOM":
+          if (this.viewState == "NADA") {
+            this.buttonLabel = "create";
+            this.showCancel = true;
+            this.viewState = newState;
+          } else if (this.viewState == "NEW_ROOM") {
+            this.reset();
+            this.createNewRoom();
+          }
+          break;
+        case "NADA":
+          this.reset();
+          break;
+        case "DELETE_ROOM":
+          this.buttonLabel = "delete";
+          this.showCancel = true;
+          this.viewState = newState;
+
+          if (this.viewState == "DELETE_ROOM") {
+            this.reset();
+            // delete Room Function
+          }
+          break;
+        case "DELETE_USER":
+          this.buttonLabel = "delete";
+          this.showCancel = true;
+          this.viewState = newState;
+          break;
+
+        default:
+          break;
       }
-      console.log(viewString + this.visibleField);
+    },
+    reset() {
+      this.buttonLabel = "new room";
+      this.showCancel = false;
+      this.viewState = "NADA";
     },
     closeDialog() {
       this.$emit("set-showDialog");

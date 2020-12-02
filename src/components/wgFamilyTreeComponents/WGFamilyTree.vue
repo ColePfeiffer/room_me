@@ -46,6 +46,7 @@
     <v-btn @click="debuggingIsMobile = !debuggingIsMobile">debug: toggle view mode</v-btn>
     <div v-if="!debuggingIsMobile">
       <!-- <div v-if="!isMobile()"> -->
+
       <!-- FOR DESKTOP VIEW -->
       <v-row justify="space-around">
         <v-col>
@@ -53,11 +54,15 @@
         </v-col>
       </v-row>
       <v-row justify="space-around">
-        <v-col v-for="i in rooms" :key="i.id" xs="6" sm="6" md="3">
-          <WGFamilyTreeRoom :room="i" :showRoomName="true"></WGFamilyTreeRoom>
-        </v-col>
+        <div v-for="(i, index) in rooms" :key="i.id">
+          <v-col xs="6" sm="6" md="3">
+            <WGFamilyTreeRoom :room="i" :showRoomName="true"></WGFamilyTreeRoom>
+          </v-col>
+          <v-col v-if="index == 1">fff</v-col>
+        </div>
       </v-row>
     </div>
+
     <!-- FOR MOBILE VIEW -->
     <div v-else>
       <v-row>
