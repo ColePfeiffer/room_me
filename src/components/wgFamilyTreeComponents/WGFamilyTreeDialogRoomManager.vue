@@ -70,6 +70,7 @@
               <v-card class="ma-0 pa-0">
                 <v-card-text align="center">
                   Enter name and hit create.
+                  <v-col cols=8>
                   <v-text-field
                     class="ma-0 pa-0"
                     outlined
@@ -84,7 +85,7 @@
                     :rules="[rules.required]"
                     maxlength="15"
                     required
-                  ></v-text-field>
+                  ></v-text-field></v-col>
                 </v-card-text>
               </v-card>
             </v-col>
