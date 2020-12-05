@@ -1,10 +1,10 @@
 <template>
   <v-main>
-    <v-row class="d-flex align-start">
-      <v-col wrap xs="12" sm="6" md="6">
+    <v-row class="align-start pa-8">
+      <v-col xs="6" sm="6" md="8">
         <WGFamilyTree :rooms="rooms"></WGFamilyTree>
       </v-col>
-      <v-col wrap xs="12" sm="6" md="6">
+      <v-col xs="6" sm="6" md="4" class="pa-10">
         <WGRules></WGRules>
       </v-col>
     </v-row>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import WGFamilyTree from "../WGFamilyTree";
+import WGFamilyTree from "../wgFamilyTreeComponents/WGFamilyTree";
 import WGRules from "../WGRules";
 
 export default {
@@ -31,6 +31,20 @@ export default {
         currentRoomie: {},
         PastRoomies: []
       },
+      dummy: {},
+      dummies: [
+        {
+          id: 19,
+          type: "DUMMY",
+          username: "David",
+          description: "Hi there!",
+          profilePicture: "https://i.imgur.com/eCG61tP.jpeg",
+          showProfilePage: false,
+          movedOut: true,
+          moveInDate: new Date(2015, 10, 15),
+          moveOutDate: new Date(2019, 5, 3)
+        }
+      ],
       rooms: [
         {
           id: "1",
@@ -48,6 +62,7 @@ export default {
             showProfilePage: false,
             isLoggedIn: true,
             movedOut: false,
+            vacationMode: false,
             moveInDate: new Date(2019, 5, 10),
             moveOutDate: new Date(2017, 5, 3)
           },
@@ -81,6 +96,7 @@ export default {
             showProfilePage: false,
             isLoggedIn: false,
             movedOut: false,
+            vacationMode: false,
             moveInDate: new Date(2017, 10, 15),
             moveOutDate: ""
           },
@@ -126,6 +142,7 @@ export default {
             showProfilePage: false,
             isLoggedIn: false,
             movedOut: false,
+            vacationMode: false,
             moveInDate: new Date(2020, 10, 15),
             moveOutDate: new Date(2017, 5, 3)
           },
@@ -170,6 +187,7 @@ export default {
             showProfilePage: false,
             isLoggedIn: false,
             movedOut: false,
+            vacationMode: false,
             moveInDate: new Date(2018, 10, 15),
             moveOutDate: new Date(2017, 5, 3)
           },
