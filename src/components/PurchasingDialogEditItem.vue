@@ -5,9 +5,9 @@
         <span class="headline">Edit item</span>
       </v-card-title>
       <v-card-text>
-        <v-container>
+ 
           <v-row>
-            <v-col cols="12" sm="6" md="4">
+            <v-col cols="12" sm="8" md="8">
               <v-text-field
                 v-model="changeData.article"
                 persistent-hint
@@ -28,7 +28,7 @@
               ></v-text-field>
             </v-col>
           </v-row>
-        </v-container>
+  
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>

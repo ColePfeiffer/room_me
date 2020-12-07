@@ -17,15 +17,15 @@
             ></v-text-field>
 
             <!-- Description -->
-            <v-text-field
-              v-model="itemDescription"
-              label="Description"
-              sm="6"
-              m="6"
-              prepend-icon="mdi-information"
-              color="#FF6F00"
-            >
-            </v-text-field>
+                 <v-text-field
+                v-model="itemDescription"
+                label="Description"
+                sm="6"
+                m="6"
+                prepend-icon="mdi-information"
+                color="#FF6F00"
+              >
+              </v-text-field>
 
             <div class="text-center">
               <v-menu v-model="itemCategory" offset-y>
@@ -47,13 +47,7 @@
               </v-menu>
             </div>
 
-            <v-text-field
-              v-model="comment"
-              label="Comment"
-              placeholder="Write a note or just a comment."
-              prepend-icon="comment"
-              color="#FF6F00"
-            ></v-text-field>
+          
           </v-col>
           <v-row justify="space-around">
             <v-btn color="gray" @click="closeDialog">Close</v-btn>
@@ -129,9 +123,10 @@ export default {
         // id needs to be generated somehow.
         // id: this.id,
         article: this.itemTitle,
-        comment: this.comment,
+
         description: this.itemDescription,
         articleCreator: this.currentUser.username,
+        currentUser: this.currentUser.username,
         avatar: this.itemAvatar,
         category: this.itemCategory,
         status: 0,

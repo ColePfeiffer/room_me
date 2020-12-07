@@ -79,6 +79,7 @@
 <script>
 import PurchasingDialogEditItem from "./PurchasingDialogEditItem";
 
+
 export default {
   name: "PurchasingTask",
   emits: [
@@ -98,9 +99,10 @@ export default {
     return {
       submittedItem: "",
       showDialogEditItem: false,
+      showDialogCashUp: false,
       completedPurchase: false,
       currentItemForCashingUp: {},
-    
+
       roomies: [
         {
           id: 0,
@@ -185,25 +187,16 @@ export default {
       console.log("itemhier" + this.item.status);
       console.log(item);
     },
-    toggleShowDialogCashUp(newState) {
-      if (this.debug) console.log("old state: " + this.showDialogCashUp);
-      this.showDialogCashUp = newState;
-      if (this.debug) console.log("new state: " + this.showDialogCashUp);
-    },
+
     toggleShowDialogEditItem(newState) {
       if (this.debug) console.log("old state: " + this.showDialogEditItem);
       this.showDialogEditItem = newState;
       if (this.debug) console.log("new state: " + this.showDialogEditItem);
     },
-    resetNewPurchase() {
-      this.newPurchase = {
-        name: "",
-        price: "",
-        comment: "",
-      };
-    },
-    setNewPurchaseName(name) {
-      this.newPurchase.name = name;
+    toggleShowDialogCashUp(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogCashUp);
+      this.showDialogCashUp = newState;
+      if (this.debug) console.log("new state: " + this.showDialogCashUp);
     },
 
     saveChangesInEditPage(item, changeData, keepAlive) {
@@ -218,6 +211,7 @@ export default {
     },
 
     cashUpItem(item) {
+      console.log("chellas");
       this.completedPurchase = false;
       this.$emit("set-newPurchaseName", item.article);
       this.$emit("toggle-dialogCashUp", true);
@@ -280,5 +274,13 @@ export default {
 .padding15 {
   padding-left: 15px;
 }
-
+.fab-text-custom {
+  position: absolute;
+  right: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+}
 </style>

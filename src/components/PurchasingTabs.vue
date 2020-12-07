@@ -1,14 +1,9 @@
 <template>
-  <v-col xs="12" sm="6" md="6" >
-    <v-tabs 
-    
-    fixed-tabs 
-     color="white" dark icons-and-text>
+  <v-col xs="12" sm="12" md="9">
+    <v-tabs fixed-tabs color="white" dark icons-and-text>
       <v-tabs-slider color="pink"></v-tabs-slider>
 
-      <v-tab 
-      
-      href="#tab-1">
+      <v-tab href="#tab-1">
         Open
         <v-icon color="pink">mdi-note</v-icon>
       </v-tab>
@@ -64,7 +59,7 @@
               <v-col class="">
                 <v-card-text class="stylingTextHeadline"
                   >No pending items yet.
-                                  </v-card-text>
+                </v-card-text>
 
                 <div class="padding15">
                   <label class="stylingTextSubtitle">
@@ -161,7 +156,6 @@ export default {
 .padding15 {
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 15px;
 }
 .stylingTextHeadline {
   font-size: 1.2rem;

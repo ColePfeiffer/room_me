@@ -1,6 +1,6 @@
 <template>
-  <v-col xs="12" sm="9" md="6">
-    <v-card class="ma-auto" max-width="444">
+  <v-col xs="12" sm="6" md="3">
+    <v-card max-width="444">
       <v-list-item>
         <v-list-item-content>
           <div class="overline">Overview</div>
@@ -35,9 +35,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <div class="text-center">
-        <v-btn color="pink" @click="toggleDialogCashUp">Split!</v-btn>
-      </div>
+     
       <br />
     </v-card>
   </v-col>

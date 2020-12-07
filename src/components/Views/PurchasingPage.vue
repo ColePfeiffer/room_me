@@ -6,8 +6,6 @@
       :roomies="roomies"
       :shoppingList="shoppingList"
       @toggle-showDialogNewArticle="toggleShowDialogNewArticle"
-  
-
     ></PurchasingDialogNewArticle>
     <v-speed-dial
       color="pink"
@@ -26,11 +24,15 @@
           <v-icon v-else>mdi-plus</v-icon>
         </v-btn>
       </template>
-
+       <v-btn fab dark small color="green" @click="showDialogCashUp = true">
+        <v-icon>mdi-plus</v-icon>
+        <div class="fab-text-custom green">Splitt article</div>
+      </v-btn>
       <v-btn fab dark small color="pink" @click="showDialogNewArticle = true">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom pink">Add article</div>
       </v-btn>
+    
     </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
@@ -41,10 +43,10 @@
         ></PurchasingTable> -->
 
         <PurchasingDialogCashUp
-          :showDialogCashUp="showDialogCashUp"
+          :showDialog="showDialogCashUp"
           :roomies="roomies"
           :newPurchase="newPurchase"
-          @toggle-dialogCashUp="toggleShowDialogCashUp"
+          @toggle-showDialogCashUp="toggleShowDialogCashUp"
           @reset-newPurchase="resetNewPurchase"
         ></PurchasingDialogCashUp>
 
@@ -73,7 +75,6 @@ export default {
     PurchasingBillingOverview,
     PurchasingDialogNewArticle,
     PurchasingDialogCashUp,
-
     PurchasingTabs,
   },
 

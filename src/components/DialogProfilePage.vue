@@ -4,44 +4,40 @@
       <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
       <v-card-text cols="12" sm="12">
         <v-row class="justify-center mt-5">
-        <div class="container">
-          <v-img
-            width="160"
-            height="160"
-            max-width="160"
-            max-height="160"
-            absolute
-            class="profile-picture ma-2 rounded-circle"
-            :src="changeData.profilePicture"
-          >
-          </v-img>
-         
-             <div>
-            <v-btn
-           fab
-              color="pink"
-              class="btn"
-              
-              
-              depressed
-              @click="onButtonClick"
+          <div class="container">
+            <v-img
+              width="160"
+              height="160"
+              max-width="160"
+              max-height="160"
+              absolute
+              class="profile-picture ma-2 rounded-circle"
+              :src="changeData.profilePicture"
             >
-              <v-icon absolute> mdi-plus </v-icon>
-             
-            </v-btn>
+            </v-img>
 
-            <input
-              ref="uploader"
-              class="d-none"
-              type="file"
-              accept="image/*"
-              v-if="roomie.isLoggedIn"
-              @change="uploadPicture"
-            />
+            <div>
+              <v-btn
+                fab
+                color="pink"
+                class="btn"
+                depressed
+                @click="onButtonClick"
+              >
+                <v-icon absolute> mdi-plus </v-icon>
+              </v-btn>
+
+              <input
+                ref="uploader"
+                class="d-none"
+                type="file"
+                accept="image/*"
+                v-if="roomie.isLoggedIn"
+                @change="uploadPicture"
+              />
+            </div>
           </div>
-        </div>
         </v-row>
-     
 
         <v-row>
           <v-col>
@@ -171,12 +167,9 @@ export default {
   color: white;
   font-size: 16px;
   padding: 12px 24px;
- 
+
   cursor: pointer;
-
 }
-
-
 </style>
 
 

@@ -90,13 +90,6 @@
                 </v-chip-group>
               </div>
 
-              <v-text-field
-                v-model="comment"
-                label="Comment"
-                placeholder="Write a note or just a comment."
-                prepend-icon="comment"
-                color="#FF6F00"
-              ></v-text-field>
             </v-col>
           </v-row>
           <v-row justify="space-around">
