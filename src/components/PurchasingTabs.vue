@@ -51,6 +51,7 @@
                 :item="item"
                 :currentUser="currentUser"
                 :shoppingList="shoppingList"
+                 @toggle-dialogCashUp="toggleShowDialogCashUp"
               ></PurchasingTask>
             </div>
           </div>
@@ -77,6 +78,7 @@
               :item="item"
               :currentUser="currentUser"
               :shoppingList="shoppingList"
+              @toggle-dialogCashUp="toggleShowDialogCashUp"
             ></PurchasingTask>
           </div>
         </div>
@@ -102,6 +104,7 @@
               :item="item"
               :currentUser="currentUser"
               :shoppingList="shoppingList"
+              @toggle-dialogCashUp="toggleShowDialogCashUp"
             ></PurchasingTask>
           </div>
         </div>
@@ -115,7 +118,7 @@ import PurchasingTask from "./PurchasingTask";
 
 export default {
   name: "PurchasingTabs",
-  emits: [],
+  emits: ["toggle-dialogCashUp"],
   props: {
     ["shoppingList"]: Array,
     ["currentUser"]: Object,
@@ -148,7 +151,12 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+       toggleShowDialogCashUp(newState) {
+          this.$emit("toggle-dialogCashUp", newState );
+    
+    },
+  },
 };
 </script>
 

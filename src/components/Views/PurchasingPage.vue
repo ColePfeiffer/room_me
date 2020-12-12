@@ -7,6 +7,7 @@
       :shoppingList="shoppingList"
       @toggle-showDialogNewArticle="toggleShowDialogNewArticle"
     ></PurchasingDialogNewArticle>
+   
     <v-speed-dial
       color="pink"
       v-model="fab"
@@ -36,11 +37,7 @@
     </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
-       <!-- <PurchasingTable
-          :shoppingList="shoppingList"
-          @toggle-dialogCashUp="toggleShowDialogCashUp"
-          @set-newPurchaseName="setNewPurchaseName"
-        ></PurchasingTable> -->
+ 
 
         <PurchasingDialogCashUp
           :showDialog="showDialogCashUp"
@@ -57,7 +54,8 @@
         ></PurchasingBillingOverview>
         <PurchasingTabs 
         :currentUser="currentUser"
-        :shoppingList="shoppingList"></PurchasingTabs>
+        :shoppingList="shoppingList"
+        @toggle-dialogCashUp="toggleShowDialogCashUp"></PurchasingTabs>
       </v-row>
     </v-container>
   </div>

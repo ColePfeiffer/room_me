@@ -23,12 +23,11 @@
                   <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
                 </v-btn>
                 <v-row>
-                 <v-card-text class="stylingTextSubtitle">
-                {{ item.description }}
-              </v-card-text>
+                  <v-card-text class="stylingTextSubtitle">
+                    {{ item.description }}
+                  </v-card-text>
                 </v-row>
-              </v-card-text>
-              </v-col
+              </v-card-text> </v-col
             ><v-col> </v-col> </v-col
           ><v-col>
             <v-row>
@@ -43,10 +42,8 @@
                       <v-btn text>
                         <v-icon @click="acceptItem(item)">mdi-check</v-icon>
                       </v-btn>
-                      <v-btn text>
-                        <v-icon @click="toggleShowDialogCashUp(true)"
-                          >euro</v-icon
-                        >
+                      <v-btn text @click="cashUpItem(item)">
+                        <v-icon>euro</v-icon>
                       </v-btn>
                     </v-col>
                   </v-card-actions>
@@ -112,7 +109,7 @@ export default {
     return {
       submittedItem: "",
       showDialogEditItem: false,
-      showDialogCashUp: false,
+
       completedPurchase: false,
       currentItemForCashingUp: {},
 
@@ -208,11 +205,6 @@ export default {
       this.showDialogEditItem = newState;
       if (this.debug) console.log("new state: " + this.showDialogEditItem);
     },
-    toggleShowDialogCashUp(newState) {
-      if (this.debug) console.log("old state: " + this.showDialogCashUp);
-      this.showDialogCashUp = newState;
-      if (this.debug) console.log("new state: " + this.showDialogCashUp);
-    },
 
     saveChangesInEditPage(item, changeData, keepAlive) {
       if (keepAlive) {
@@ -226,11 +218,10 @@ export default {
     },
 
     cashUpItem(item) {
-      console.log("chellas");
       this.completedPurchase = false;
-      this.$emit("set-newPurchaseName", item.article);
-      this.$emit("toggle-dialogCashUp", true);
       this.currentItemForCashingUp = item;
+      this.$emit("toggle-dialogCashUp", true);
+      this.$emit("set-newPurchaseName", item.article);
     },
     addItem() {
       this.shoppingList.push({
