@@ -4,17 +4,32 @@
       <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
       <v-card-text cols="12" sm="12">
         <v-row class="justify-center mt-5">
-          <v-img
-            width="160"
-            height="160"
-            max-width="160"
-            max-height="160"
-            class="profile-picture ma-2 rounded-circle"
-            :src="changeData.profilePicture"
-          >
-            <input type="file" @change="uploadPicture" accept="image/*" v-if="roomie.isLoggedIn" />
-            <v-icon>mdi-plus</v-icon>
-          </v-img>
+          <div class="container">
+            <v-img
+              width="160"
+              height="160"
+              max-width="160"
+              max-height="160"
+              absolute
+              class="profile-picture ma-2 rounded-circle"
+              :src="changeData.profilePicture"
+            ></v-img>
+
+            <div>
+              <v-btn fab color="pink" class="btn" depressed @click="onButtonClick">
+                <v-icon absolute>mdi-plus</v-icon>
+              </v-btn>
+
+              <input
+                ref="uploader"
+                class="d-none"
+                type="file"
+                accept="image/*"
+                v-if="roomie.isLoggedIn"
+                @change="uploadPicture"
+              />
+            </div>
+          </div>
         </v-row>
 
         <v-row>
@@ -45,7 +60,11 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="closeDialog">{{roomie.isLoggedIn ? "Cancel": "Close"}}</v-btn>
+        <v-btn color="primary" @click="closeDialog">
+          {{
+          roomie.isLoggedIn ? "Cancel" : "Close"
+          }}
+        </v-btn>
         <v-btn color="primary" v-if="roomie.isLoggedIn" @click="saveChanges">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -71,7 +90,21 @@ export default {
     };
   },
   methods: {
+    onButtonClick() {
+      this.isSelecting = true;
+      window.addEventListener(
+        "focus",
+        () => {
+          this.isSelecting = false;
+        },
+        { once: true }
+      );
+
+      this.$refs.uploader.click();
+    },
+
     saveChanges() {
+      console.log();
       this.$emit("save-changes", this.roomie, this.changeData);
     },
 
@@ -97,6 +130,7 @@ export default {
           // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
           // Read image as base64 and set to imageData
           this.roomie.profilePicture = e.target.result;
+          this.changeData.profilePicture = e.target.result;
           //this.profilePicture = e.target.result;
         };
         // Start the reader job - read file as a data url (base64 format)
@@ -107,5 +141,29 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.container {
+  position: relative;
+  width: 50%;
+}
+.container img {
+  width: 100%;
+  height: auto;
+}
+.container .btn {
+  position: absolute;
+  top: 80%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+
+  cursor: pointer;
+}
 </style>
+
+
+// text-none
