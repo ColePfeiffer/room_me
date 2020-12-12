@@ -5,6 +5,11 @@
       :rooms="rooms"
       @set-showDialog="showDialogForNewRoomie = false"
     ></WGFamilyTreeDialogNewRoomie>
+    <WGFamilyTreeDialogRoomManager
+      :showDialog="showDialogForRoomManager"
+      :rooms="rooms"
+      @set-showDialog="showDialogForRoomManager = false"
+    ></WGFamilyTreeDialogRoomManager>
 
     <v-speed-dial
       color="pink"
@@ -28,23 +33,20 @@
         <v-icon>mdi-help</v-icon>
         <div class="fab-text-custom orange">Help</div>
       </v-btn>
-      <v-btn fab dark small color="green" class="ma-2 white--text" @click="editFamilyTree">
+      <v-btn fab dark small color="pink" @click="showDialogForRoomManager = true">
         <v-icon>mdi-pencil</v-icon>
-        <div class="fab-text-custom green">Edit</div>
+        <div class="fab-text-custom pink">Room Manager</div>
       </v-btn>
       <v-btn fab dark small color="black" @click="showDialogForNewRoomie = true">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom black">Add roomie</div>
-      </v-btn>
-      <v-btn fab dark small color="pink" @click="showDialogForNewRoom = true">
-        <v-icon>mdi-plus</v-icon>
-        <div class="fab-text-custom pink">Add room</div>
       </v-btn>
     </v-speed-dial>
 
     <v-btn @click="debuggingIsMobile = !debuggingIsMobile">debug: toggle view mode</v-btn>
     <div v-if="!debuggingIsMobile">
       <!-- <div v-if="!isMobile()"> -->
+
       <!-- FOR DESKTOP VIEW -->
       <v-row justify="space-around">
         <v-col>
@@ -52,11 +54,15 @@
         </v-col>
       </v-row>
       <v-row justify="space-around">
-        <v-col v-for="i in rooms" :key="i.id" xs="6" sm="6" md="3">
-          <WGFamilyTreeRoom :room="i" :showRoomName="true"></WGFamilyTreeRoom>
-        </v-col>
+        <div v-for="(i, index) in rooms" :key="i.id">
+          <v-col xs="6" sm="6" md="3">
+            <WGFamilyTreeRoom :room="i" :showRoomName="true"></WGFamilyTreeRoom>
+          </v-col>
+          <v-col v-if="index == 1">fff</v-col>
+        </div>
       </v-row>
     </div>
+
     <!-- FOR MOBILE VIEW -->
     <div v-else>
       <v-row>
@@ -105,19 +111,21 @@
 <script>
 import WGFamilyTreeRoom from "./WGFamilyTreeRoom";
 import WGFamilyTreeDialogNewRoomie from "./WGFamilyTreeDialogNewRoomie";
+import WGFamilyTreeDialogRoomManager from "./WGFamilyTreeDialogRoomManager";
 
 export default {
   name: "WGFamilyTree",
   emits: [],
   components: {
     WGFamilyTreeRoom,
-    WGFamilyTreeDialogNewRoomie
+    WGFamilyTreeDialogNewRoomie,
+    WGFamilyTreeDialogRoomManager
   },
   props: { rooms: Array },
   data() {
     return {
       showDialogForNewRoomie: false,
-      showDialogForNewRoom: false,
+      showDialogForRoomManager: false,
       fab: false,
       colors: [
         "indigo",
