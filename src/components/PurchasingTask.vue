@@ -1,76 +1,92 @@
 <template>
   <!--Card on the right!, background: orange -->
 
-  <v-row dense class="paddingCards">
+  <v-row dense class="card">
     <!--Cards for shopping list:-->
-    <v-col cols="12">
+    <v-col cols="8">
       <v-card class="purchasingCards">
-        <v-col class="profileAndTitleCol">
-          <v-row>
+        <v-row>
+          <!--  -->
+          <v-col xs="6" s="6" md="3">
             <v-img
               class="profile-picture rounded-circle"
               max-width="100"
               max-height="100"
               v-bind:src="item.avatar"
             ></v-img>
-
+          </v-col>
+          <v-col xs="6" s="6" md="6">
             <v-col>
               <v-card-text class="stylingTextHeadline"
                 >{{ item.article }}
+                <v-btn text>
+                  <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
+                </v-btn>
               </v-card-text>
-            </v-col>
-          </v-row>
-          <div class="padding15">
-            <label class="stylingTextSubtitle">
-              {{ item.description }}
-            </label>
-          </div>
+              <v-card-text class="stylingTextSubtitle">
+                {{ item.description }}
+              </v-card-text> </v-col
+            ><v-col> </v-col> </v-col
+          ><v-col>
+            <v-row>
+              <v-card-text class="stylingDate">
+                {{ item.createdOn }}
+              </v-card-text>
 
-          <div class="commentBox" v-if="item.status === 3">
-            <!--If item is done, show comment:-->
-            <v-textarea
-              height="80px"
-              outlined
-              readonly
-              name="Comment"
-              :label="currentUser.username"
-              :value="item.comment"
-            ></v-textarea>
-          </div>
-          <PurchasingDialogEditItem
-            :item="item"
-            @save-changes="saveChangesInEditPage"
-            :showDialog="showDialogEditItem"
-            @toggle-showDialogEditItem="toggleShowDialogEditItem"
-          ></PurchasingDialogEditItem>
-          <div v-if="item.status === 0">
-            <v-card-actions>
-              <v-col class="text-right">
-                <v-btn text>
-                  <v-icon @click="acceptItem(item)">mdi-check</v-icon>
-                </v-btn>
-                <v-btn text>
-                  <v-icon @click="toggleShowDialogCashUp(true)">euro</v-icon>
-                </v-btn>
-                <v-btn text>
-                  <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
-                </v-btn>
-              </v-col>
-            </v-card-actions>
-          </div>
-          <div v-if="item.status === 1">
-            <v-card-actions>
-              <v-col class="text-right">
-                <v-btn text>
-                  <v-icon @click="cashUpItem(item)">euro</v-icon>
-                </v-btn>
-                <v-btn text>
-                  <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
-                </v-btn>
-              </v-col>
-            </v-card-actions>
-          </div>
-        </v-col>
+              <v-row>
+                <div v-if="item.status === 0">
+                  <v-card-actions>
+                    <v-col class="text-right">
+                      <v-btn text>
+                        <v-icon @click="acceptItem(item)">mdi-check</v-icon>
+                      </v-btn>
+                      <v-btn text>
+                        <v-icon @click="toggleShowDialogCashUp(true)"
+                          >euro</v-icon
+                        >
+                      </v-btn>
+                    </v-col>
+                  </v-card-actions>
+                </div>
+              </v-row>
+              <!--Cards when pending:-->
+              <v-row>
+                <div v-if="item.status === 1">
+                  <v-card-actions>
+                    <v-col class="text-right">
+                      <v-btn text>
+                        <v-icon @click="cashUpItem(item)">euro</v-icon>
+                      </v-btn>
+                      <v-btn text>
+                        <v-icon @click="toggleShowDialogEditItem(true)"
+                          >edit</v-icon
+                        >
+                      </v-btn>
+                    </v-col>
+                  </v-card-actions>
+                </div>
+              </v-row>
+            </v-row>
+          </v-col>
+        </v-row>
+
+        <div class="commentBox" v-if="item.status === 3">
+          <!--If item is done, show comment:-->
+          <v-textarea
+            height="80px"
+            outlined
+            readonly
+            name="Comment"
+            :label="currentUser.username"
+            :value="item.comment"
+          ></v-textarea>
+        </div>
+        <PurchasingDialogEditItem
+          :item="item"
+          @save-changes="saveChangesInEditPage"
+          :showDialog="showDialogEditItem"
+          @toggle-showDialogEditItem="toggleShowDialogEditItem"
+        ></PurchasingDialogEditItem>
       </v-card>
     </v-col>
   </v-row>
@@ -78,7 +94,6 @@
 
 <script>
 import PurchasingDialogEditItem from "./PurchasingDialogEditItem";
-
 
 export default {
   name: "PurchasingTask",
@@ -183,6 +198,8 @@ export default {
   methods: {
     acceptItem(item) {
       this.item.status = 1;
+      this.item.acceptedBy = this.currentUser.username;
+      this.item.avatar = this.currentUser.profilePicture;
       console.log("itemhier" + this.item.article);
       console.log("itemhier" + this.item.status);
       console.log(item);
@@ -236,7 +253,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .cleaningCards {
   width: 100%;
 }
@@ -247,10 +264,6 @@ export default {
   margin: 1em;
 }
 
-.profileAndTitleCol {
-  margin: 0.2em;
-  padding-top: 10px;
-}
 .stylingTextHeadline {
   font-size: 1.8rem;
 }
@@ -273,6 +286,7 @@ export default {
 }
 .padding15 {
   padding-left: 15px;
+  padding-right: 15px;
 }
 .fab-text-custom {
   position: absolute;

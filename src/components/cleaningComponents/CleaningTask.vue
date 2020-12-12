@@ -233,7 +233,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .cleaningCards {
   width: 100%;
 }

@@ -205,7 +205,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .radioRowStyling {
   padding-left: 18px;
 }

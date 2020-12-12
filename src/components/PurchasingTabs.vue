@@ -1,6 +1,9 @@
 <template>
   <v-col xs="12" sm="12" md="9">
-    <v-tabs fixed-tabs color="white" dark icons-and-text>
+  
+    <v-tabs 
+    
+    fixed-tabs color="white" dark icons-and-text>
       <v-tabs-slider color="pink"></v-tabs-slider>
 
       <v-tab href="#tab-1">
@@ -28,7 +31,7 @@
         <div v-if="i == 1">
           <div v-if="openItems.length === 0">
             <v-card class="purchasingCards">
-              <v-col class="">
+              <v-col>
                 <v-card-text class="stylingTextHeadline"
                   >No items added yet.
                 </v-card-text>
@@ -149,9 +152,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.someStyling {
+  padding: 10px;
+
+}
 .purchasingCards {
   width: 100%;
+  
 }
 .padding15 {
   padding-left: 15px;
@@ -163,5 +171,6 @@ export default {
 .stylingTextSubtitle {
   font-size: 1rem;
 }
+
 </style>
 
