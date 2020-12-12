@@ -6,7 +6,9 @@
           <CleaningCalendar></CleaningCalendar>
         </v-col>
         <v-col wrap xs="12" sm="6" md="6">
-          <CleaningTabs :currentUser="currentUser" :taskList="taskList"></CleaningTabs>
+          <CleaningTabs 
+          :currentUser="currentUser" 
+          :taskList="taskList"></CleaningTabs>
         </v-col>
       </v-row>
     </div>

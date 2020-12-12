@@ -1,12 +1,44 @@
 <template>
   <div class="purchasing">
+    <PurchasingDialogNewArticle
+      :showDialog="showDialogNewArticle"
+      :currentUser="currentUser"
+      :roomies="roomies"
+      :shoppingList="shoppingList"
+      @toggle-showDialogNewArticle="toggleShowDialogNewArticle"
+  
+
+    ></PurchasingDialogNewArticle>
+    <v-speed-dial
+      color="pink"
+      v-model="fab"
+      dark
+      small
+      absolute
+      fixed
+      bottom
+      right
+      slide-y-reverse-transition
+    >
+      <template v-slot:activator>
+        <v-btn v-model="fab" color="blue darken-2" dark fab>
+          <v-icon v-if="fab">mdi-close</v-icon>
+          <v-icon v-else>mdi-plus</v-icon>
+        </v-btn>
+      </template>
+
+      <v-btn fab dark small color="pink" @click="showDialogNewArticle = true">
+        <v-icon>mdi-plus</v-icon>
+        <div class="fab-text-custom pink">Add article</div>
+      </v-btn>
+    </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
-        <PurchasingTable
+       <!-- <PurchasingTable
           :shoppingList="shoppingList"
           @toggle-dialogCashUp="toggleShowDialogCashUp"
           @set-newPurchaseName="setNewPurchaseName"
-        ></PurchasingTable>
+        ></PurchasingTable> -->
 
         <PurchasingDialogCashUp
           :showDialogCashUp="showDialogCashUp"
@@ -29,39 +61,35 @@
 
 <script>
 import PurchasingBillingOverview from "../PurchasingBillingOverview";
-import PurchasingTable from "../PurchasingTable";
+
 import PurchasingTabs from "../PurchasingTabs";
 
 // Dialogs
 import PurchasingDialogCashUp from "../PurchasingDialogCashUp";
+import PurchasingDialogNewArticle from "../PurchasingDialogNewArticle";
 
 export default {
   components: {
     PurchasingBillingOverview,
+    PurchasingDialogNewArticle,
     PurchasingDialogCashUp,
-    PurchasingTable,
-    PurchasingTabs
+
+    PurchasingTabs,
   },
-  methods: {
-    toggleShowDialogCashUp(newState) {
-      if (this.debug) console.log("old state: " + this.showDialogCashUp);
-      this.showDialogCashUp = newState;
-      if (this.debug) console.log("new state: " + this.showDialogCashUp);
-    },
-    resetNewPurchase() {
-      this.newPurchase = {
-        name: "",
-        price: "",
-        comment: ""
-      };
-    },
-    setNewPurchaseName(name) {
-      this.newPurchase.name = name;
-    }
-  },
-  computed: {},
+
   data() {
     return {
+      fab: false,
+      colors: [
+        "indigo",
+        "warning",
+        "pink darken-2",
+        "red lighten-1",
+        "deep-purple accent-4",
+      ],
+
+      model: 0,
+      showDialogNewArticle: false,
       showDialogCashUp: false,
       currentUser: {
         id: 0,
@@ -72,7 +100,7 @@ export default {
         balance: +3,
         balancePlus: true,
         selected: true,
-        color: "#1F85DE"
+        color: "#1F85DE",
       },
       currencySymbol: " €",
       debug: true,
@@ -84,7 +112,7 @@ export default {
       shoppingList: [],
       /* shoppingList: [
         {
-          article: "Spüli",
+          title: "Spüli",
           // Status: 0 - offen, 1 - pending,
           price: 0,
           status: 0,
@@ -145,7 +173,7 @@ export default {
           selected: true,
           color: "#1F85DE",
           showProfilePage: false,
-          isLoggedIn: true
+          isLoggedIn: true,
         },
         {
           id: 1,
@@ -158,7 +186,7 @@ export default {
           selected: true,
           color: "#DE591F",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 2,
@@ -171,7 +199,7 @@ export default {
           selected: true,
           color: "#BDA0EC",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 3,
@@ -184,11 +212,34 @@ export default {
           selected: true,
           color: "#EBE386",
           showProfilePage: false,
-          isLoggedIn: false
-        }
-      ]
+          isLoggedIn: false,
+        },
+      ],
     };
   },
+  methods: {
+    toggleShowDialogCashUp(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogCashUp);
+      this.showDialogCashUp = newState;
+      if (this.debug) console.log("new state: " + this.showDialogCashUp);
+    },
+    resetNewPurchase() {
+      this.newPurchase = {
+        name: "",
+        price: "",
+        comment: "",
+      };
+    },
+    setNewPurchaseName(name) {
+      this.newPurchase.name = name;
+    },
+    toggleShowDialogNewArticle(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogNewArticle);
+      this.showDialogNewArticle = newState;
+      if (this.debug) console.log("new state: " + this.showDialogNewArticle);
+    },
+  },
+  computed: {},
 };
 </script>
 

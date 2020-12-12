@@ -1,8 +1,8 @@
 <template>
-  <v-dialog v-model="item.showEditDialog" persistent max-width="500">
+  <v-dialog v-model="showDialog" persistent max-width="500">
     <v-card>
       <v-card-title>
-        <span class="headline">Edit Item</span>
+        <span class="headline">Edit item</span>
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -22,7 +22,7 @@
             </v-col>
             <v-col v-if="disabled === false" cols="12">
               <v-text-field
-                v-model="commentBox"
+                v-model="comment"
                 :disabled="disabled"
                 label="Inform your roomies about your latest changing."
               ></v-text-field>
@@ -44,11 +44,13 @@ export default {
   name: "PurchasingDialogEditItem",
 
   props: {
-    ["item"]: Object
+    ["item"]: Object,
+    showDialog: Boolean,
   },
-  emits: ["save-changes"],
+  emits: ["save-changes", "toggle-showDialogEditItem"],
   data() {
     return {
+      comment: "",
       changeData: {
         article: this.item.article
       },
@@ -58,12 +60,15 @@ export default {
   methods: {
     saveChanges() {
       this.$emit("save-changes", this.item, this.changeData, this.disabled);
+      this.closeDialog();
     },
     closeDialog() {
-      this.item.showEditDialog = false;
+       this.$emit("toggle-showDialogEditItem", false);
+
       // reset displayed data to item/shoppingList data
       this.changeData.article = this.item.article;
-    }
+    },
+       
   }
 };
 </script>
