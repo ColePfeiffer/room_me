@@ -2,7 +2,7 @@
   <v-main>
     <v-row class="align-start pa-8">
       <v-col xs="6" sm="6" md="8">
-        <WGFamilyTree :rooms="rooms"></WGFamilyTree>
+        <WGFamilyTree :rooms="rooms" @create-new-room="createNewRoom"></WGFamilyTree>
       </v-col>
       <v-col xs="6" sm="6" md="4" class="pa-10">
         <WGRules></WGRules>
@@ -22,15 +22,9 @@ export default {
     WGFamilyTree,
     WGRules
   },
-  props: {},
+  props: [],
   data() {
     return {
-      room: {
-        id: "",
-        name: "",
-        currentRoomie: {},
-        PastRoomies: []
-      },
       dummy: {},
       dummies: [
         {
@@ -299,7 +293,18 @@ export default {
       ]
     };
   },
-  methods: {}
+  methods: {
+    createNewRoom(roomName) {
+      console.log("yolo" + roomName);
+
+      this.rooms.push({
+        id: "123",
+        name: roomName,
+        currentRoomie: "EMPTY",
+        pastRoomies: new Array()
+      });
+    }
+  }
 };
 </script>
 

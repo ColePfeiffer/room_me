@@ -9,6 +9,7 @@
       :showDialog="showDialogForRoomManager"
       :rooms="rooms"
       @set-showDialog="showDialogForRoomManager = false"
+      @create-new-room="createNewRoom"
     ></WGFamilyTreeDialogRoomManager>
 
     <v-speed-dial
@@ -115,13 +116,13 @@ import WGFamilyTreeDialogRoomManager from "./WGFamilyTreeDialogRoomManager";
 
 export default {
   name: "WGFamilyTree",
-  emits: [],
+  emits: ["create-new-room"],
   components: {
     WGFamilyTreeRoom,
     WGFamilyTreeDialogNewRoomie,
     WGFamilyTreeDialogRoomManager
   },
-  props: { rooms: Array },
+  props: { rooms: Array, roomName: String },
   data() {
     return {
       showDialogForNewRoomie: false,
@@ -142,8 +143,8 @@ export default {
     editFamilyTree() {
       // opens dialog
     },
-    addNewRoom() {
-      // opens dialog
+    createNewRoom(roomName) {
+      this.$emit('create-new-room', roomName)
     },
     isMobile() {
       if (

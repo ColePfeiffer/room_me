@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="showDialog" persistent width="500">
+    <v-dialog :value="showDialog" persistent width="500">
       <v-card>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-title primary-title>
