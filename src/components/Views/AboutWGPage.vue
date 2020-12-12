@@ -202,103 +202,14 @@ export default {
               moveOutDate: new Date(2018, 5, 3)
             }
           ]
-        } /*
-        {
-          id: "5",
-          name: "room 5",
-          currentRoomie:             {
-              id: 3,
-              username: "Tim",
-              description: "",
-              profilePicture:
-                "https://images.unsplash.com/photo-1516210673878-84fa2173547b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-              balance: 0,
-              balancePlus: true,
-              selected: true,
-              color: "#EBE386",
-              showProfilePage: false,
-              isLoggedIn: false,
-              movedOut: false,
-              moveInDate: new Date(2015, 10, 15),
-              moveOutDate: new Date(2017, 5, 3)
-            },
-          pastRoomies: [
-            {
-              id: 0,
-              username: "Marlon",
-              description: "Hi there!",
-              profilePicture: "https://i.imgur.com/0y9cTae.gif",
-              balance: +3,
-              balancePlus: true,
-              selected: true,
-              color: "#1F85DE",
-              showProfilePage: false,
-              isLoggedIn: true,
-              movedOut: true,
-              moveInDate: new Date(2013, 10, 15),
-              moveOutDate: new Date(2017, 5, 3)
-            },
-            {
-              id: 1,
-              username: "Max",
-              description: "Möpp",
-              profilePicture: "https://i.imgur.com/8fS7ZkO.gif",
-              balance: -3,
-              balancePlus: false,
-              selected: true,
-              color: "#DE591F",
-              showProfilePage: false,
-              isLoggedIn: false,
-              movedOut: false,
-              moveInDate: new Date(2015, 10, 15),
-              moveOutDate: new Date(2017, 5, 3)
-            }
-          ]
-        },
-        {
-          name: "room 6",
-          roomies: [
-            {
-              id: 0,
-              username: "Marlon",
-              description: "Hi there!",
-              profilePicture: "https://i.imgur.com/0y9cTae.gif",
-              balance: +3,
-              balancePlus: true,
-              selected: true,
-              color: "#1F85DE",
-              showProfilePage: false,
-              isLoggedIn: true,
-              movedOut: true,
-              moveInDate: new Date(2013, 10, 15),
-              moveOutDate: new Date(2017, 5, 3)
-            },
-            {
-              id: 1,
-              username: "Max",
-              description: "Möpp",
-              profilePicture: "https://i.imgur.com/8fS7ZkO.gif",
-              balance: -3,
-              balancePlus: false,
-              selected: true,
-              color: "#DE591F",
-              showProfilePage: false,
-              isLoggedIn: false,
-              movedOut: false,
-              moveInDate: new Date(2015, 10, 15),
-              moveOutDate: new Date(2017, 5, 3)
-            }
-          ]
-        }*/
+        }
       ]
     };
   },
   methods: {
     createNewRoom(roomName) {
-      console.log("yolo" + roomName);
-
       this.rooms.push({
-        id: "123",
+        id: Math.floor(Math.random() * Date.now()),
         name: roomName,
         currentRoomie: "EMPTY",
         pastRoomies: new Array()
