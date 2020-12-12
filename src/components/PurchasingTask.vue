@@ -22,10 +22,13 @@
                 <v-btn text>
                   <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
                 </v-btn>
-              </v-card-text>
-              <v-card-text class="stylingTextSubtitle">
+                <v-row>
+                 <v-card-text class="stylingTextSubtitle">
                 {{ item.description }}
-              </v-card-text> </v-col
+              </v-card-text>
+                </v-row>
+              </v-card-text>
+              </v-col
             ><v-col> </v-col> </v-col
           ><v-col>
             <v-row>
@@ -53,14 +56,9 @@
               <v-row>
                 <div v-if="item.status === 1">
                   <v-card-actions>
-                    <v-col class="text-right">
+                    <v-col class="text-left">
                       <v-btn text>
                         <v-icon @click="cashUpItem(item)">euro</v-icon>
-                      </v-btn>
-                      <v-btn text>
-                        <v-icon @click="toggleShowDialogEditItem(true)"
-                          >edit</v-icon
-                        >
                       </v-btn>
                     </v-col>
                   </v-card-actions>
