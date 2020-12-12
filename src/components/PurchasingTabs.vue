@@ -1,14 +1,12 @@
 <template>
-  <v-col xs="12" sm="6" md="6" >
+  <v-col xs="12" sm="12" md="9">
+  
     <v-tabs 
     
-    fixed-tabs 
-     color="white" dark icons-and-text>
+    fixed-tabs color="white" dark icons-and-text>
       <v-tabs-slider color="pink"></v-tabs-slider>
 
-      <v-tab 
-      
-      href="#tab-1">
+      <v-tab href="#tab-1">
         Open
         <v-icon color="pink">mdi-note</v-icon>
       </v-tab>
@@ -33,7 +31,7 @@
         <div v-if="i == 1">
           <div v-if="openItems.length === 0">
             <v-card class="purchasingCards">
-              <v-col class="">
+              <v-col>
                 <v-card-text class="stylingTextHeadline"
                   >No items added yet.
                 </v-card-text>
@@ -53,6 +51,7 @@
                 :item="item"
                 :currentUser="currentUser"
                 :shoppingList="shoppingList"
+                 @toggle-dialogCashUp="toggleShowDialogCashUp"
               ></PurchasingTask>
             </div>
           </div>
@@ -64,7 +63,7 @@
               <v-col class="">
                 <v-card-text class="stylingTextHeadline"
                   >No pending items yet.
-                                  </v-card-text>
+                </v-card-text>
 
                 <div class="padding15">
                   <label class="stylingTextSubtitle">
@@ -79,6 +78,7 @@
               :item="item"
               :currentUser="currentUser"
               :shoppingList="shoppingList"
+              @toggle-dialogCashUp="toggleShowDialogCashUp"
             ></PurchasingTask>
           </div>
         </div>
@@ -104,6 +104,7 @@
               :item="item"
               :currentUser="currentUser"
               :shoppingList="shoppingList"
+              @toggle-dialogCashUp="toggleShowDialogCashUp"
             ></PurchasingTask>
           </div>
         </div>
@@ -117,7 +118,7 @@ import PurchasingTask from "./PurchasingTask";
 
 export default {
   name: "PurchasingTabs",
-  emits: [],
+  emits: ["toggle-dialogCashUp"],
   props: {
     ["shoppingList"]: Array,
     ["currentUser"]: Object,
@@ -150,18 +151,27 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+       toggleShowDialogCashUp(newState) {
+          this.$emit("toggle-dialogCashUp", newState );
+    
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
+.someStyling {
+  padding: 10px;
+
+}
 .purchasingCards {
   width: 100%;
+  
 }
 .padding15 {
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 15px;
 }
 .stylingTextHeadline {
   font-size: 1.2rem;
@@ -169,5 +179,6 @@ export default {
 .stylingTextSubtitle {
   font-size: 1rem;
 }
+
 </style>
 

@@ -1,28 +1,19 @@
 <template>
-  <v-main>
-    <div class="d-flex align-start">
-      <v-row class="fill-height pa-15">
-        <v-col wrap xs="12" sm="6" md="6">
-          <CleaningCalendar></CleaningCalendar>
-        </v-col>
-        <v-col wrap xs="12" sm="6" md="6">
+  <div class="cleaning">
+        <v-col  xs="12" sm="9" md="9">
           <CleaningTabs 
           :currentUser="currentUser" 
           :taskList="taskList"></CleaningTabs>
         </v-col>
-      </v-row>
-    </div>
-  </v-main>
+  </div>
 </template>
 
 <script>
-import CleaningCalendar from "../cleaningComponents/CleaningCalendar";
 import CleaningTabs from "../cleaningComponents/CleaningTabs";
 
 
 export default {
   components: {
-    CleaningCalendar,
     CleaningTabs,
   
   },

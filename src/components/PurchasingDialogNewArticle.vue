@@ -2,67 +2,79 @@
   <div>
     <v-dialog v-model="showDialog" persistent width="500">
       <v-card>
-        <v-card-title class="headline ighten-2">Add new article</v-card-title>
-        <v-card-text cols="12" sm="12">
-          <v-col cols="12" sm="12">
-            <!-- Name -->
-            <v-text-field
-              v-model="itemTitle"
-              sm="12"
-              m="12"
-              label="Product"
-              :counter="15"
-              prepend-icon="add_shopping_cart"
-              color="#FF6F00"
-            ></v-text-field>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-card-title class="headline">Add new article</v-card-title>
+          <v-card-text cols="12" sm="12">
+            <v-col cols="12" sm="12">
+              <v-row xs="12" sm="6" m="6">
+                <!-- Name -->
+                <v-text-field
+                  v-model="itemTitle"
+                  sm="12"
+                  m="12"
+                  label="Product"
+                  :counter="15"
+                  :rules="[rules.required]"
+                  required
+                  prepend-icon="add_shopping_cart"
+                  color="#FF6F00"
+                ></v-text-field>
 
-            <!-- Description -->
-            <v-text-field
-              v-model="itemDescription"
-              label="Description"
-              sm="6"
-              m="6"
-              prepend-icon="mdi-information"
-              color="#FF6F00"
-            >
-            </v-text-field>
+                <!-- Created On Date -->
+                <v-text-field
+                  :value="timestamp"
+                  label="Created date"
+                  sm="6"
+                  m="6"
+                  color="pink"
+                  prepend-icon="mdi-calendar"
+                >
+                </v-text-field>
 
-            <div class="text-center">
-              <v-menu v-model="itemCategory" offset-y>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                    Dropdown
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item
-                    v-for="(category, index) in categories"
-                    :key="index"
-                  >
-                    <v-list-item-title @click="selectCategory(category)">{{
-                      category.title
-                    }}</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </div>
-
-            <v-text-field
-              v-model="comment"
-              label="Comment"
-              placeholder="Write a note or just a comment."
-              prepend-icon="comment"
-              color="#FF6F00"
-            ></v-text-field>
-          </v-col>
-          <v-row justify="space-around">
-            <v-btn color="gray" @click="closeDialog">Close</v-btn>
-            <v-btn color="pink" @click="addNewItem" v-model="submittedItem"
-              >Save</v-btn
-            >
-          </v-row>
-        </v-card-text>
-        <v-card-actions></v-card-actions>
+                <!-- Description -->
+                <v-text-field
+                  v-model="itemDescription"
+                  label="Description"
+                  sm="6"
+                  m="6"
+                  :counter="30"
+                  :rules="[rules.required]"
+                  required
+                  prepend-icon="mdi-information"
+                  color="#FF6F00"
+                >
+                </v-text-field>
+                <div class="paddingTop">
+                  <v-menu v-model="itemCategory" offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn color="pink" dark v-bind="attrs" v-on="on">
+                        {{ dropdownTitel }}
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item
+                        v-for="(category, index) in categories"
+                        :key="index"
+                      >
+                        <v-list-item-title @click="selectCategory(category)">{{
+                          category.title
+                        }}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </v-row>
+              <!-- Description -->
+            </v-col>
+            <v-row justify="space-around">
+              <v-btn color="pink" :disabled="!valid" @click="create"
+                >Save</v-btn
+              >
+              <v-btn color="gray" @click="closeDialog">Close</v-btn>
+            </v-row>
+          </v-card-text>
+          <v-card-actions></v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
   </div>
@@ -82,11 +94,14 @@ export default {
   },
   data() {
     return {
+      valid: true,
+      timestamp: new Date().toISOString().substr(0, 10),
+      dropdownTitel: "Select category",
       submittedItem: "",
       itemTitle: "",
       comment: "",
       itemDescription: "",
-      itemCategory: "",
+      itemCategory: "Select category",
       itemAvatar:
         "https://images.unsplash.com/photo-1516246843873-9d12356b6fab?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8Nnx8cXVlc3Rpb24lMjBtYXJrfGVufDB8fDB8&auto=format&fit=crop&w=500&q=60",
       categories: [
@@ -111,16 +126,18 @@ export default {
             "https://images.unsplash.com/photo-1494962227006-107baac595eb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mzh8fGRyaW5rc3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
         },
       ],
+      rules: {
+        required: (value) => !!value || "Required.",
+      },
     };
   },
   methods: {
     selectCategory(category) {
-      
+      this.dropdownTitel = category.title;
       this.itemCategory = category.title;
       this.itemAvatar = category.avatar;
-
-
     },
+
     addNewItem() {
       // Für Task Vorweg 50
       // this.item.id = LatestId + 1
@@ -129,9 +146,10 @@ export default {
         // id needs to be generated somehow.
         // id: this.id,
         article: this.itemTitle,
-        comment: this.comment,
         description: this.itemDescription,
         articleCreator: this.currentUser.username,
+        currentUser: this.currentUser.username,
+        createdOn: this.timestamp,
         avatar: this.itemAvatar,
         category: this.itemCategory,
         status: 0,
@@ -139,17 +157,33 @@ export default {
       this.$emit("saveNewItem", this.item);
       this.closeDialog();
     },
+    create() {
+      // if this returns true, all required fields are filled out
+      if (this.$refs.form.validate()) {
+        this.addNewItem();
+      } else {
+        alert("Oh no");
+      }
+    },
+
     closeDialog() {
       this.$emit("toggle-showDialogNewArticle", false);
       this.comment = "";
       this.itemTitle = "";
-      this.description = "";
-      this.articleCreator = this.currentUser.username;
+      this.itemDescription = "";
+      this.articleCreator = "";
+      this.itemAvatar =
+        "https://images.unsplash.com/photo-1516246843873-9d12356b6fab?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8Nnx8cXVlc3Rpb24lMjBtYXJrfGVufDB8fDB8&auto=format&fit=crop&w=500&q=60";
+      this.itemCategory = this.dropdownTitel;
     },
   },
 };
 </script>
-<style>
+<style scoped>
+.paddingTop {
+  padding-top: 15px;
+  padding-left: 15px;
+}
 .radioRowStyling {
   padding-left: 18px;
 }

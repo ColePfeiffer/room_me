@@ -233,7 +233,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .cleaningCards {
   width: 100%;
 }
@@ -267,5 +267,14 @@ export default {
   font-size: 1.1rem;
 
   font-weight: bold;
+}
+.fab-text-custom {
+  position: absolute;
+  right: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
 }
 </style>

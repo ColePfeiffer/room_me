@@ -1,16 +1,18 @@
 <template>
-  <v-container justify-center>
-    <v-tabs class="cleaningTabs" background-color="dark" centered dark icons-and-text>
+  <v-col xs="12" sm="12" md="9">
+    <v-tabs fixed-tabs color="white" dark icons-and-text>
+      <v-tabs-slider color="pink"></v-tabs-slider>
+
       <v-tabs-slider></v-tabs-slider>
 
       <v-tab href="#tab-1">
         Task
-        <v-icon>mdi-broom</v-icon>
+        <v-icon color="pink">mdi-note</v-icon>
       </v-tab>
 
       <v-tab href="#tab-2">
-        Log
-        <v-icon>mdi-heart</v-icon>
+        Done
+        <v-icon color="green">mdi-checkbox-multiple-marked-circle</v-icon>
       </v-tab>
 
       <v-tab-item
@@ -21,7 +23,19 @@
       >
         <div v-if="i == 1">
           <div v-if="openTasks.length === 0 && pendingTasks.length === 0">
-            <v-card>No open or pending tasks yet.</v-card>
+            <v-card class="purchasingCards">
+              <v-col>
+                <v-card-text class="stylingTextHeadline"
+                  >No open or pending items added yet.
+                </v-card-text>
+
+                <div class="padding15">
+                  <label class="stylingTextSubtitle">
+                    Click on button in the right corner to add a new item.
+                  </label>
+                </div>
+              </v-col>
+            </v-card>
           </div>
           <div v-else>
             <div v-for="item in openTasks" :key="item.id">
@@ -35,20 +49,31 @@
         </div>
         <div v-if="i == 2">
           <div v-if="doneTasks.length === 0">
-            <v-card-text>No items pending yet.</v-card-text>
+            <v-card class="purchasingCards">
+              <v-col>
+                <v-card-text class="stylingTextHeadline"
+                  >No tasks done so far.
+                </v-card-text>
+
+                <div class="padding15">
+                  <label class="stylingTextSubtitle">
+                    Check a task as finished to see it in this overview.
+                  </label>
+                </div>
+              </v-col>
+            </v-card>
           </div>
           <div v-for="item in doneTasks" :key="item.id">
             <CleaningTask
               :item="item"
               :currentUser="currentUser"
-                  :taskList="taskList"
-  
+              :taskList="taskList"
             ></CleaningTask>
           </div>
         </div>
       </v-tab-item>
     </v-tabs>
-  </v-container>
+  </v-col>
 </template>
 
 <script>
@@ -92,14 +117,23 @@ export default {
 };
 </script>
 
-<style>
-.cleaningTabs {
-  width: 400px;
-}
+<style scoped>
 
 .someStyling {
   padding: 10px;
-  background-color: rgba(25, 25, 25, 0.1);
+}
+.purchasingCards {
+  width: 100%;
+}
+.padding15 {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.stylingTextHeadline {
+  font-size: 1.2rem;
+}
+.stylingTextSubtitle {
+  font-size: 1rem;
 }
 </style>
 

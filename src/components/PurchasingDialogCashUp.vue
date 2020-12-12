@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="showDialogCashUp" persistent width="500">
+    <v-dialog v-model="showDialog" persistent width="500">
       <v-card>
         <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
         <v-card-text cols="12" sm="12">
@@ -67,15 +67,14 @@
 <script>
 export default {
   name: "PurchasingDialogCashUp",
-  emits: ["toggle-dialogCashUp", "reset-newPurchase"],
+  emits: ["toggle-showDialogCashUp", "reset-newPurchase"],
   props: {
-    showDialogCashUp: Boolean,
+    showDialog: Boolean,
     ["roomies"]: Array,
     newPurchase: Object
   },
   data() {
     return {
-      localShowDialog: this.showDialogCashUp,
       // Regex for Pricerange:
       numberRule: v => {
         if (!v.trim()) return true;

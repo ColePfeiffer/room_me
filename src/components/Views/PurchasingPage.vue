@@ -6,9 +6,8 @@
       :roomies="roomies"
       :shoppingList="shoppingList"
       @toggle-showDialogNewArticle="toggleShowDialogNewArticle"
-  
-
     ></PurchasingDialogNewArticle>
+   
     <v-speed-dial
       color="pink"
       v-model="fab"
@@ -26,25 +25,25 @@
           <v-icon v-else>mdi-plus</v-icon>
         </v-btn>
       </template>
-
+       <v-btn fab dark small color="green" @click="showDialogCashUp = true">
+        <v-icon>mdi-plus</v-icon>
+        <div class="fab-text-custom green">Splitt article</div>
+      </v-btn>
       <v-btn fab dark small color="pink" @click="showDialogNewArticle = true">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom pink">Add article</div>
       </v-btn>
+    
     </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
-       <!-- <PurchasingTable
-          :shoppingList="shoppingList"
-          @toggle-dialogCashUp="toggleShowDialogCashUp"
-          @set-newPurchaseName="setNewPurchaseName"
-        ></PurchasingTable> -->
+ 
 
         <PurchasingDialogCashUp
-          :showDialogCashUp="showDialogCashUp"
+          :showDialog="showDialogCashUp"
           :roomies="roomies"
           :newPurchase="newPurchase"
-          @toggle-dialogCashUp="toggleShowDialogCashUp"
+          @toggle-showDialogCashUp="toggleShowDialogCashUp"
           @reset-newPurchase="resetNewPurchase"
         ></PurchasingDialogCashUp>
 
@@ -53,7 +52,10 @@
           :currencySymbol="currencySymbol"
           @toggle-dialogCashUp="toggleShowDialogCashUp"
         ></PurchasingBillingOverview>
-        <PurchasingTabs :shoppingList="shoppingList"></PurchasingTabs>
+        <PurchasingTabs 
+        :currentUser="currentUser"
+        :shoppingList="shoppingList"
+        @toggle-dialogCashUp="toggleShowDialogCashUp"></PurchasingTabs>
       </v-row>
     </v-container>
   </div>
@@ -73,7 +75,6 @@ export default {
     PurchasingBillingOverview,
     PurchasingDialogNewArticle,
     PurchasingDialogCashUp,
-
     PurchasingTabs,
   },
 
@@ -250,5 +251,14 @@ export default {
 
 .balance-minus {
   color: red;
+}
+.fab-text-custom {
+  position: absolute;
+  right: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
 }
 </style>
