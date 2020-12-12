@@ -13,7 +13,7 @@
 
 <script>
 import WGFamilyTree from "../wgFamilyTreeComponents/WGFamilyTree";
-import WGRules from "../wgFamilyTreeComponents/WGRules";
+import WGRules from "../WGRules";
 
 export default {
   name: "AboutWGPage",

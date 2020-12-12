@@ -7,7 +7,9 @@
         class="d-flex justify-center align-center"
         style="background-color: #a83250;"
       >
-        <div>{{room.name}}</div>
+        <div>
+          <quick-edit id="name" v-model="room.name"></quick-edit>
+        </div>
       </v-col>
     </v-row>
 
@@ -34,12 +36,14 @@
 
 <script>
 import WGFamilyTreeRoomie from "./WGFamilyTreeRoomie";
+import QuickEdit from "vue-quick-edit";
 
 export default {
   name: "WGFamilyTreeRoom",
   emits: [],
   components: {
-    WGFamilyTreeRoomie
+    WGFamilyTreeRoomie,
+    QuickEdit
   },
   props: { room: Object, showRoomName: Boolean },
   data() {
@@ -67,5 +71,10 @@ export default {
   position: relative;
   left: 50%;
   top: 0;
+}
+
+.vue-quick-edit__link--is-clickable {
+  color: white !important;
+  border-style: hidden !important;
 }
 </style>
