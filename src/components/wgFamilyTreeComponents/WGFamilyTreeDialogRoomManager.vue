@@ -159,7 +159,7 @@ export default {
       },
 
       // Data
-      roomName: "nameeee"
+      roomName: "room " + (this.rooms.length+1)
     };
   },
   methods: {
