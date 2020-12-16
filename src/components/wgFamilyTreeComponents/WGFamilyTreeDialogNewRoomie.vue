@@ -11,7 +11,7 @@
           <v-card-text cols="12" sm="12">
             <!-- Enter name -->
             <v-text-field
-              :value="name"
+              v-model="name"
               label="Name"
               sm="6"
               m="6"
@@ -28,6 +28,7 @@
               :color="color"
               name="roomSelection"
               item-text="name"
+              item-value="id"
               label="Select room"
               prepend-icon="mdi-square-outline"
               :rules="[rules.required]"
@@ -50,7 +51,7 @@
           <v-card-actions>
             <v-row justify="space-around">
               <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
-              <v-btn color="pink" :disabled="!valid" @click="create">Create</v-btn>
+              <v-btn color="pink" :disabled="!valid" @click="createRoomie">Create</v-btn>
             </v-row>
           </v-card-actions>
         </v-form>
@@ -86,13 +87,16 @@ export default {
     closeDialog() {
       this.$emit("set-showDialog");
     },
-    create() {
+    createRoomie() {
       // if this returns true, all required fields are filled out
       if (this.$refs.form.validate()) {
         if (this.creationType == "INVITE") {
           console.log("generate code");
         } else if (this.creationType == "DUMMY") {
           console.log("created dummy");
+
+          // emit to parent, with room id
+          this.$emit("create-dummy", [this.roomSelection, this.name]);
         }
       }
     }
