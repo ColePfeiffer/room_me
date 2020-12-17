@@ -52,10 +52,10 @@
               </v-chip>
             </v-row>
           </v-chip-group>
-
-          <v-row class="justify-center">
-            <v-btn color="primary" @click="closeDialog">Close</v-btn>
-            <v-btn color="#FF6F00" justify-center @click="addPurchase">Split!</v-btn>
+          <br />
+          <v-row justify="space-around">
+            <v-btn color="pink" @click="addPurchase">Split</v-btn>
+            <v-btn color="gray" @click="closeDialog">Close</v-btn>
           </v-row>
         </v-card-text>
         <v-card-actions></v-card-actions>
@@ -66,8 +66,8 @@
 
 <script>
 export default {
-  name: "PurchasingDialogCashUp",
-  emits: ["toggle-showDialogCashUp", "reset-newPurchase"],
+  name: "PurchasingDialogSplit",
+  emits: ["show-Dialog-Split", "reset-newPurchase"],
   props: {
     showDialog: Boolean,
     ["roomies"]: Array,
@@ -75,6 +75,7 @@ export default {
   },
   data() {
     return {
+      debug: true,
       // Regex for Pricerange:
       numberRule: v => {
         if (!v.trim()) return true;
@@ -101,38 +102,42 @@ export default {
     },
     closeDialog() {
       this.localShowDialog = false;
-      this.$emit("toggle-dialogCashUp", false);
+      this.$emit("show-Dialog-Split", false);
       this.$emit("reset-newPurchase");
       // reset displayed data to roomies data
     },
     addPurchase() {
-      //let vn = this;
+      // create list of involved roomies
+      let involvedRoomies = [];
+      for (let i = 0; i < this.roomies.length; i++) {
+        if (this.roomies[i].selected) {
+          involvedRoomies.push(this.roomies[i]);
+        }
+      }
 
-      if (this.debug) console.log("Preis: " + this.newPurchase.price);
+      if (this.debug) console.log("Total Cost: " + this.newPurchase.price);
+
+      // Calculating price for each roomie
+      let priceEach = (this.newPurchase.price / involvedRoomies.length).toFixed(
+        2
+      );
+      if (this.debug) console.log("Individual Price: ", priceEach);
+
+      // Verrechnen
 
       // hide dialoge
-      this.localShowDialog = false;
-      this.$emit("toggle-dialogCashUp", false);
-      this.$emit("reset-newPurchase");
+      this.closeDialog();
 
       /*
-      var sharedByNumber = 0;
+      
       // var buyer
       var individualPrice;
 
       // count selected roomies to determine divider
-      this.roomies.forEach(function(roomie) {
-        if (roomie.selected) {
-          sharedByNumber = sharedByNumber + 1;
-        }
-      });
+  
 
       // calculate individual price
-      if (this.debug === true) console.log("Divided by", sharedByNumber);
-      individualPrice = this.newPurchase.price / sharedByNumber;
-      individualPrice = individualPrice.toFixed(2);
-      if (this.debug === true)
-        console.log("Individual Price: ", individualPrice);
+
 
     
       this.roomies.forEach(function(roomie) {

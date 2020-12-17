@@ -7,7 +7,7 @@
       :shoppingList="shoppingList"
       @toggle-showDialogNewArticle="toggleShowDialogNewArticle"
     ></PurchasingDialogNewArticle>
-   
+
     <v-speed-dial
       color="pink"
       v-model="fab"
@@ -25,37 +25,27 @@
           <v-icon v-else>mdi-plus</v-icon>
         </v-btn>
       </template>
-       <v-btn fab dark small color="green" @click="showDialogCashUp = true">
+      <v-btn fab dark small color="green" @click="showDialogSplit = true">
         <v-icon>mdi-plus</v-icon>
-        <div class="fab-text-custom green">Splitt article</div>
+        <div class="fab-text-custom green">Split costs</div>
       </v-btn>
       <v-btn fab dark small color="pink" @click="showDialogNewArticle = true">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom pink">Add article</div>
       </v-btn>
-    
     </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
- 
-
-        <PurchasingDialogCashUp
-          :showDialog="showDialogCashUp"
+        <PurchasingDialogSplit
+          :showDialog="showDialogSplit"
           :roomies="roomies"
           :newPurchase="newPurchase"
-          @toggle-showDialogCashUp="toggleShowDialogCashUp"
+          @show-Dialog-Split="toggleDialogSplit"
           @reset-newPurchase="resetNewPurchase"
-        ></PurchasingDialogCashUp>
+        ></PurchasingDialogSplit>
 
-        <PurchasingBillingOverview
-          :roomies="roomies"
-          :currencySymbol="currencySymbol"
-          @toggle-dialogCashUp="toggleShowDialogCashUp"
-        ></PurchasingBillingOverview>
-        <PurchasingTabs 
-        :currentUser="currentUser"
-        :shoppingList="shoppingList"
-        @toggle-dialogCashUp="toggleShowDialogCashUp"></PurchasingTabs>
+        <PurchasingBillingOverview :roomies="roomies" :currencySymbol="currencySymbol"></PurchasingBillingOverview>
+        <PurchasingTabs :currentUser="currentUser" :shoppingList="shoppingList"></PurchasingTabs>
       </v-row>
     </v-container>
   </div>
@@ -67,15 +57,15 @@ import PurchasingBillingOverview from "../PurchasingBillingOverview";
 import PurchasingTabs from "../PurchasingTabs";
 
 // Dialogs
-import PurchasingDialogCashUp from "../PurchasingDialogCashUp";
+import PurchasingDialogSplit from "../PurchasingDialogSplit";
 import PurchasingDialogNewArticle from "../PurchasingDialogNewArticle";
 
 export default {
   components: {
     PurchasingBillingOverview,
     PurchasingDialogNewArticle,
-    PurchasingDialogCashUp,
-    PurchasingTabs,
+    PurchasingDialogSplit,
+    PurchasingTabs
   },
 
   data() {
@@ -86,12 +76,12 @@ export default {
         "warning",
         "pink darken-2",
         "red lighten-1",
-        "deep-purple accent-4",
+        "deep-purple accent-4"
       ],
 
       model: 0,
       showDialogNewArticle: false,
-      showDialogCashUp: false,
+      showDialogSplit: false,
       currentUser: {
         id: 0,
         username: "Chris",
@@ -101,14 +91,14 @@ export default {
         balance: +3,
         balancePlus: true,
         selected: true,
-        color: "#1F85DE",
+        color: "#1F85DE"
       },
       currencySymbol: " €",
       debug: true,
       newPurchase: {
         name: "",
         price: "",
-        comment: "",
+        comment: ""
       },
       shoppingList: [],
       /* shoppingList: [
@@ -174,7 +164,7 @@ export default {
           selected: true,
           color: "#1F85DE",
           showProfilePage: false,
-          isLoggedIn: true,
+          isLoggedIn: true
         },
         {
           id: 1,
@@ -187,7 +177,7 @@ export default {
           selected: true,
           color: "#DE591F",
           showProfilePage: false,
-          isLoggedIn: false,
+          isLoggedIn: false
         },
         {
           id: 2,
@@ -200,7 +190,7 @@ export default {
           selected: true,
           color: "#BDA0EC",
           showProfilePage: false,
-          isLoggedIn: false,
+          isLoggedIn: false
         },
         {
           id: 3,
@@ -213,34 +203,34 @@ export default {
           selected: true,
           color: "#EBE386",
           showProfilePage: false,
-          isLoggedIn: false,
-        },
-      ],
+          isLoggedIn: false
+        }
+      ]
     };
   },
   methods: {
-    toggleShowDialogCashUp(newState) {
-      if (this.debug) console.log("old state: " + this.showDialogCashUp);
-      this.showDialogCashUp = newState;
-      if (this.debug) console.log("new state: " + this.showDialogCashUp);
-    },
-    resetNewPurchase() {
-      this.newPurchase = {
-        name: "",
-        price: "",
-        comment: "",
-      };
-    },
-    setNewPurchaseName(name) {
-      this.newPurchase.name = name;
+    toggleDialogSplit(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogSplit);
+      this.showDialogSplit = newState;
+      if (this.debug) console.log("new state: " + this.showDialogSplit);
     },
     toggleShowDialogNewArticle(newState) {
       if (this.debug) console.log("old state: " + this.showDialogNewArticle);
       this.showDialogNewArticle = newState;
       if (this.debug) console.log("new state: " + this.showDialogNewArticle);
     },
+    resetNewPurchase() {
+      this.newPurchase = {
+        name: "",
+        price: "",
+        comment: ""
+      };
+    },
+    setNewPurchaseName(name) {
+      this.newPurchase.name = name;
+    }
   },
-  computed: {},
+  computed: {}
 };
 </script>
 

@@ -50,11 +50,11 @@
               </section>
               <v-col class="radioRowStyling">
                 <section class="fontStyling">
-                  <input type="radio" v-model="switchSelected" v-bind:value="true" />
+                  <input type="radio" v-model="isNewOrderSelected" v-bind:value="true" />
                   New order
                   <input
                     type="radio"
-                    v-model="switchSelected"
+                    v-model="isNewOrderSelected"
                     v-bind:value="false"
                   />
                   Standard Order
@@ -62,7 +62,7 @@
               </v-col>
 
               <!-- Roomie Chip if usser selects to switch their task:-->
-              <div v-if="switchSelected === true">
+              <div v-if="isNewOrderSelected === true">
                 <v-chip-group column multiple active-class="primary--text">
                   <div class="mx-2" v-for="(roomie, index) in roomies" :key="roomie.id">
                     <v-chip
@@ -78,6 +78,9 @@
                   </div>
                 </v-chip-group>
               </div>
+              <div
+                v-else
+              >The standard order moves on for each task created, so that tasks will be distributed fairly.</div>
             </v-col>
           </v-row>
           <v-row justify="space-around">
@@ -128,7 +131,7 @@ export default {
       },
       debug: true,
       submittedTask: "",
-      switchSelected: false,
+      isNewOrderSelected: false,
       showDialogSelectedTaskDate: false,
       timestamp: new Date().toISOString().substr(0, 10),
       comment: "",
@@ -152,9 +155,22 @@ export default {
     toggleSelectedTaskDate(newState) {
       this.showDialogSelectedTaskDate = newState;
     },
+
     addNewTask() {
       // set new order
-      this.createNewOrder();
+      if (this.isNewOrderSelected) {
+        this.createNewOrder();
+      } else {
+        // need a way to access standard order from WGRules
+        /*
+        // standard order abrufen
+        this.order = this.standardOrder;
+        // Standard Order anpassen, sodass der erste Roomie nach hinten rutscht
+        move(this.standardOrder, 0, this.standardOrder.length)
+        */
+        if (this.debug)
+          console.log("Standard Order selected. Not yet implemented.");
+      }
 
       // Für Task Vorweg 50
       // this.item.id = LatestId + 1
@@ -184,6 +200,23 @@ export default {
       this.currentUser = "";
     },
 
+    move(arr, old_index, new_index) {
+      while (old_index < 0) {
+        old_index += arr.length;
+      }
+      while (new_index < 0) {
+        new_index += arr.length;
+      }
+      if (new_index >= arr.length) {
+        var k = new_index - arr.length;
+        while (k-- + 1) {
+          arr.push(undefined);
+        }
+      }
+      arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+      return arr;
+    },
+
     selectRoomie(roomie, index) {
       if (!roomie.selected) {
         console.log("roomie deselected");
@@ -211,23 +244,6 @@ export default {
         }
       }
       if (this.debug) console.log("New order created:", this.order);
-    },
-
-    move(arr, old_index, new_index) {
-      while (old_index < 0) {
-        old_index += arr.length;
-      }
-      while (new_index < 0) {
-        new_index += arr.length;
-      }
-      if (new_index >= arr.length) {
-        var k = new_index - arr.length;
-        while (k-- + 1) {
-          arr.push(undefined);
-        }
-      }
-      arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-      return arr;
     }
   }
 };
