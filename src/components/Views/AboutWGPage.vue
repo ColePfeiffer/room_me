@@ -2,11 +2,7 @@
   <v-main>
     <v-row class="align-start pa-8">
       <v-col xs="6" sm="6" md="8">
-        <WGFamilyTree
-          :rooms="rooms"
-          @create-new-room="createNewRoom"
-          @create-dummy="createDummy"
-        ></WGFamilyTree>
+        <WGFamilyTree :rooms="rooms" @create-new-room="createNewRoom" @create-dummy="createDummy"></WGFamilyTree>
       </v-col>
       <v-col xs="6" sm="6" md="4" class="pa-10">
         <WGRules></WGRules>
@@ -24,12 +20,11 @@ export default {
   emits: [],
   components: {
     WGFamilyTree,
-    WGRules,
+    WGRules
   },
   props: [],
   data() {
     return {
-      dummy: {},
       dummies: [
         {
           id: 19,
@@ -40,8 +35,8 @@ export default {
           showProfilePage: false,
           movedOut: true,
           moveInDate: new Date(2015, 10, 15),
-          moveOutDate: new Date(2019, 5, 3),
-        },
+          moveOutDate: new Date(2019, 5, 3)
+        }
       ],
       rooms: [
         {
@@ -62,7 +57,7 @@ export default {
             movedOut: false,
             vacationMode: false,
             moveInDate: new Date(2019, 5, 10),
-            moveOutDate: new Date(2017, 5, 3),
+            moveOutDate: new Date(2017, 5, 3)
           },
           pastRoomies: [
             {
@@ -74,11 +69,11 @@ export default {
               showProfilePage: false,
               movedOut: true,
               moveInDate: new Date(2015, 10, 15),
-              moveOutDate: new Date(2019, 5, 3),
-            },
-          ],
-        },
-      ],
+              moveOutDate: new Date(2019, 5, 3)
+            }
+          ]
+        }
+      ]
       /*
       rooms: [
         {
@@ -253,35 +248,39 @@ export default {
         id: Math.floor(Math.random() * Date.now()),
         name: roomName,
         currentRoomie: "EMPTY",
-        pastRoomies: new Array(),
+        pastRoomies: new Array()
       });
     },
-    createDummy(array){
+    createDummy(array) {
+      let roomSelection = array[0];
+      let dummyName = array[1];
+      let dummyId = Math.floor(Math.random() * Date.now());
+
       // create dummy
-      // method 1
-      // add dummy to dummy list 
-      // add dummy to selected Room or set a reference within the room
-
-      // method 2
-      // simply add dummy to room directly
-
       let dummy = {
-          id: 19,
-          type: "DUMMY",
-          username: dummyName,
-          description: "Hi there!",
-          profilePicture: "https://i.imgur.com/eCG61tP.jpeg",
-          showProfilePage: false,
-          movedOut: true,
-          moveInDate: new Date(2015, 10, 15),
-          moveOutDate: new Date(2019, 5, 3)};
+        id: dummyId,
+        type: "DUMMY",
+        username: dummyName,
+        description: "No description",
+        profilePicture: "https://i.gifer.com/T7n8.gif",
+        showProfilePage: false,
+        movedOut: false,
+        moveInDate: new Date(),
+        moveOutDate: ""
+      };
 
+      //push to dummy array
+      this.dummies.push(dummy);
 
-      var roomSelection = array[0];
-      var dummyName = array[1];
-      console.log("blubb", array, roomSelection, dummyName, dummy);
+      // add dummy to selected Room or set a reference within the room
+      // add dummy as currentRoomie
+      let currentRoomieRef = this.rooms.find(room => room.id === roomSelection)
+        .currentRoomie;
+
+      console.log(currentRoomieRef);
+      currentRoomieRef = dummy;
     }
-  },
+  }
 };
 </script>
 
