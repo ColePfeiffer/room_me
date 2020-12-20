@@ -18,7 +18,7 @@
           <v-col xs="6" s="6" md="6">
             <v-col>
               <v-card-text class="stylingTextHeadline"
-                >{{ item.article }}
+                >{{ item.name }}
                 <v-btn text>
                   <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
                 </v-btn>
@@ -195,7 +195,7 @@ export default {
       this.item.status = 1;
       this.item.acceptedBy = this.currentUser.username;
       this.item.avatar = this.currentUser.profilePicture;
-      console.log("itemhier" + this.item.article);
+      console.log("itemhier" + this.item.name);
       console.log("itemhier" + this.item.status);
       console.log(item);
     },
@@ -208,7 +208,7 @@ export default {
 
     saveChangesInEditPage(item, changeData, keepAlive) {
       if (keepAlive) {
-        item.article = changeData.article;
+        item.name = changeData.name;
       } else {
         const position = this.shoppingList.indexOf(item);
         console.log(position);
@@ -221,11 +221,11 @@ export default {
       this.completedPurchase = false;
       this.currentItemForCashingUp = item;
       this.$emit("toggle-dialogCashUp", true);
-      this.$emit("set-newPurchaseName", item.article);
+      this.$emit("set-newPurchaseName", item.name);
     },
     addItem() {
       this.shoppingList.push({
-        article: this.submittedItem,
+        name: this.submittedItem,
         status: 0,
         showEditDialog: false,
       });

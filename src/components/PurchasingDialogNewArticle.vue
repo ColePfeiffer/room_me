@@ -141,11 +141,11 @@ export default {
     addNewItem() {
       // Für Task Vorweg 50
       // this.item.id = LatestId + 1
-      console.log("Iwas??");
+      console.log("Adding new item to list");
       this.shoppingList.push({
         // id needs to be generated somehow.
         // id: this.id,
-        article: this.itemTitle,
+        name: this.itemTitle,
         description: this.itemDescription,
         articleCreator: this.currentUser.username,
         currentUser: this.currentUser.username,

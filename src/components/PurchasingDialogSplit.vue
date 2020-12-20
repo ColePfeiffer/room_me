@@ -70,7 +70,7 @@
 <script>
 export default {
   name: "PurchasingDialogSplit",
-  emits: ["show-Dialog-Split", "reset-newPurchase"],
+  emits: ["show-Dialog-Split", "reset-newPurchase", "add-Purchased-Item-To-List"],
   props: {
     showDialog: Boolean,
     ["roomies"]: Array,
@@ -113,10 +113,6 @@ export default {
       this.roomies.forEach(function (roomie) {
         roomie.selected = true;
       });
-
-      this.newPurchase.name = "";
-      this.newPurchase.price = "";
-      this.newPurchase.comment = "";
     },
     addPurchase() {
       // create list of involved roomies
@@ -143,6 +139,7 @@ export default {
         involvedRoomies[i].balance = involvedRoomies[i].balance - priceEach;
       }
 
+      this.$emit("add-Purchased-Item-To-List", [this.newPurchase.name, this.newPurchase.price]);
         /*
         this.openItems.forEach((element) => {
           if (element === this.currentItemForCashingUp) {

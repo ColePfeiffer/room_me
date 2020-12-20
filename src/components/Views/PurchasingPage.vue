@@ -15,6 +15,7 @@
       :currentUser="currentUser"
       @show-Dialog-Split="toggleDialogSplit"
       @reset-newPurchase="resetNewPurchase"
+      @add-Purchased-Item-To-List="addPurchasedItemToList"
     ></PurchasingDialogSplit>
 
     <v-speed-dial
@@ -59,8 +60,8 @@
 </template>
 
 <script>
+// Views
 import PurchasingBillingOverview from "../PurchasingBillingOverview";
-
 import PurchasingTabs from "../PurchasingTabs";
 
 // Dialogs
@@ -95,6 +96,14 @@ export default {
         name: "",
         price: "",
         comment: "",
+        description: "",
+        articleCreatedBy: "",
+        articleAcceptedBy: "",
+        articlePurchasedBy: "",
+        createdOn: "",
+        avatar: "",
+        category: "",
+        status: 0,
       },
       shoppingList: [],
       roomies: [
@@ -164,12 +173,28 @@ export default {
       this.showDialogNewArticle = newState;
       if (this.debug) console.log("new state: " + this.showDialogNewArticle);
     },
+    addPurchasedItemToList(list) {
+      this.newPurchase.status = 2;
+      this.newPurchase.name = list[0];
+      this.newPurchase.price = list[1];
+      console.log(list[0]);
+      this.shoppingList.push(this.newPurchase);
+      this.resetNewPurchase();
+    },
     resetNewPurchase() {
       this.newPurchase = {
         name: "",
         price: "",
         comment: "",
-      };
+        description: "",
+        articleCreatedBy: "",
+        articleAcceptedBy: "",
+        articlePurchasedBy: "",
+        createdOn: "",
+        avatar: "",
+        category: "",
+        status: 0,
+      }
     },
     setNewPurchaseName(name) {
       this.newPurchase.name = name;
@@ -178,7 +203,7 @@ export default {
   computed: {
     currentUser() {
       // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/find
-      return this.roomies.find( roomie => roomie.isLoggedIn === true);
+      return this.roomies.find((roomie) => roomie.isLoggedIn === true);
     },
   },
 };
