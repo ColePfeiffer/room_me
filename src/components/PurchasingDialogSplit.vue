@@ -2,7 +2,9 @@
   <div>
     <v-dialog v-model="showDialog" persistent width="500">
       <v-card>
-        <v-card-title class="headline ighten-2">Add your bought supplies here</v-card-title>
+        <v-card-title class="headline ighten-2"
+          >Add your bought supplies here</v-card-title
+        >
         <v-card-text cols="12" sm="12">
           <v-row>
             <v-col>
@@ -48,7 +50,8 @@
                 <v-avatar left>
                   <v-img v-bind:src="roomie.profilePicture"></v-img>
                 </v-avatar>
-                <strong>{{ roomie.username }}</strong>&nbsp;
+                <strong>{{ roomie.username }}</strong
+                >&nbsp;
               </v-chip>
             </v-row>
           </v-chip-group>
@@ -71,22 +74,23 @@ export default {
   props: {
     showDialog: Boolean,
     ["roomies"]: Array,
-    newPurchase: Object
+    newPurchase: Object,
+    currentUser: Object,
   },
   data() {
     return {
       debug: true,
       // Regex for Pricerange:
-      numberRule: v => {
+      numberRule: (v) => {
         if (!v.trim()) return true;
         if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
         return "Number has to be between 0 and 999";
-      }
+      },
     };
   },
   methods: {
     selectRoomie(selected_roomie) {
-      this.roomies.forEach(function(roomie, index) {
+      this.roomies.forEach(function (roomie, index) {
         if (roomie == selected_roomie) {
           roomie.selected = !roomie.selected;
           console.log(roomie.selected, index);
@@ -115,15 +119,21 @@ export default {
         }
       }
 
-      if (this.debug) console.log("Total Cost: " + this.newPurchase.price);
+      let price = parseFloat(this.newPurchase.price);
+      if (this.debug) console.log("Total Cost: " + price);
 
-      // Calculating price for each roomie
-      let priceEach = (this.newPurchase.price / involvedRoomies.length).toFixed(
+      // Calculating price each roomie involved has to pay
+      let priceEach = parseFloat((price / involvedRoomies.length).toFixed(
         2
-      );
+      ));
       if (this.debug) console.log("Individual Price: ", priceEach);
 
-      // Verrechnen
+      // Calculating the new balance
+      this.currentUser.balance = parseFloat(this.currentUser.balance+price);
+
+      for (let i = 0; i < involvedRoomies.length; i++) {
+        involvedRoomies[i].balance = involvedRoomies[i].balance - priceEach;
+      }
 
       // hide dialoge
       this.closeDialog();
@@ -150,7 +160,7 @@ export default {
       // checks if this dialog was opened via the cash up-option
 
       if (this.completedPurchase === false) {
-        this.openItems.forEach(element => {
+        this.openItems.forEach((element) => {
           if (element === this.currentItemForCashingUp) {
             element.acceptedBy = this.currentUser.username;
             element.boughtBy = this.currentUser.username;
@@ -161,7 +171,7 @@ export default {
       }
 
       // reset everything
-      this.roomies.forEach(function(roomie) {
+      this.roomies.forEach(function (roomie) {
         roomie.selected = true;
       });
 
@@ -171,7 +181,7 @@ export default {
 
       if (this.debug) console.log("Split!");
       this.completedPurchase = true;
-    }
-  }
+    },
+  },
 };
 </script>

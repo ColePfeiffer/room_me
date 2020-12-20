@@ -8,6 +8,15 @@
       @toggle-showDialogNewArticle="toggleShowDialogNewArticle"
     ></PurchasingDialogNewArticle>
 
+    <PurchasingDialogSplit
+      :showDialog="showDialogSplit"
+      :roomies="roomies"
+      :newPurchase="newPurchase"
+      :currentUser="currentUser"
+      @show-Dialog-Split="toggleDialogSplit"
+      @reset-newPurchase="resetNewPurchase"
+    ></PurchasingDialogSplit>
+
     <v-speed-dial
       color="pink"
       v-model="fab"
@@ -36,16 +45,14 @@
     </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
-        <PurchasingDialogSplit
-          :showDialog="showDialogSplit"
+        <PurchasingBillingOverview
           :roomies="roomies"
-          :newPurchase="newPurchase"
-          @show-Dialog-Split="toggleDialogSplit"
-          @reset-newPurchase="resetNewPurchase"
-        ></PurchasingDialogSplit>
-
-        <PurchasingBillingOverview :roomies="roomies" :currencySymbol="currencySymbol"></PurchasingBillingOverview>
-        <PurchasingTabs :currentUser="currentUser" :shoppingList="shoppingList"></PurchasingTabs>
+          :currencySymbol="currencySymbol"
+        ></PurchasingBillingOverview>
+        <PurchasingTabs
+          :currentUser="currentUser"
+          :shoppingList="shoppingList"
+        ></PurchasingTabs>
       </v-row>
     </v-container>
   </div>
@@ -65,7 +72,7 @@ export default {
     PurchasingBillingOverview,
     PurchasingDialogNewArticle,
     PurchasingDialogSplit,
-    PurchasingTabs
+    PurchasingTabs,
   },
 
   data() {
@@ -76,29 +83,18 @@ export default {
         "warning",
         "pink darken-2",
         "red lighten-1",
-        "deep-purple accent-4"
+        "deep-purple accent-4",
       ],
 
       model: 0,
       showDialogNewArticle: false,
       showDialogSplit: false,
-      currentUser: {
-        id: 0,
-        username: "Chris",
-        description: "Hi there!",
-        profilePicture:
-          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        balance: +3,
-        balancePlus: true,
-        selected: true,
-        color: "#1F85DE"
-      },
       currencySymbol: " €",
       debug: true,
       newPurchase: {
         name: "",
         price: "",
-        comment: ""
+        comment: "",
       },
       shoppingList: [],
       /* shoppingList: [
@@ -159,12 +155,12 @@ export default {
           description: "Hi there!",
           profilePicture:
             "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: +3,
+          balance: 0,
           balancePlus: true,
           selected: true,
           color: "#1F85DE",
           showProfilePage: false,
-          isLoggedIn: true
+          isLoggedIn: true,
         },
         {
           id: 1,
@@ -172,12 +168,12 @@ export default {
           description: "Möpp",
           profilePicture:
             "https://images.unsplash.com/photo-1457131760772-7017c6180f05?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: -3,
+          balance: 0,
           balancePlus: false,
           selected: true,
           color: "#DE591F",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 2,
@@ -190,7 +186,7 @@ export default {
           selected: true,
           color: "#BDA0EC",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 3,
@@ -203,9 +199,9 @@ export default {
           selected: true,
           color: "#EBE386",
           showProfilePage: false,
-          isLoggedIn: false
-        }
-      ]
+          isLoggedIn: false,
+        },
+      ],
     };
   },
   methods: {
@@ -223,14 +219,19 @@ export default {
       this.newPurchase = {
         name: "",
         price: "",
-        comment: ""
+        comment: "",
       };
     },
     setNewPurchaseName(name) {
       this.newPurchase.name = name;
-    }
+    },
   },
-  computed: {}
+  computed: {
+    currentUser() {
+      // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+      return this.roomies.find( roomie => roomie.isLoggedIn === true);
+    },
+  },
 };
 </script>
 
