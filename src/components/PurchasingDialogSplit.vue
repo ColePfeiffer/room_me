@@ -108,7 +108,15 @@ export default {
       this.localShowDialog = false;
       this.$emit("show-Dialog-Split", false);
       this.$emit("reset-newPurchase");
-      // reset displayed data to roomies data
+
+      // reset everything
+      this.roomies.forEach(function (roomie) {
+        roomie.selected = true;
+      });
+
+      this.newPurchase.name = "";
+      this.newPurchase.price = "";
+      this.newPurchase.comment = "";
     },
     addPurchase() {
       // create list of involved roomies
@@ -135,31 +143,7 @@ export default {
         involvedRoomies[i].balance = involvedRoomies[i].balance - priceEach;
       }
 
-      // hide dialoge
-      this.closeDialog();
-
-      /*
-      
-      // var buyer
-      var individualPrice;
-
-      // count selected roomies to determine divider
-  
-
-      // calculate individual price
-
-
-    
-      this.roomies.forEach(function(roomie) {
-        if (roomie.selected) {
-          roomie.balance = parseInt(roomie.balance) + individualPrice;
-          if (vn.this.debug) console.log(roomie.balance);
-        }
-      });
-      */
-      // checks if this dialog was opened via the cash up-option
-
-      if (this.completedPurchase === false) {
+        /*
         this.openItems.forEach((element) => {
           if (element === this.currentItemForCashingUp) {
             element.acceptedBy = this.currentUser.username;
@@ -167,20 +151,14 @@ export default {
             if (this.debug) console.log(this.currentUser.username);
             element.status = 2;
           }
-        });
-      }
+        });*/
+  
 
-      // reset everything
-      this.roomies.forEach(function (roomie) {
-        roomie.selected = true;
-      });
+      // hide dialoge
+      this.closeDialog();
 
-      this.newPurchase.name = "";
-      this.newPurchase.price = "";
-      this.newPurchase.comment = "";
 
-      if (this.debug) console.log("Split!");
-      this.completedPurchase = true;
+      if (this.debug) console.log("Split complete!");
     },
   },
 };

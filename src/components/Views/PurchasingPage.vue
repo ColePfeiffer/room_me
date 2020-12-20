@@ -97,57 +97,6 @@ export default {
         comment: "",
       },
       shoppingList: [],
-      /* shoppingList: [
-        {
-          title: "Spüli",
-          // Status: 0 - offen, 1 - pending,
-          price: 0,
-          status: 0,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Müllsäcke",
-          price: 0,
-          status: 0,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Ingwerbröd",
-          price: 0,
-          status: 0,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Aluhut",
-          price: 0,
-          status: 1,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Seife",
-          price: 0,
-          status: 1,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        },
-        {
-          article: "Wlan Repeater",
-          price: 2.7,
-          status: 99,
-          acceptedBy: "",
-          boughtBy: "",
-          declinedBy: []
-        }
-],*/
       roomies: [
         {
           id: 0,
