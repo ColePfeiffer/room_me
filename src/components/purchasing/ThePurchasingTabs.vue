@@ -74,12 +74,13 @@
             </v-card>
           </div>
           <div v-for="item in pendingItems" :key="item.id">
-            <PurchasingTask
+                        <PurchasingTask
               :item="item"
               :currentUser="currentUser"
               :shoppingList="shoppingList"
               @toggle-dialogCashUp="toggleShowDialogCashUp"
             ></PurchasingTask>
+
           </div>
         </div>
 
@@ -100,12 +101,10 @@
             </v-card>
           </div>
           <div v-for="item in doneItems" :key="item.id">
-            <PurchasingTask
-              :item="item"
-              :currentUser="currentUser"
-              :shoppingList="shoppingList"
-              @toggle-dialogCashUp="toggleShowDialogCashUp"
-            ></PurchasingTask>
+            <BoughtCard
+              :article="item"
+              :currencySymbol="currencySymbol"
+            ></BoughtCard>
           </div>
         </div>
       </v-tab-item>
@@ -115,6 +114,7 @@
 
 <script>
 import PurchasingTask from "./PurchasingTask";
+import BoughtCard from "./BoughtCard";
 
 export default {
   name: "PurchasingTabs",
@@ -123,9 +123,11 @@ export default {
     ["shoppingList"]: Array,
     ["currentUser"]: Object,
     ["item"]: Object,
+    ["currencySymbol"]: String
   },
   components: {
     PurchasingTask,
+    BoughtCard
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen

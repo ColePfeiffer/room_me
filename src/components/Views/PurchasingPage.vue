@@ -5,7 +5,7 @@
       :currentUser="currentUser"
       :roomies="roomies"
       :shoppingList="shoppingList"
-      @toggle-showDialogNewArticle="toggleShowDialogNewArticle"
+      @toggle-showDialogNewArticle="toggleDialogNewArticle"
     ></DialogNewArticle>
 
     <DialogSplitCosts
@@ -14,7 +14,7 @@
       :currentUser="currentUser"
       @show-Dialog-Split="toggleDialogSplit"
       @reset-newArticle="resetnewArticle"
-      @add-Purchased-Item-To-List="addPurchasedItemToList"
+      @add-Article="addArticle"
     ></DialogSplitCosts>
 
     <v-speed-dial
@@ -36,43 +36,41 @@
       </template>
       <v-btn fab dark small color="green" @click="showDialogSplit = true">
         <v-icon>mdi-plus</v-icon>
-        <div class="fab-text-custom green">Split costs</div>
+        <div class="fab-text-custom green">Add bought item</div>
       </v-btn>
       <v-btn fab dark small color="pink" @click="showDialogNewArticle = true">
         <v-icon>mdi-plus</v-icon>
-        <div class="fab-text-custom pink">Add article</div>
+        <div class="fab-text-custom pink">Add to shopping list</div>
       </v-btn>
     </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
-        <BalanceBoard
+        <TheBalanceBoard
           :roomies="roomies"
           :currencySymbol="currencySymbol"
-        ></BalanceBoard>
-        <PurchasingTabs
+        ></TheBalanceBoard>
+        <ThePurchasingTabs
           :currentUser="currentUser"
           :shoppingList="shoppingList"
-        ></PurchasingTabs>
+          :currencySymbol = "currencySymbol"
+        ></ThePurchasingTabs>
       </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
-// Views
-import BalanceBoard from "../purchasing/BalanceBoard";
-import PurchasingTabs from "../purchasing/PurchasingTabs";
-
-// Dialogs
+import TheBalanceBoard from "../purchasing/TheBalanceBoard";
+import ThePurchasingTabs from "../purchasing/ThePurchasingTabs";
 import DialogSplitCosts from "../purchasing/DialogSplitCosts";
 import DialogNewArticle from "../purchasing/DialogNewArticle";
 
 export default {
   components: {
-    BalanceBoard,
+    TheBalanceBoard,
     DialogNewArticle,
     DialogSplitCosts,
-    PurchasingTabs,
+    ThePurchasingTabs,
   },
 
   data() {
@@ -96,15 +94,14 @@ export default {
         price: "",
         description: "",
         comment: "",
-        createdOn: "", 
-        createdBy: "",   // ref or id
-        acceptedBy: "",  // ref or id
+        createdOn: "",
+        createdBy: "", // ref or id
+        acceptedBy: "", // ref or id
         purchasedBy: "", // ref or id
         avatar: "",
         category: "",
         status: 0,
       },
-      shoppingList: [],
       roomies: [
         {
           id: 0,
@@ -159,6 +156,34 @@ export default {
           isLoggedIn: false,
         },
       ],
+      shoppingList: [
+        {
+          name: "seife",
+          price: "3.50",
+          comment: "blubber war teuer.",
+          createdOn: "",
+          createdBy: "", // ref or id
+          acceptedBy: "", // ref or id
+          purchasedBy: "Hannah", // ref or id
+          avatar:
+            "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+          category: "",
+          status: 2,
+        },
+        {
+          name: "mülltüten",
+          price: "4",
+          comment: "",
+          createdOn: "",
+          createdBy: "",
+          acceptedBy: "", // ref or id
+          purchasedBy: "Rufus",
+          avatar:
+            "https://images.unsplash.com/photo-1517423568366-8b83523034fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+          category: "",
+          status: 2,
+        },
+      ],
     };
   },
   methods: {
@@ -167,17 +192,21 @@ export default {
       this.showDialogSplit = newState;
       if (this.debug) console.log("new state: " + this.showDialogSplit);
     },
-    toggleShowDialogNewArticle(newState) {
+    toggleDialogNewArticle(newState) {
       if (this.debug) console.log("old state: " + this.showDialogNewArticle);
       this.showDialogNewArticle = newState;
       if (this.debug) console.log("new state: " + this.showDialogNewArticle);
     },
-    addPurchasedItemToList(list) {
-      this.newArticle.status = 2;
-      this.newArticle.name = list[0];
-      this.newArticle.price = list[1];
-      console.log(list[0]);
-      this.shoppingList.push(this.newArticle);
+    addArticle({ newArticle, status }) {
+      console.log(newArticle, status);
+      newArticle.createdOn = "";
+      newArticle.createdBy = this.currentUser;
+      newArticle.acceptedBy = this.currentUser;
+      newArticle.purchasedBy = this.currentUser;
+      // avatar, category
+      newArticle.status = status;
+
+      this.shoppingList.push(newArticle);
       this.resetnewArticle();
     },
     resetnewArticle() {

@@ -10,7 +10,7 @@
             <v-col>
               <v-row class="mx-2">
                 <v-text-field
-                  v-model="articleName"
+                  v-model="newArticle.name"
                   sm="12"
                   m="12"
                   label="Product"
@@ -19,7 +19,7 @@
                   color="#FF6F00"
                 ></v-text-field>
                 <v-text-field
-                  v-model="articlePrice"
+                  v-model="newArticle.price"
                   :rules="[numberRule]"
                   sm="6"
                   m="6"
@@ -30,7 +30,7 @@
                 ></v-text-field>
               </v-row>
               <v-text-field
-                v-model="articleComment"
+                v-model="newArticle.comment"
                 class="mx-2"
                 label="Comment"
                 placeholder="Add an optional comment about this product."
@@ -70,7 +70,7 @@
 <script>
 export default {
   name: "DialogSplitCosts",
-  emits: ["show-Dialog-Split", "reset-newPurchase", "add-Purchased-Item-To-List"],
+  emits: ["show-Dialog-Split", "reset-newPurchase", "add-Article"],
   props: {
     showDialog: Boolean,
     ["roomies"]: Array,
@@ -78,9 +78,19 @@ export default {
   },
   data() {
     return {
-      articleName: "",
-      articlePrice: "",
-      articleComment: "",
+      newArticle: {
+        name: " ",
+        price: "",
+        description: "",
+        comment: "",
+        createdOn: "",
+        createdBy: "", // ref or id
+        acceptedBy: "", // ref or id
+        purchasedBy: "", // ref or id
+        avatar: "",
+        category: "",
+        status: 0,
+      },
       debug: true,
 
       // Regex for Pricerange:
@@ -118,32 +128,10 @@ export default {
       });
     },
     addPurchase() {
-      // create list of involved roomies
-      let involvedRoomies = [];
-      for (let i = 0; i < this.roomies.length; i++) {
-        if (this.roomies[i].selected) {
-          involvedRoomies.push(this.roomies[i]);
-        }
-      }
+      this.splitCosts();
+      this.$emit("add-Article", { newArticle: this.newArticle, status: 2 });
 
-      let price = parseFloat(this.articlePrice);
-      if (this.debug) console.log("Total Cost: " + price);
-
-      // Calculating price each roomie involved has to pay
-      let priceEach = parseFloat((price / involvedRoomies.length).toFixed(
-        2
-      ));
-      if (this.debug) console.log("Individual Price: ", priceEach);
-
-      // Calculating the new balance
-      this.currentUser.balance = parseFloat(this.currentUser.balance+price);
-
-      for (let i = 0; i < involvedRoomies.length; i++) {
-        involvedRoomies[i].balance = involvedRoomies[i].balance - priceEach;
-      }
-
-      this.$emit("add-Purchased-Item-To-List", [this.articleName, this.articlePrice, this.articleComment]);
-        /*
+      /*
         this.openItems.forEach((element) => {
           if (element === this.currentItemForCashingUp) {
             element.acceptedBy = this.currentUser.username;
@@ -152,13 +140,33 @@ export default {
             element.status = 2;
           }
         });*/
-  
 
-      // hide dialoge
       this.closeDialog();
-
-
       if (this.debug) console.log("Split complete!");
+    },
+
+    splitCosts() {
+      // create list of involved roomies
+      let involvedRoomies = [];
+      for (let i = 0; i < this.roomies.length; i++) {
+        if (this.roomies[i].selected) {
+          involvedRoomies.push(this.roomies[i]);
+        }
+      }
+
+      let price = parseFloat(this.newArticle.price);
+      if (this.debug) console.log("Total Cost: " + price);
+
+      // Calculating price each roomie involved has to pay
+      let priceEach = parseFloat((price / involvedRoomies.length).toFixed(2));
+      if (this.debug) console.log("Individual Price: ", priceEach);
+
+      // Calculating the new balance
+      this.currentUser.balance = parseFloat(this.currentUser.balance + price);
+
+      for (let i = 0; i < involvedRoomies.length; i++) {
+        involvedRoomies[i].balance = involvedRoomies[i].balance - priceEach;
+      }
     },
   },
 };

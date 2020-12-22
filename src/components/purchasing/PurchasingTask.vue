@@ -1,8 +1,6 @@
 <template>
   <!--Card on the right!, background: orange -->
-
   <v-row dense class="card">
-    <!--Cards for shopping list:-->
     <v-col cols="8">
       <v-card class="purchasingCards">
         <v-row>
