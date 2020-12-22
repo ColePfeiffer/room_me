@@ -52,7 +52,7 @@
         <ThePurchasingTabs
           :currentUser="currentUser"
           :shoppingList="shoppingList"
-          :currencySymbol = "currencySymbol"
+          :currencySymbol="currencySymbol"
         ></ThePurchasingTabs>
       </v-row>
     </v-container>
@@ -92,7 +92,6 @@ export default {
       newArticle: {
         name: " ",
         price: "",
-        description: "",
         comment: "",
         createdOn: "",
         createdBy: "", // ref or id
@@ -156,34 +155,7 @@ export default {
           isLoggedIn: false,
         },
       ],
-      shoppingList: [
-        {
-          name: "seife",
-          price: "3.50",
-          comment: "blubber war teuer.",
-          createdOn: "",
-          createdBy: "", // ref or id
-          acceptedBy: "", // ref or id
-          purchasedBy: "Hannah", // ref or id
-          avatar:
-            "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          category: "",
-          status: 2,
-        },
-        {
-          name: "mülltüten",
-          price: "4",
-          comment: "",
-          createdOn: "",
-          createdBy: "",
-          acceptedBy: "", // ref or id
-          purchasedBy: "Rufus",
-          avatar:
-            "https://images.unsplash.com/photo-1517423568366-8b83523034fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          category: "",
-          status: 2,
-        },
-      ],
+      shoppingList: [],
     };
   },
   methods: {
@@ -199,6 +171,7 @@ export default {
     },
     addArticle({ newArticle, status }) {
       console.log(newArticle, status);
+
       newArticle.createdOn = "";
       newArticle.createdBy = this.currentUser;
       newArticle.acceptedBy = this.currentUser;

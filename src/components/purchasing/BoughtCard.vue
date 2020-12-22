@@ -10,7 +10,7 @@
               width="65"
               max-width="65"
               max-height="65"
-              v-bind:src="article.avatar"
+              v-bind:src="article.purchasedBy.profilePicture"
             ></v-img>
           </v-col>
           <v-col md="9">
@@ -24,7 +24,7 @@
             </v-row>
             <v-row no-gutters>
                 <v-card-text id="articleInformation">
-                {{article.purchasedBy}}
+                {{article.purchasedBy.username}}
                 <span v-if="article.comment != ''"> - {{article.comment}} </span>
                 </v-card-text>
             </v-row>

@@ -81,7 +81,6 @@ export default {
       newArticle: {
         name: " ",
         price: "",
-        description: "",
         comment: "",
         createdOn: "",
         createdBy: "", // ref or id
@@ -117,6 +116,7 @@ export default {
         return true;
       }
     },
+
     closeDialog() {
       this.localShowDialog = false;
       this.$emit("show-Dialog-Split", false);
@@ -126,6 +126,19 @@ export default {
       this.roomies.forEach(function (roomie) {
         roomie.selected = true;
       });
+
+      this.newArticle = {
+        name: " ",
+        price: "",
+        comment: "",
+        createdOn: "",
+        createdBy: "", // ref or id
+        acceptedBy: "", // ref or id
+        purchasedBy: "", // ref or id
+        avatar: "",
+        category: "",
+        status: 0,
+      };
     },
     addPurchase() {
       this.splitCosts();
