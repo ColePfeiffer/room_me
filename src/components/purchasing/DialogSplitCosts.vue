@@ -10,7 +10,7 @@
             <v-col>
               <v-row class="mx-2">
                 <v-text-field
-                  v-model="newPurchase.name"
+                  v-model="articleName"
                   sm="12"
                   m="12"
                   label="Product"
@@ -19,7 +19,7 @@
                   color="#FF6F00"
                 ></v-text-field>
                 <v-text-field
-                  v-model="newPurchase.price"
+                  v-model="articlePrice"
                   :rules="[numberRule]"
                   sm="6"
                   m="6"
@@ -30,7 +30,7 @@
                 ></v-text-field>
               </v-row>
               <v-text-field
-                v-model="newPurchase.comment"
+                v-model="articleComment"
                 class="mx-2"
                 label="Comment"
                 placeholder="Add an optional comment about this product."
@@ -69,17 +69,20 @@
 
 <script>
 export default {
-  name: "PurchasingDialogSplit",
+  name: "DialogSplitCosts",
   emits: ["show-Dialog-Split", "reset-newPurchase", "add-Purchased-Item-To-List"],
   props: {
     showDialog: Boolean,
     ["roomies"]: Array,
-    newPurchase: Object,
     currentUser: Object,
   },
   data() {
     return {
+      articleName: "",
+      articlePrice: "",
+      articleComment: "",
       debug: true,
+
       // Regex for Pricerange:
       numberRule: (v) => {
         if (!v.trim()) return true;
@@ -123,7 +126,7 @@ export default {
         }
       }
 
-      let price = parseFloat(this.newPurchase.price);
+      let price = parseFloat(this.articlePrice);
       if (this.debug) console.log("Total Cost: " + price);
 
       // Calculating price each roomie involved has to pay
@@ -139,7 +142,7 @@ export default {
         involvedRoomies[i].balance = involvedRoomies[i].balance - priceEach;
       }
 
-      this.$emit("add-Purchased-Item-To-List", [this.newPurchase.name, this.newPurchase.price]);
+      this.$emit("add-Purchased-Item-To-List", [this.articleName, this.articlePrice, this.articleComment]);
         /*
         this.openItems.forEach((element) => {
           if (element === this.currentItemForCashingUp) {

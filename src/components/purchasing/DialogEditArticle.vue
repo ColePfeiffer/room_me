@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  name: "PurchasingDialogEditItem",
+  name: "DialogEditArticle",
 
   props: {
     ["item"]: Object,

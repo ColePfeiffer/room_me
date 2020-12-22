@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import DialogProfilePage from "./DialogProfilePage";
+import DialogProfilePage from "../DialogProfilePage";
 
 export default {
-  name: "PurchasingBillingOverview",
+  name: "BalanceBoard",
   emits: ["save-changes", "toggle-dialogCashUp"],
   components: {
     DialogProfilePage

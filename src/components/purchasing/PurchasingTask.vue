@@ -20,7 +20,7 @@
               <v-card-text class="stylingTextHeadline"
                 >{{ item.name }}
                 <v-btn text>
-                  <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
+                  <v-icon @click="toggleShowDialogeditArticle(true)">edit</v-icon>
                 </v-btn>
                 <v-row>
                   <v-card-text class="stylingTextSubtitle">
@@ -76,19 +76,19 @@
             :value="item.comment"
           ></v-textarea>
         </div>
-        <PurchasingDialogEditItem
+        <DialogEditArticle
           :item="item"
           @save-changes="saveChangesInEditPage"
-          :showDialog="showDialogEditItem"
-          @toggle-showDialogEditItem="toggleShowDialogEditItem"
-        ></PurchasingDialogEditItem>
+          :showDialog="showDialogeditArticle"
+          @toggle-showDialogeditArticle="toggleShowDialogeditArticle"
+        ></DialogEditArticle>
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import PurchasingDialogEditItem from "./PurchasingDialogEditItem";
+import DialogEditArticle from "./DialogEditArticle";
 
 export default {
   name: "PurchasingTask",
@@ -103,12 +103,12 @@ export default {
     ["item"]: Object,
   },
   components: {
-    PurchasingDialogEditItem,
+    DialogEditArticle,
   },
   data() {
     return {
       submittedItem: "",
-      showDialogEditItem: false,
+      showDialogeditArticle: false,
 
       completedPurchase: false,
       currentItemForCashingUp: {},
@@ -200,10 +200,10 @@ export default {
       console.log(item);
     },
 
-    toggleShowDialogEditItem(newState) {
-      if (this.debug) console.log("old state: " + this.showDialogEditItem);
-      this.showDialogEditItem = newState;
-      if (this.debug) console.log("new state: " + this.showDialogEditItem);
+    toggleShowDialogeditArticle(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogeditArticle);
+      this.showDialogeditArticle = newState;
+      if (this.debug) console.log("new state: " + this.showDialogeditArticle);
     },
 
     saveChangesInEditPage(item, changeData, keepAlive) {
@@ -214,7 +214,7 @@ export default {
         console.log(position);
         this.shoppingList.splice(position, 1);
       }
-      item.showDialogEditItem = false;
+      item.showDialogeditArticle = false;
     },
 
     cashUpItem(item) {

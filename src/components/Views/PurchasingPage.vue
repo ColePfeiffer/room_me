@@ -1,22 +1,21 @@
 <template>
   <div class="purchasing">
-    <PurchasingDialogNewArticle
+    <DialogNewArticle
       :showDialog="showDialogNewArticle"
       :currentUser="currentUser"
       :roomies="roomies"
       :shoppingList="shoppingList"
       @toggle-showDialogNewArticle="toggleShowDialogNewArticle"
-    ></PurchasingDialogNewArticle>
+    ></DialogNewArticle>
 
-    <PurchasingDialogSplit
+    <DialogSplitCosts
       :showDialog="showDialogSplit"
       :roomies="roomies"
-      :newPurchase="newPurchase"
       :currentUser="currentUser"
       @show-Dialog-Split="toggleDialogSplit"
-      @reset-newPurchase="resetNewPurchase"
+      @reset-newArticle="resetnewArticle"
       @add-Purchased-Item-To-List="addPurchasedItemToList"
-    ></PurchasingDialogSplit>
+    ></DialogSplitCosts>
 
     <v-speed-dial
       color="pink"
@@ -46,10 +45,10 @@
     </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
-        <PurchasingBillingOverview
+        <BalanceBoard
           :roomies="roomies"
           :currencySymbol="currencySymbol"
-        ></PurchasingBillingOverview>
+        ></BalanceBoard>
         <PurchasingTabs
           :currentUser="currentUser"
           :shoppingList="shoppingList"
@@ -61,18 +60,18 @@
 
 <script>
 // Views
-import PurchasingBillingOverview from "../PurchasingBillingOverview";
-import PurchasingTabs from "../PurchasingTabs";
+import BalanceBoard from "../purchasing/BalanceBoard";
+import PurchasingTabs from "../purchasing/PurchasingTabs";
 
 // Dialogs
-import PurchasingDialogSplit from "../PurchasingDialogSplit";
-import PurchasingDialogNewArticle from "../PurchasingDialogNewArticle";
+import DialogSplitCosts from "../purchasing/DialogSplitCosts";
+import DialogNewArticle from "../purchasing/DialogNewArticle";
 
 export default {
   components: {
-    PurchasingBillingOverview,
-    PurchasingDialogNewArticle,
-    PurchasingDialogSplit,
+    BalanceBoard,
+    DialogNewArticle,
+    DialogSplitCosts,
     PurchasingTabs,
   },
 
@@ -92,15 +91,15 @@ export default {
       showDialogSplit: false,
       currencySymbol: " €",
       debug: true,
-      newPurchase: {
-        name: "",
+      newArticle: {
+        name: " ",
         price: "",
-        comment: "",
         description: "",
-        articleCreatedBy: "",
-        articleAcceptedBy: "",
-        articlePurchasedBy: "",
-        createdOn: "",
+        comment: "",
+        createdOn: "", 
+        createdBy: "",   // ref or id
+        acceptedBy: "",  // ref or id
+        purchasedBy: "", // ref or id
         avatar: "",
         category: "",
         status: 0,
@@ -174,15 +173,15 @@ export default {
       if (this.debug) console.log("new state: " + this.showDialogNewArticle);
     },
     addPurchasedItemToList(list) {
-      this.newPurchase.status = 2;
-      this.newPurchase.name = list[0];
-      this.newPurchase.price = list[1];
+      this.newArticle.status = 2;
+      this.newArticle.name = list[0];
+      this.newArticle.price = list[1];
       console.log(list[0]);
-      this.shoppingList.push(this.newPurchase);
-      this.resetNewPurchase();
+      this.shoppingList.push(this.newArticle);
+      this.resetnewArticle();
     },
-    resetNewPurchase() {
-      this.newPurchase = {
+    resetnewArticle() {
+      this.newArticle = {
         name: "",
         price: "",
         comment: "",
@@ -194,10 +193,10 @@ export default {
         avatar: "",
         category: "",
         status: 0,
-      }
+      };
     },
-    setNewPurchaseName(name) {
-      this.newPurchase.name = name;
+    setnewArticleName(name) {
+      this.newArticle.name = name;
     },
   },
   computed: {
