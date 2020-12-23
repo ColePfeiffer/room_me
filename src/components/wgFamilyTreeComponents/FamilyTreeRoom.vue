@@ -18,7 +18,7 @@
       <v-row no-gutters id="wrapperForFTRoom">
         <v-col cols="12" class="black lighten-5">
           <div>
-            <WGFamilyTreeRoomie :roomie="room.currentRoomie"></WGFamilyTreeRoomie>
+            <FamilyTreeRoomie :roomie="room.currentRoomie"></FamilyTreeRoomie>
           </div>
         </v-col>
       </v-row>
@@ -38,7 +38,7 @@
       <div v-for="(n, index) in room.pastRoomies" :key="n.id">
         <v-row no-gutters id="wrapperForFTRoom">
           <v-col cols="12" class="black lighten-5">
-            <WGFamilyTreeRoomie :roomie="n"></WGFamilyTreeRoomie>
+            <FamilyTreeRoomie :roomie="n"></FamilyTreeRoomie>
             <div v-if="index != room.pastRoomies.length-1" class="verticalLine"></div>
           </v-col>
         </v-row>
@@ -49,14 +49,14 @@
 </template>
 
 <script>
-import WGFamilyTreeRoomie from "./WGFamilyTreeRoomie";
+import FamilyTreeRoomie from "./FamilyTreeRoomie";
 import QuickEdit from "vue-quick-edit";
 
 export default {
-  name: "WGFamilyTreeRoom",
+  name: "FamilyTreeRoom",
   emits: [],
   components: {
-    WGFamilyTreeRoomie,
+    FamilyTreeRoomie,
     QuickEdit
   },
   props: { room: Object, showRoomName: Boolean },
@@ -66,7 +66,7 @@ export default {
       pastRoomiesSize: this.room.pastRoomies.length
     };
   },
-  methods: {},
+  methods: {}
 };
 </script>
 

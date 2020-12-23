@@ -1,0 +1,296 @@
+<template>
+  <v-dialog :value="showDialog" persistent width="500">
+    <v-card>
+      <v-container>
+        <v-form ref="form" v-model="isValid" lazy-validation>
+          <!-- Title -->
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">Adding a new article</h3>
+            </div>
+          </v-card-title>
+
+          <v-card-text>
+            <!-- Name and price for CASH View -->
+            <v-row v-if="view === 'CASH'">
+              <v-col cols="6">
+                <v-text-field
+                  v-model="newArticle.name"
+                  label="Name"
+                  :counter="15"
+                  prepend-icon="add_shopping_cart"
+                  :color="color"
+                  :rules="[rules.required, rules.minChars]"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="newArticle.price"
+                  :rules="[rules.numberRule, rules.required]"
+                  :counter="5"
+                  label="Price"
+                  prepend-icon="euro"
+                  :color="color"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <!-- Name and Category for NEW View -->
+            <v-row v-else>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="newArticle.name"
+                  label="Name"
+                  :counter="15"
+                  prepend-icon="add_shopping_cart"
+                  :color="color"
+                  :rules="[rules.required, rules.minChars]"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-select
+                  :items="categories"
+                  v-model="newArticle.category"
+                  :color="color"
+                  name="categorySelection"
+                  item-text="name"
+                  item-value="id"
+                  label="Select category"
+                  prepend-icon="mdi-square-outline"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <!-- Categories and Comment-Section for CASH View -->
+            <v-row v-if="view === 'CASH'">
+              <v-col>
+                <v-select
+                  :items="categories"
+                  v-model="newArticle.category"
+                  :color="color"
+                  name="categorySelection"
+                  item-text="name"
+                  item-value="id"
+                  label="Select category"
+                  prepend-icon="mdi-square-outline"
+                ></v-select>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="newArticle.comment"
+                  class="mx-2"
+                  label="Comment"
+                  prepend-icon="comment"
+                  color="#FF6F00"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <!-- Comment-Section for NEW View -->
+            <v-row v-else>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="newArticle.comment"
+                  class="mx-2"
+                  label="Comment"
+                  prepend-icon="comment"
+                  color="#FF6F00"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <!-- Roomie Chips -->
+            <v-row v-if="view === 'CASH'">
+              <v-col>
+                <fieldset style="text-align:center">
+                  <legend style="padding:10px;text-align:center">
+                    <p class="text--secondary">Who did you buy it for?</p>
+                  </legend>
+                  <v-chip-group column multiple active-class="primary--text">
+                    <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+                      <v-chip
+                        :color="roomie.color"
+                        :outlined="roomieChipOutlined(roomie)"
+                        @click="selectRoomie(roomie)"
+                      >
+                        <v-avatar left>
+                          <v-img v-bind:src="roomie.profilePicture"></v-img>
+                        </v-avatar>
+                        <strong>{{ roomie.username }}</strong>&nbsp;
+                      </v-chip>
+                    </v-row>
+                  </v-chip-group>
+                </fieldset>
+              </v-col>
+            </v-row>
+
+            <!-- Buttons -->
+            <v-row justify="space-around">
+              <v-col cols="4"></v-col>
+              <v-col cols="4">
+                <v-btn
+                  color="pink"
+                  :disabled="!isValid"
+                  @click="addPurchase"
+                >{{view === 'NEW' ? 'Add to list' : 'Split Costs'}}</v-btn>
+              </v-col>
+              <v-col cols="4">
+                <v-btn color="gray" @click="closeDialog">Close</v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-actions></v-card-actions>
+        </v-form>
+      </v-container>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script>
+export default {
+  name: "DialogAddArticle",
+  emits: ["toggle-Dialog", "add-Article"],
+  props: {
+    showDialog: Boolean,
+    ["roomies"]: Array,
+    currentUser: Object,
+    view: String,
+    categories: Array
+  },
+  data() {
+    return {
+      debug: true,
+      isValid: true,
+      color: "#FF6F00", //dialogColor
+
+      newArticle: {
+        name: " ",
+        price: "",
+        comment: "",
+        createdOn: "",
+        createdBy: "", // ref or id
+        acceptedBy: "", // ref or id
+        purchasedBy: "", // ref or id
+        avatar: "",
+        category: "",
+        status: 0
+      },
+
+      rules: {
+        required: value => !!value || "Required.",
+        numberRule: v => {
+          if (!v.trim()) return true;
+          if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
+          return "Number has to be between 0 and 999";
+        },
+        minChars: v => (v && v.length >= 3) || "Name can't be empty"
+      }
+    };
+  },
+  methods: {
+    selectRoomie(selected_roomie) {
+      this.roomies.forEach(function(roomie, index) {
+        if (roomie == selected_roomie) {
+          roomie.selected = !roomie.selected;
+          console.log(roomie.selected, index);
+        }
+      });
+    },
+    roomieChipOutlined(roomie) {
+      if (roomie.selected) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
+    closeDialog() {
+      this.localShowDialog = false;
+      this.$emit("toggle-Dialog", false);
+
+      // reset everything
+      this.roomies.forEach(function(roomie) {
+        roomie.selected = true;
+      });
+
+      this.newArticle = {
+        name: " ",
+        price: "",
+        comment: "",
+        createdOn: "",
+        createdBy: "", // ref or id
+        acceptedBy: "", // ref or id
+        purchasedBy: "", // ref or id
+        avatar: "",
+        category: "",
+        status: 0
+      };
+    },
+    addPurchase() {
+      // checks if all required fields are filled out correctly, if so returns true
+      if (this.$refs.form.validate()) {
+        if (this.view === "NEW") {
+          // NEW_ARTICLE VIEW
+          this.setCategory();
+          this.$emit("add-Article", { newArticle: this.newArticle, status: 0 });
+        } else {
+          // SPLIT COSTS VIEW
+          this.splitCosts();
+          this.setCategory();
+          this.$emit("add-Article", { newArticle: this.newArticle, status: 2 });
+        }
+
+        this.closeDialog();
+        if (this.debug) console.log("Split complete!");
+      }
+    },
+
+    splitCosts() {
+      // create list of involved roomies
+      let involvedRoomies = [];
+      for (let i = 0; i < this.roomies.length; i++) {
+        if (this.roomies[i].selected) {
+          involvedRoomies.push(this.roomies[i]);
+        }
+      }
+
+      let price = parseFloat(this.newArticle.price);
+      if (this.debug) console.log("Total Cost: " + price);
+
+      // Calculating the price each roomie involved has to pay
+      let priceEach = parseFloat((price / involvedRoomies.length).toFixed(2));
+      if (this.debug) console.log("Individual Price: ", priceEach);
+
+      // Calculating the new balance for the current user and all involved roomies
+      this.currentUser.balance = parseFloat(this.currentUser.balance + price);
+
+      for (let i = 0; i < involvedRoomies.length; i++) {
+        involvedRoomies[i].balance = involvedRoomies[i].balance - priceEach;
+      }
+    },
+
+    setCategory() {
+      // in case no category was picked, the default category will be chosen
+      if (this.newArticle.category === "") {
+        let defaultCat = this.categories.find(cat => cat.isDefault === true);
+        this.newArticle.category = defaultCat.id;
+        this.newArticle.avatar = defaultCat.avatar;
+      } else {
+        const category = this.categories.find(
+          cat => cat.id === this.newArticle.category
+        );
+        this.newArticle.avatar = category.avatar;
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+.fieldset {
+  color: red;
+}
+
+.v-col {
+  padding: 0px !important;
+}
+</style>

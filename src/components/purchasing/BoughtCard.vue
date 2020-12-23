@@ -14,8 +14,8 @@
           </v-col>
           <v-col md="9">
             <v-row no-gutters>
-              <v-card-title id="articleName"
-                >{{ article.name }}
+              <v-card-title id="articleName">
+                {{ article.name }}
                 <v-btn text dense @click="showSettings = true">
                   <v-icon small>edit</v-icon>
                 </v-btn>
@@ -24,19 +24,17 @@
             <v-row no-gutters>
               <v-card-text id="articleInformation">
                 {{ article.purchasedBy.username }}
-                <span v-if="article.comment != ''">
-                  - {{ article.comment }}
-                </span>
+                <span
+                  v-if="article.comment != ''"
+                >- {{ article.comment }}</span>
               </v-card-text>
             </v-row>
           </v-col>
-        </v-row></v-col
-      >
+        </v-row>
+      </v-col>
       <v-divider vertical></v-divider>
       <v-col s="2" md="2">
-        <v-card-title id="price">
-          {{ article.price }} {{ currencySymbol }}
-        </v-card-title>
+        <v-card-title id="price">{{ article.price }} {{ currencySymbol }}</v-card-title>
       </v-col>
     </v-row>
   </v-card>
@@ -58,17 +56,15 @@
             <v-row no-gutters>
               <v-col cols="6">
                 <v-card-title id="articleName">
-                  <v-text-field
-                    v-model="article.name"
-                  >
+                  <v-text-field v-model="article.name">
                     <template v-slot:append-outer>
-                      <v-row align="center" justify="center" no-gutters> 
-                        <v-col cols=6>
-                          <v-btn text  @click="showSettings = false">
+                      <v-row align="center" justify="center" no-gutters>
+                        <v-col cols="6">
+                          <v-btn text @click="showSettings = false">
                             <v-icon left small>save</v-icon>
                           </v-btn>
                         </v-col>
-                        <v-col cols=6>
+                        <v-col cols="6">
                           <v-btn v-bind:class="{ click2: clickedOnce }" text @click="deleteArticle">
                             <v-icon left small>delete</v-icon>
                           </v-btn>
@@ -79,13 +75,12 @@
                 </v-card-title>
               </v-col>
             </v-row>
-          </v-col> </v-row
-      ></v-col>
+          </v-col>
+        </v-row>
+      </v-col>
       <v-divider vertical></v-divider>
       <v-col s="2" md="2">
-        <v-card-title id="price">
-          {{ article.price }} {{ currencySymbol }}
-        </v-card-title>
+        <v-card-title id="price">{{ article.price }} {{ currencySymbol }}</v-card-title>
       </v-col>
     </v-row>
   </v-card>
@@ -97,7 +92,7 @@ export default {
   emits: [],
   props: {
     ["article"]: Object,
-    ["currencySymbol"]: String,
+    ["currencySymbol"]: String
   },
   components: {},
   data() {
@@ -109,15 +104,15 @@ export default {
   },
   methods: {
     deleteArticle() {
-      if(this.clickedOnce){
+      if (this.clickedOnce) {
         // delete item here
         this.clickedOnce = false;
         this.showSettings = false;
-      }else{
+      } else {
         this.clickedOnce = true;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

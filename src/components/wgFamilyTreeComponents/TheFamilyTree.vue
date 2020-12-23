@@ -1,17 +1,17 @@
 <template>
   <v-container justify-center>
-    <WGFamilyTreeDialogNewRoomie
+    <DialogNewRoomie
       :showDialog="showDialogForNewRoomie"
       :rooms="rooms"
       @create-dummy="createDummy"
       @set-showDialog="showDialogForNewRoomie = false"
-    ></WGFamilyTreeDialogNewRoomie>
-    <WGFamilyTreeDialogRoomManager
+    ></DialogNewRoomie>
+    <DialogRoomManager
       :showDialog="showDialogForRoomManager"
       :rooms="rooms"
       @set-showDialog="showDialogForRoomManager = false"
       @create-new-room="createNewRoom"
-    ></WGFamilyTreeDialogRoomManager>
+    ></DialogRoomManager>
 
     <v-speed-dial
       color="pink"
@@ -31,42 +31,21 @@
         </v-btn>
       </template>
 
-      <v-btn
-        fab
-        dark
-        small
-        color="orange"
-        class="ma-2 white--text"
-        @click="editFamilyTree"
-      >
+      <v-btn fab dark small color="orange" class="ma-2 white--text" @click="editFamilyTree">
         <v-icon>mdi-help</v-icon>
         <div class="fab-text-custom orange">Help</div>
       </v-btn>
-      <v-btn
-        fab
-        dark
-        small
-        color="pink"
-        @click="showDialogForRoomManager = true"
-      >
+      <v-btn fab dark small color="pink" @click="showDialogForRoomManager = true">
         <v-icon>mdi-pencil</v-icon>
         <div class="fab-text-custom pink">Room Manager</div>
       </v-btn>
-      <v-btn
-        fab
-        dark
-        small
-        color="black"
-        @click="showDialogForNewRoomie = true"
-      >
+      <v-btn fab dark small color="black" @click="showDialogForNewRoomie = true">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom black">Add roomie</div>
       </v-btn>
     </v-speed-dial>
 
-    <v-btn @click="debuggingIsMobile = !debuggingIsMobile"
-      >debug: toggle view mode</v-btn
-    >
+    <v-btn @click="debuggingIsMobile = !debuggingIsMobile">debug: toggle view mode</v-btn>
     <div v-if="!debuggingIsMobile">
       <!-- <div v-if="!isMobile()"> -->
 
@@ -79,7 +58,7 @@
       <v-row justify="space-around">
         <div v-for="(i, index) in rooms" :key="i.id">
           <v-col xs="6" sm="6" md="3">
-            <WGFamilyTreeRoom :room="i" :showRoomName="true"></WGFamilyTreeRoom>
+            <FamilyTreeRoom :room="i" :showRoomName="true"></FamilyTreeRoom>
           </v-col>
           <v-col v-if="index == 1">fff</v-col>
         </div>
@@ -112,21 +91,13 @@
       </v-row>
       <v-row justify="space-around">
         <v-col xs="12" sm="6" md="3">
-          <v-carousel
-            hide-delimiter-background
-            :show-arrows="false"
-            height="auto"
-            v-model="model"
-          >
+          <v-carousel hide-delimiter-background :show-arrows="false" height="auto" v-model="model">
             <v-carousel-item v-for="room in rooms" :key="room.id">
               <v-sheet height="100%">
                 <v-row class="fill-height" align="center" justify="center">
                   <div class="posts">
                     <v-card elevation="10" max-width="100%">
-                      <WGFamilyTreeRoom
-                        :room="room"
-                        :showRoomName="false"
-                      ></WGFamilyTreeRoom>
+                      <WGFamilyTreeRoom :room="room" :showRoomName="false"></WGFamilyTreeRoom>
                     </v-card>
                   </div>
                 </v-row>
@@ -140,17 +111,17 @@
 </template>
 
 <script>
-import WGFamilyTreeRoom from "./WGFamilyTreeRoom";
-import WGFamilyTreeDialogNewRoomie from "./WGFamilyTreeDialogNewRoomie";
-import WGFamilyTreeDialogRoomManager from "./WGFamilyTreeDialogRoomManager";
+import FamilyTreeRoom from "./FamilyTreeRoom";
+import DialogNewRoomie from "./DialogNewRoomie";
+import DialogRoomManager from "./DialogRoomManager";
 
 export default {
   name: "WGFamilyTree",
   emits: ["create-new-room"],
   components: {
-    WGFamilyTreeRoom,
-    WGFamilyTreeDialogNewRoomie,
-    WGFamilyTreeDialogRoomManager,
+    FamilyTreeRoom,
+    DialogNewRoomie,
+    DialogRoomManager
   },
   props: { rooms: Array, roomName: String },
   data() {
@@ -163,10 +134,10 @@ export default {
         "warning",
         "pink darken-2",
         "red lighten-1",
-        "deep-purple accent-4",
+        "deep-purple accent-4"
       ],
       debuggingIsMobile: false,
-      model: 0,
+      model: 0
     };
   },
   methods: {
@@ -191,8 +162,8 @@ export default {
         return false;
         //return true;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

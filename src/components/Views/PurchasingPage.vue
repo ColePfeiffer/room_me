@@ -1,21 +1,14 @@
 <template>
   <div class="purchasing">
-    <DialogNewArticle
-      :showDialog="showDialogNewArticle"
-      :currentUser="currentUser"
-      :roomies="roomies"
-      :shoppingList="shoppingList"
-      @toggle-showDialogNewArticle="toggleDialogNewArticle"
-    ></DialogNewArticle>
-
-    <DialogSplitCosts
+    <DialogAddArticle
       :showDialog="showDialogSplit"
       :roomies="roomies"
       :currentUser="currentUser"
-      @show-Dialog-Split="toggleDialogSplit"
-      @reset-newArticle="resetnewArticle"
+      :view="ViewStateOfDialogSplit"
+      :categories="categories"
+      @toggle-Dialog="toggleDialogSplit"
       @add-Article="addArticle"
-    ></DialogSplitCosts>
+    ></DialogAddArticle>
 
     <v-speed-dial
       color="pink"
@@ -34,21 +27,18 @@
           <v-icon v-else>mdi-plus</v-icon>
         </v-btn>
       </template>
-      <v-btn fab dark small color="green" @click="showDialogSplit = true">
+      <v-btn fab dark small color="green" @click="changeDialogState('CASH')">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom green">Add bought item</div>
       </v-btn>
-      <v-btn fab dark small color="pink" @click="showDialogNewArticle = true">
+      <v-btn fab dark small color="pink" @click="changeDialogState('NEW')">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom pink">Add to shopping list</div>
       </v-btn>
     </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
-        <TheBalanceBoard
-          :roomies="roomies"
-          :currencySymbol="currencySymbol"
-        ></TheBalanceBoard>
+        <TheBalanceBoard :roomies="roomies" :currencySymbol="currencySymbol"></TheBalanceBoard>
         <ThePurchasingTabs
           :currentUser="currentUser"
           :shoppingList="shoppingList"
@@ -62,15 +52,13 @@
 <script>
 import TheBalanceBoard from "../purchasing/TheBalanceBoard";
 import ThePurchasingTabs from "../purchasing/ThePurchasingTabs";
-import DialogSplitCosts from "../purchasing/DialogSplitCosts";
-import DialogNewArticle from "../purchasing/DialogNewArticle";
+import DialogAddArticle from "../purchasing/DialogAddArticle";
 
 export default {
   components: {
     TheBalanceBoard,
-    DialogNewArticle,
-    DialogSplitCosts,
-    ThePurchasingTabs,
+    DialogAddArticle,
+    ThePurchasingTabs
   },
 
   data() {
@@ -81,7 +69,7 @@ export default {
         "warning",
         "pink darken-2",
         "red lighten-1",
-        "deep-purple accent-4",
+        "deep-purple accent-4"
       ],
 
       model: 0,
@@ -89,18 +77,41 @@ export default {
       showDialogSplit: false,
       currencySymbol: " €",
       debug: true,
-      newArticle: {
-        name: " ",
-        price: "",
-        comment: "",
-        createdOn: "",
-        createdBy: "", // ref or id
-        acceptedBy: "", // ref or id
-        purchasedBy: "", // ref or id
-        avatar: "",
-        category: "",
-        status: 0,
-      },
+      ViewStateOfDialogSplit: "CASH",
+      categories: [
+        {
+          id: 1,
+          name: "Groceries",
+          color: "#81b29a",
+          isDefault: true,
+          avatar:
+            "https://images.unsplash.com/photo-1584473457406-6240486418e9?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=334&q=80"
+        },
+        {
+          id: 2,
+          name: "Household",
+          color: "#e07a5f",
+          isDefault: false,
+          avatar:
+            "https://images.unsplash.com/photo-1563453392212-326f5e854473?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Y2xlYW5pbmclMjBjaGVtaWNhbHN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        },
+        {
+          id: 3,
+          name: "Snacks",
+          color: "#f2cc8f",
+          isDefault: false,
+          avatar:
+            "https://images.unsplash.com/photo-1517093602195-b40af9688b46?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8c25hY2tzfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        },
+        {
+          id: 4,
+          name: "Drinks",
+          color: "#3d405b",
+          isDefault: false,
+          avatar:
+            "https://images.unsplash.com/photo-1494962227006-107baac595eb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mzh8fGRyaW5rc3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        }
+      ],
       roomies: [
         {
           id: 0,
@@ -113,7 +124,7 @@ export default {
           selected: true,
           color: "#1F85DE",
           showProfilePage: false,
-          isLoggedIn: true,
+          isLoggedIn: true
         },
         {
           id: 1,
@@ -126,7 +137,7 @@ export default {
           selected: true,
           color: "#DE591F",
           showProfilePage: false,
-          isLoggedIn: false,
+          isLoggedIn: false
         },
         {
           id: 2,
@@ -139,7 +150,7 @@ export default {
           selected: true,
           color: "#BDA0EC",
           showProfilePage: false,
-          isLoggedIn: false,
+          isLoggedIn: false
         },
         {
           id: 3,
@@ -152,61 +163,51 @@ export default {
           selected: true,
           color: "#EBE386",
           showProfilePage: false,
-          isLoggedIn: false,
-        },
+          isLoggedIn: false
+        }
       ],
-      shoppingList: [],
+      shoppingList: []
     };
   },
   methods: {
-    toggleDialogSplit(newState) {
-      if (this.debug) console.log("old state: " + this.showDialogSplit);
-      this.showDialogSplit = newState;
-      if (this.debug) console.log("new state: " + this.showDialogSplit);
+    changeDialogState(newViewState) {
+      this.ViewStateOfDialogSplit = newViewState;
+      this.showDialogSplit = true;
     },
-    toggleDialogNewArticle(newState) {
-      if (this.debug) console.log("old state: " + this.showDialogNewArticle);
-      this.showDialogNewArticle = newState;
-      if (this.debug) console.log("new state: " + this.showDialogNewArticle);
+    toggleDialogSplit(visible) {
+      this.showDialogSplit = visible;
     },
     addArticle({ newArticle, status }) {
-      console.log(newArticle, status);
+      newArticle.createdOn = new Date().toISOString().substr(0, 10);
 
-      newArticle.createdOn = "";
-      newArticle.createdBy = this.currentUser;
-      newArticle.acceptedBy = this.currentUser;
-      newArticle.purchasedBy = this.currentUser;
+      switch (status) {
+        case 0: // open
+          newArticle.createdBy = this.currentUser;
+          break;
+        case 1: // pending
+          break;
+        case 2: // bought
+          newArticle.createdBy = this.currentUser;
+          newArticle.acceptedBy = this.currentUser;
+          newArticle.purchasedBy = this.currentUser;
+          break;
+
+        default:
+          break;
+      }
+
       // avatar, category
       newArticle.status = status;
 
       this.shoppingList.push(newArticle);
-      this.resetnewArticle();
-    },
-    resetnewArticle() {
-      this.newArticle = {
-        name: "",
-        price: "",
-        comment: "",
-        description: "",
-        articleCreatedBy: "",
-        articleAcceptedBy: "",
-        articlePurchasedBy: "",
-        createdOn: "",
-        avatar: "",
-        category: "",
-        status: 0,
-      };
-    },
-    setnewArticleName(name) {
-      this.newArticle.name = name;
-    },
+    }
   },
   computed: {
     currentUser() {
       // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/find
-      return this.roomies.find((roomie) => roomie.isLoggedIn === true);
-    },
-  },
+      return this.roomies.find(roomie => roomie.isLoggedIn === true);
+    }
+  }
 };
 </script>
 

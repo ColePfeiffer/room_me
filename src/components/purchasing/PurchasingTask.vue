@@ -15,23 +15,21 @@
           </v-col>
           <v-col xs="6" s="6" md="6">
             <v-col>
-              <v-card-text class="stylingTextHeadline"
-                >{{ item.name }}
+              <v-card-text class="stylingTextHeadline">
+                {{ item.name }}
                 <v-btn text>
                   <v-icon @click="toggleShowDialogeditArticle(true)">edit</v-icon>
                 </v-btn>
                 <v-row>
-                  <v-card-text class="stylingTextSubtitle">
-                    {{ item.description }}
-                  </v-card-text>
+                  <v-card-text class="stylingTextSubtitle">{{ item.comment }}</v-card-text>
                 </v-row>
-              </v-card-text> </v-col
-            ><v-col> </v-col> </v-col
-          ><v-col>
-            <v-row>
-              <v-card-text class="stylingDate">
-                {{ item.createdOn }}
               </v-card-text>
+            </v-col>
+            <v-col></v-col>
+          </v-col>
+          <v-col>
+            <v-row>
+              <v-card-text class="stylingDate">{{ item.createdOn }}</v-card-text>
 
               <v-row>
                 <div v-if="item.status === 0">
@@ -93,15 +91,15 @@ export default {
   emits: [
     "set-newPurchaseName",
     "toggle-dialogCashUp",
-    "save-changesInEditPage",
+    "save-changesInEditPage"
   ],
   props: {
     ["currentUser"]: Object,
     ["shoppingList"]: Array,
-    ["item"]: Object,
+    ["item"]: Object
   },
   components: {
-    DialogEditArticle,
+    DialogEditArticle
   },
   data() {
     return {
@@ -123,7 +121,7 @@ export default {
           selected: true,
           color: "#1F85DE",
           showProfilePage: false,
-          isLoggedIn: true,
+          isLoggedIn: true
         },
         {
           id: 1,
@@ -136,7 +134,7 @@ export default {
           selected: true,
           color: "#DE591F",
           showProfilePage: false,
-          isLoggedIn: false,
+          isLoggedIn: false
         },
         {
           id: 2,
@@ -149,7 +147,7 @@ export default {
           selected: true,
           color: "#BDA0EC",
           showProfilePage: false,
-          isLoggedIn: false,
+          isLoggedIn: false
         },
         {
           id: 3,
@@ -162,31 +160,31 @@ export default {
           selected: true,
           color: "#EBE386",
           showProfilePage: false,
-          isLoggedIn: false,
-        },
-      ],
+          isLoggedIn: false
+        }
+      ]
     };
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
     openItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function (value) {
+      return this.shoppingList.filter(function(value) {
         return value.status === 0;
       });
     },
     pendingItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function (value) {
+      return this.shoppingList.filter(function(value) {
         return value.status === status;
       });
     },
     billedItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function (value) {
+      return this.shoppingList.filter(function(value) {
         return value.status === 99;
       });
-    },
+    }
   },
   methods: {
     acceptItem(item) {
@@ -225,7 +223,7 @@ export default {
       this.shoppingList.push({
         name: this.submittedItem,
         status: 0,
-        showEditDialog: false,
+        showEditDialog: false
       });
       this.submittedItem = "";
     },
@@ -235,8 +233,8 @@ export default {
       this.shoppingList.splice(index, 1);
       // beim Aufrufen IN DEM CLICK EVENT!!
       // v-for="(goal, index) in goals @click="removeGoal(index)"
-    },
-  },
+    }
+  }
 };
 </script>
 

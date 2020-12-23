@@ -2,25 +2,25 @@
   <v-main>
     <v-row class="align-start pa-8">
       <v-col xs="6" sm="6" md="8">
-        <WGFamilyTree :rooms="rooms" @create-new-room="createNewRoom" @create-dummy="createDummy"></WGFamilyTree>
+        <TheFamilyTree :rooms="rooms" @create-new-room="createNewRoom" @create-dummy="createDummy"></TheFamilyTree>
       </v-col>
       <v-col xs="6" sm="6" md="4" class="pa-10">
-        <WGRules :roomies="roomies"></WGRules>
+        <TheHouseRules :roomies="roomies"></TheHouseRules>
       </v-col>
     </v-row>
   </v-main>
 </template>
 
 <script>
-import WGFamilyTree from "../wgFamilyTreeComponents/WGFamilyTree";
-import WGRules from "../WGRules";
+import TheFamilyTree from "../wgFamilyTreeComponents/TheFamilyTree";
+import TheHouseRules from "../wgFamilyTreeComponents/TheHouseRules";
 
 export default {
   name: "AboutWGPage",
   emits: [],
   components: {
-    WGFamilyTree,
-    WGRules
+    TheFamilyTree,
+    TheHouseRules
   },
   props: [],
   data() {
