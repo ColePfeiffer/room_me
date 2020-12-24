@@ -6,8 +6,10 @@
       :currentUser="currentUser"
       :view="ViewStateOfDialogSplit"
       :categories="categories"
+      :existingArticle="existingArticle"
       @toggle-Dialog="toggleDialogSplit"
       @add-Article="addArticle"
+      @change-Status-Of-Article="changeStatusOfArticle"
     ></DialogAddArticle>
 
     <v-speed-dial
@@ -28,7 +30,7 @@
         </v-btn>
       </template>
       <v-btn fab dark small color="green" @click="changeDialogState('CASH')">
-        <v-icon>mdi-currency-usd</v-icon>
+        <v-icon>euro</v-icon>
         <div class="fab-text-custom green">Add bought item</div>
       </v-btn>
       <v-btn fab dark small color="pink" @click="changeDialogState('NEW')">
@@ -44,6 +46,7 @@
           :shoppingList="shoppingList"
           :currencySymbol="currencySymbol"
           @delete-article="deleteArticle"
+          @open-Dialog-Add-Article="openDialogAddArticle"
         ></ThePurchasingTabs>
       </v-row>
     </v-container>
@@ -78,6 +81,19 @@ export default {
       showDialogSplit: false,
       currencySymbol: " €",
       debug: true,
+      existingArticle: {
+        name: " ",
+        price: "",
+        comment: "",
+        createdOn: "",
+        createdBy: "", // ref or id
+        acceptedBy: "", // ref or id
+        purchasedBy: "", // ref or id
+        avatar: "",
+        category: "",
+        involvedRoomies: [],
+        status: 0
+      },
       ViewStateOfDialogSplit: "CASH",
       categories: [
         {
@@ -177,12 +193,25 @@ export default {
         console.log("Position of " + article.name + " is " + position);
       this.shoppingList.splice(position, 1);
     },
+    openDialogAddArticle(item) {
+      this.changeDialogState("CASH_UP_EXISTING");
+      this.existingArticle = item;
+    },
     changeDialogState(newViewState) {
       this.ViewStateOfDialogSplit = newViewState;
       this.showDialogSplit = true;
     },
     toggleDialogSplit(visible) {
       this.showDialogSplit = visible;
+    },
+    changeStatusOfArticle({ article, status }) {
+      if (status === 1) {
+        article.acceptedBy = this.currentUser;
+      } else if (status === 2) {
+        article.purchasedBy = this.currentUser;
+      }
+
+      article.status = status;
     },
     addArticle({ newArticle, status }) {
       newArticle.createdOn = new Date().toISOString().substr(0, 10);
@@ -197,6 +226,7 @@ export default {
           newArticle.createdBy = this.currentUser;
           newArticle.acceptedBy = this.currentUser;
           newArticle.purchasedBy = this.currentUser;
+          newArticle.avatar = this.currentUser.profilePicture;
           break;
 
         default:

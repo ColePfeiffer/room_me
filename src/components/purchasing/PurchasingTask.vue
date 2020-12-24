@@ -17,8 +17,8 @@
             <v-col>
               <v-card-text class="stylingTextHeadline">
                 {{ item.name }}
-                <v-btn text>
-                  <v-icon @click="toggleShowDialogeditArticle(true)">edit</v-icon>
+                <v-btn text @click="toggleShowDialogeditArticle(true)">
+                  <v-icon>edit</v-icon>
                 </v-btn>
                 <v-row>
                   <v-card-text class="stylingTextSubtitle">{{ item.comment }}</v-card-text>
@@ -35,10 +35,10 @@
                 <div v-if="item.status === 0">
                   <v-card-actions>
                     <v-col class="text-right">
-                      <v-btn text>
-                        <v-icon @click="acceptItem(item)">mdi-check</v-icon>
+                      <v-btn text @click="acceptItem(item)">
+                        <v-icon>mdi-check</v-icon>
                       </v-btn>
-                      <v-btn text @click="cashUpItem(item)">
+                      <v-btn text @click="openDialogSplit(item)">
                         <v-icon>euro</v-icon>
                       </v-btn>
                     </v-col>
@@ -50,8 +50,8 @@
                 <div v-if="item.status === 1">
                   <v-card-actions>
                     <v-col class="text-left">
-                      <v-btn text>
-                        <v-icon @click="cashUpItem(item)">euro</v-icon>
+                      <v-btn text @click="openDialogSplit(item)">
+                        <v-icon>euro</v-icon>
                       </v-btn>
                     </v-col>
                   </v-card-actions>
@@ -90,8 +90,8 @@ export default {
   name: "PurchasingTask",
   emits: [
     "set-newPurchaseName",
-    "toggle-dialogCashUp",
-    "save-changesInEditPage"
+    "save-changesInEditPage",
+    "open-Dialog-Add-Article"
   ],
   props: {
     ["currentUser"]: Object,
@@ -213,11 +213,8 @@ export default {
       item.showDialogeditArticle = false;
     },
 
-    cashUpItem(item) {
-      this.completedPurchase = false;
-      this.currentItemForCashingUp = item;
-      this.$emit("toggle-dialogCashUp", true);
-      this.$emit("set-newPurchaseName", item.name);
+    openDialogSplit(item) {
+      this.$emit("open-Dialog-Add-Article", item);
     },
     addItem() {
       this.shoppingList.push({

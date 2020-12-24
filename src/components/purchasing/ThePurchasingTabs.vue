@@ -36,12 +36,12 @@
           </div>
 
           <div v-else>
-            <div v-for="item in openItems" :key="item.id">
+            <div v-for="item in openItems.reverse()" :key="item.id">
               <PurchasingTask
                 :item="item"
                 :currentUser="currentUser"
                 :shoppingList="shoppingList"
-                @toggle-dialogCashUp="toggleShowDialogCashUp"
+                @open-Dialog-Add-Article="openDialogAddArticle"
               ></PurchasingTask>
             </div>
           </div>
@@ -61,12 +61,12 @@
               </v-col>
             </v-card>
           </div>
-          <div v-for="item in pendingItems" :key="item.id">
+          <div v-for="item in pendingItems.reverse()" :key="item.id">
             <PurchasingTask
               :item="item"
               :currentUser="currentUser"
               :shoppingList="shoppingList"
-              @toggle-dialogCashUp="toggleShowDialogCashUp"
+              @open-Dialog-Add-Article="openDialogAddArticle"
             ></PurchasingTask>
           </div>
         </div>
@@ -85,7 +85,7 @@
               </v-col>
             </v-card>
           </div>
-          <div v-for="item in doneItems" :key="item.id">
+          <div v-for="item in doneItems.reverse()" :key="item.id">
             <BoughtCard
               :article="item"
               :currencySymbol="currencySymbol"
@@ -143,8 +143,8 @@ export default {
     deleteArticle(article) {
       this.$emit("delete-article", article);
     },
-    toggleShowDialogCashUp(newState) {
-      this.$emit("toggle-dialogCashUp", newState);
+    openDialogAddArticle(item) {
+      this.$emit("open-Dialog-Add-Article", item);
     }
   }
 };
