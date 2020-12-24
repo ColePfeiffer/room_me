@@ -7,7 +7,9 @@
           <!-- Title -->
           <v-card-title primary-title>
             <div>
-              <h3 class="headline mb-0">Adding a new article</h3>
+              <h3
+                class="headline mb-0"
+              >{{ view === "NEW" ? 'Add to shopping list' : 'Bought something?'}}</h3>
             </div>
           </v-card-title>
 
