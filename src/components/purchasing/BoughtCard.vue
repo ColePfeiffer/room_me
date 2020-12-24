@@ -65,7 +65,11 @@
                           </v-btn>
                         </v-col>
                         <v-col cols="6">
-                          <v-btn v-bind:class="{ click2: clickedOnce }" text @click="deleteArticle">
+                          <v-btn
+                            v-bind:class="{ click2: isSecondClick }"
+                            text
+                            @click="deleteArticle"
+                          >
                             <v-icon left small>delete</v-icon>
                           </v-btn>
                         </v-col>
@@ -89,7 +93,7 @@
 <script>
 export default {
   name: "BoughtCard",
-  emits: [],
+  emits: ["delete-Article"],
   props: {
     ["article"]: Object,
     ["currencySymbol"]: String
@@ -99,17 +103,17 @@ export default {
     return {
       showSettings: false,
       showDeleteInfo: false,
-      clickedOnce: false
+      isSecondClick: false
     };
   },
   methods: {
     deleteArticle() {
-      if (this.clickedOnce) {
-        // delete item here
-        this.clickedOnce = false;
+      if (this.isSecondClick) {
+        this.$emit("delete-Article", this.article);
+        this.isSecondClick = false;
         this.showSettings = false;
       } else {
-        this.clickedOnce = true;
+        this.isSecondClick = true;
       }
     }
   }

@@ -97,7 +97,7 @@
                 <v-row class="fill-height" align="center" justify="center">
                   <div class="posts">
                     <v-card elevation="10" max-width="100%">
-                      <WGFamilyTreeRoom :room="room" :showRoomName="false"></WGFamilyTreeRoom>
+                      <FamilyTreeRoom :room="room" :showRoomName="false"></FamilyTreeRoom>
                     </v-card>
                   </div>
                 </v-row>
@@ -116,7 +116,7 @@ import DialogNewRoomie from "./DialogNewRoomie";
 import DialogRoomManager from "./DialogRoomManager";
 
 export default {
-  name: "WGFamilyTree",
+  name: "TheFamilyTree",
   emits: ["create-new-room"],
   components: {
     FamilyTreeRoom,

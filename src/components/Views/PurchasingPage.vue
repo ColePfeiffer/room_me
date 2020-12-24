@@ -28,11 +28,11 @@
         </v-btn>
       </template>
       <v-btn fab dark small color="green" @click="changeDialogState('CASH')">
-        <v-icon>mdi-plus</v-icon>
+        <v-icon>mdi-currency-usd</v-icon>
         <div class="fab-text-custom green">Add bought item</div>
       </v-btn>
       <v-btn fab dark small color="pink" @click="changeDialogState('NEW')">
-        <v-icon>mdi-plus</v-icon>
+        <v-icon>mdi-shopping</v-icon>
         <div class="fab-text-custom pink">Add to shopping list</div>
       </v-btn>
     </v-speed-dial>
@@ -43,6 +43,7 @@
           :currentUser="currentUser"
           :shoppingList="shoppingList"
           :currencySymbol="currencySymbol"
+          @delete-article="deleteArticle"
         ></ThePurchasingTabs>
       </v-row>
     </v-container>
@@ -170,6 +171,12 @@ export default {
     };
   },
   methods: {
+    deleteArticle(article) {
+      const position = this.shoppingList.indexOf(article);
+      if (this.debug)
+        console.log("Position of " + article.name + " is " + position);
+      this.shoppingList.splice(position, 1);
+    },
     changeDialogState(newViewState) {
       this.ViewStateOfDialogSplit = newViewState;
       this.showDialogSplit = true;
