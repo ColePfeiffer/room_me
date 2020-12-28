@@ -54,9 +54,9 @@
 </template>
 
 <script>
-import TheBalanceBoard from "../purchasing/TheBalanceBoard";
-import ThePurchasingTabs from "../purchasing/ThePurchasingTabs";
-import DialogAddArticle from "../purchasing/DialogAddArticle";
+import TheBalanceBoard from "../components/purchasing/TheBalanceBoard";
+import ThePurchasingTabs from "../components/purchasing/ThePurchasingTabs";
+import DialogAddArticle from "../components/purchasing/DialogAddArticle";
 
 export default {
   components: {

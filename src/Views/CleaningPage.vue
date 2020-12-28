@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import CleaningTabs from "../cleaningComponents/CleaningTabs";
+import CleaningTabs from "../components/cleaningComponents/CleaningTabs";
 
 
 export default {

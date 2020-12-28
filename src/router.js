@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from "./components/Views/Home";
+import Home from "./Views/Home";
 
-import AboutWGPage from "./components/Views/AboutWGPage";
-import CleaningPage from "./components/Views/CleaningPage";
-import Login from "./components/Views/Login";
-import PurchasingPage from "./components/Views/PurchasingPage";
+import AboutWGPage from "./Views/AboutWGPage";
+import CleaningPage from "./Views/CleaningPage";
+import Login from "./Views/Login";
+import PurchasingPage from "./Views/PurchasingPage";
 
 // https://vuejs.org/v2/cookbook/adding-instance-properties.html#When-Using-a-Module-System
 Vue.prototype.$roomies = [

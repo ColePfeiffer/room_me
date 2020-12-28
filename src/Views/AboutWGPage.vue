@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import TheFamilyTree from "../wgFamilyTreeComponents/TheFamilyTree";
-import TheHouseRules from "../wgFamilyTreeComponents/TheHouseRules";
+import TheFamilyTree from "../components/wgFamilyTreeComponents/TheFamilyTree";
+import TheHouseRules from "../components/wgFamilyTreeComponents/TheHouseRules";
 
 export default {
   name: "AboutWGPage",
