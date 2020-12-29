@@ -15,6 +15,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    debug: true,
+    standardOrder: [], // array, holds references to roomie objects within roomies
     roomies: [
       {
         id: 0,
@@ -27,7 +29,7 @@ const store = new Vuex.Store({
         selected: true,
         color: "#1F85DE",
         showProfilePage: false,
-        isLoggedIn: true
+        isLoggedIn: true,
       },
       {
         id: 1,
@@ -40,7 +42,7 @@ const store = new Vuex.Store({
         selected: true,
         color: "#DE591F",
         showProfilePage: false,
-        isLoggedIn: false
+        isLoggedIn: false,
       },
       {
         id: 2,
@@ -53,7 +55,7 @@ const store = new Vuex.Store({
         selected: true,
         color: "#BDA0EC",
         showProfilePage: false,
-        isLoggedIn: false
+        isLoggedIn: false,
       },
       {
         id: 3,
@@ -66,7 +68,7 @@ const store = new Vuex.Store({
         selected: true,
         color: "#EBE386",
         showProfilePage: false,
-        isLoggedIn: false
+        isLoggedIn: false,
       },
     ],
     dummies: [
@@ -79,8 +81,8 @@ const store = new Vuex.Store({
         showProfilePage: false,
         movedOut: true,
         moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 5, 3)
-      }
+        moveOutDate: new Date(2019, 5, 3),
+      },
     ],
     rooms: [
       {
@@ -101,7 +103,7 @@ const store = new Vuex.Store({
           movedOut: false,
           vacationMode: false,
           moveInDate: new Date(2019, 5, 10),
-          moveOutDate: new Date(2017, 5, 3)
+          moveOutDate: new Date(2017, 5, 3),
         },
         pastRoomies: [
           {
@@ -113,20 +115,37 @@ const store = new Vuex.Store({
             showProfilePage: false,
             movedOut: true,
             moveInDate: new Date(2015, 10, 15),
-            moveOutDate: new Date(2019, 5, 3)
-          }
-        ]
-      }
+            moveOutDate: new Date(2019, 5, 3),
+          },
+        ],
+      },
     ],
-    counter: "kdkdkdd"
+    counter: "kdkdkdd",
+  },
+  mutations: {
+    createOrder(state) {
+      state.standardOrder = [];
+      for (let i = 0; i < state.roomies.length; i++) {
+        state.standardOrder.push(state.roomies[i]);
+      }
+
+      if (state.debug) console.log("Order created.");
+    },
+    updateOrder(state) {
+      state.standardOrder = [];
+      for (let i = 0; i < state.roomies.length; i++) {
+        state.standardOrder.push(state.roomies[i]);
+      }
+
+      if (state.debug) console.log("Order created.");
+    },
   },
   getters: {
-    currentUser: state => {
-      return state.roomies.find(roomie => roomie.isLoggedIn === true);
-    }
-  }
-})
-
+    currentUser: (state) => {
+      return state.roomies.find((roomie) => roomie.isLoggedIn === true);
+    },
+  },
+});
 
 new Vue({
   icons: {

@@ -76,7 +76,11 @@ export default {
   components: {},
   data: () => ({
     drawer: false
-  })
+  }),
+  // create standardOrder
+  created() {
+    this.$store.commit("createOrder");
+  }
 };
 
 // Colors: EEF5F0 - weiß
