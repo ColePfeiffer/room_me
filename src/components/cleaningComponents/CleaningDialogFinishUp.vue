@@ -41,6 +41,9 @@
               >
               </v-text-field>
 
+
+
+
               <v-text-field
                 v-model="comment"
                 label="Comment"
@@ -67,29 +70,25 @@
                     >When did you finish your task? Select the date and safe
                     it.</v-card-text
                   >
-                  <v-card-actions>  <v-btn
-                    color="pink"
-                    text
-                    @click="toggleCalendarCompletedOn(false)"
+                  <v-card-actions>
+                    <v-btn
+                      color="pink"
+                      text
+                      @click="toggleCalendarCompletedOn(false)"
+                    >
+                      Close
+                    </v-btn>
+                    <v-btn color="pink" text @click="saveCalendarCompletedOn()">
+                      Safe
+                    </v-btn></v-card-actions
                   >
-                    Close
-                  </v-btn>
-                  <v-btn
-                    color="pink"
-                    text
-                    @click="saveCalendarCompletedOn(completedOnDate)"
-                  >
-                    Safe
-                  </v-btn></v-card-actions>
-
-                 
                 </v-card>
               </v-dialog>
             </v-col>
           </v-row>
           <v-row justify="space-around">
             <v-btn color="gray" @click="closeDialog">Close</v-btn>
-            <v-btn color="pink" @click="checkOffTask(item)" justify-center
+            <v-btn color="pink" @click="checkOffTask" justify-center
               >Task checkkk!</v-btn
             >
           </v-row>
@@ -123,7 +122,7 @@ export default {
       intervall: 7,
       // Shows todays date:
       timestamp: new Date().toISOString().substr(0, 10),
-      completedOnDate: "",
+      //completedOnDate: new Date().toISOString().substr(0, 10),
       comment: "",
 
       // Current User that chooses Task:
@@ -142,24 +141,18 @@ export default {
   },
   methods: {
     saveCalendarCompletedOn() {
-      this.completedOnDate = this.timestamp;
-      this.$emit("save-calendarCompletedOn", this.completedOnDate);
       this.toggleCalendarCompletedOn(false);
-      console.log("safed timestamp: " + this.timestamp);
     },
     toggleCalendarCompletedOn(newState) {
       this.showDialogCalendarCompletedOn = newState;
     },
     checkOffTask() {
-     
       // Status: 0 - offen, accepted: 1, declined: 2, done: 3
       this.item.status = 3;
       this.item.comment = this.comment;
-      this.item.completedOnDate = this.completedOnDate;
+      this.item.completedOnDate = this.timestamp;
 
-      // emit muss comments und completed date noch weitergeben:
-      this.$emit("checkOffTask", this.item);
-       this.closeDialog();
+      this.closeDialog();
     },
     closeDialog() {
       this.$emit("toggle-showDialogFinishUp", false);

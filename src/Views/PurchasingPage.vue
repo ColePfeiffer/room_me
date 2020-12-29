@@ -108,7 +108,7 @@ export default {
           color: "#e07a5f",
           isDefault: false,
           avatar:
-            "https://images.unsplash.com/photo-1563453392212-326f5e854473?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Y2xlYW5pbmclMjBjaGVtaWNhbHN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Nnx8Y2xlYW5pbmd8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
         },
         {
           id: 3,
@@ -124,7 +124,7 @@ export default {
           color: "#3d405b",
           isDefault: false,
           avatar:
-            "https://images.unsplash.com/photo-1494962227006-107baac595eb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mzh8fGRyaW5rc3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            "https://images.unsplash.com/photo-1559842438-2942c907c8fe?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
         }
       ],
       shoppingList: []

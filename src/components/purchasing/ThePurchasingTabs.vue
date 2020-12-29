@@ -4,7 +4,7 @@
       <v-tabs-slider color="pink"></v-tabs-slider>
 
       <v-tab href="#tab-1">
-        Open
+        Shopping List
         <v-icon color="pink">mdi-note</v-icon>
       </v-tab>
 

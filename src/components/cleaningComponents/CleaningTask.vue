@@ -18,38 +18,13 @@
     >
     </CleaningDialogDeclineTask>
 
-        <CleaningDialogNewTask
+    <CleaningDialogNewTask
       :showDialog="showDialogNewTask"
       :roomies="roomies"
-        :taskList="taskList"
-     :item="item"
+      :taskList="taskList"
+      :item="item"
       @toggle-showDialogNewTask="toggleShowDialogNewTask"
     ></CleaningDialogNewTask>
-
-      <v-speed-dial
-      color="pink"
-      v-model="fab"
-      dark
-      small
-      absolute
-      fixed
-      bottom
-      right
-      slide-y-reverse-transition
-    >
-      <template v-slot:activator>
-        <v-btn v-model="fab" color="blue darken-2" dark fab>
-          <v-icon v-if="fab">mdi-close</v-icon>
-          <v-icon v-else>mdi-plus</v-icon>
-        </v-btn>
-      </template>
-
-
-      <v-btn fab dark small color="pink" @click="showDialogNewTask = true">
-        <v-icon>mdi-plus</v-icon>
-        <div class="fab-text-custom pink">Add task</div>
-      </v-btn>
-    </v-speed-dial>
 
     <v-col cols="12">
       <v-card class="cleaningCards">
@@ -83,33 +58,35 @@
             </label>
           </div>
 
-          <div class="commentBox" v-if="item.status === 3">
+          <div class="commentBox" v-if="item.status === 3 && item.comment != '' " >
             <!--If item is done, show comment:-->
-            <v-textarea
-              height="80px"
-              outlined
-              readonly
-              name="Comment"
-              :label="$store.getters.currentUser.username"
-              :value="item.comment"
-            ></v-textarea>
+            <fieldset style="text-align: center">
+              <legend style="text-align: center">
+                <p class="text--black;">
+                  {{ $store.getters.currentUser.username }}
+                </p>
+              </legend>
+              <div style="text-align: left; padding-left: 15px; padding-bottom: 15px">{{ item.comment }}</div>
+            </fieldset>
           </div>
+
           <div v-if="item.status === 0 || item.status === 1">
             <v-card-actions>
               <v-col class="text-right">
-                <v-btn text>
-                  <v-icon @click="toggleShowDialogFinishUp(true)"
+                <v-btn text @click="toggleShowDialogFinishUp(true)">
+                  <v-icon 
                     >mdi-check</v-icon
                   >
                 </v-btn>
-                <v-btn text>
-                  <v-icon @click="toggleShowDialogDeclineTask(true)"
+                <v-btn text @click="toggleShowDialogDeclineTask(true)">
+                  <v-icon 
                     >mdi-close</v-icon
                   >
                 </v-btn>
               </v-col>
             </v-card-actions>
           </div>
+          
         </v-col>
       </v-card>
     </v-col>
@@ -126,31 +103,22 @@ export default {
   emits: [],
   props: {
     ["item"]: Object,
-       ["taskList"]: Array,
+    ["taskList"]: Array,
   },
   components: {
     CleaningDialogFinishUp,
     CleaningDialogDeclineTask,
-      CleaningDialogNewTask,
+    CleaningDialogNewTask,
   },
   data() {
     return {
-       fab: false,
-      colors: [
-        "indigo",
-        "warning",
-        "pink darken-2",
-        "red lighten-1",
-        "deep-purple accent-4",
-      ],
-
       model: 0,
       showDialogNewTask: false,
       showDialogFinishUp: false,
       showDialogDeclineTask: false,
       debug: true,
       mycolor: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
-     
+
       roomies: [
         {
           id: 0,
@@ -163,7 +131,7 @@ export default {
           selected: true,
           color: "#1F85DE",
           showProfilePage: false,
-          isLoggedIn: true
+          isLoggedIn: true,
         },
         {
           id: 1,
@@ -176,7 +144,7 @@ export default {
           selected: true,
           color: "#DE591F",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 2,
@@ -189,7 +157,7 @@ export default {
           selected: true,
           color: "#BDA0EC",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 3,
@@ -202,9 +170,9 @@ export default {
           selected: true,
           color: "#EBE386",
           showProfilePage: false,
-          isLoggedIn: false
-        }
-      ]
+          isLoggedIn: false,
+        },
+      ],
     };
   },
   methods: {
@@ -218,7 +186,7 @@ export default {
       this.showDialogDeclineTask = newState;
       if (this.debug) console.log("new state: " + this.showDialogDeclineTask);
     },
-     toggleShowDialogNewTask(newState) {
+    toggleShowDialogNewTask(newState) {
       if (this.debug) console.log("old state: " + this.showDialogNewTask);
       this.showDialogNewTask = newState;
       if (this.debug) console.log("new state: " + this.showDialogNewTask);
@@ -234,9 +202,11 @@ export default {
 <style scoped>
 .cleaningCards {
   width: 100%;
+  padding-bottom: 15px;
 }
 .commentBox {
-  padding-top: 20px;
+  padding-top: 15px;
+ 
 }
 .profile-picture {
   margin: 1em;
@@ -265,14 +235,5 @@ export default {
   font-size: 1.1rem;
 
   font-weight: bold;
-}
-.fab-text-custom {
-  position: absolute;
-  right: 50px;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
-  border-radius: 2px;
 }
 </style>
