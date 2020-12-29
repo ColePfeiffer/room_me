@@ -20,7 +20,6 @@
 
         <CleaningDialogNewTask
       :showDialog="showDialogNewTask"
-      :currentUser="currentUser"
       :roomies="roomies"
         :taskList="taskList"
      :item="item"
@@ -60,7 +59,7 @@
               class="profile-picture rounded-circle"
               max-width="60"
               max-height="60"
-              v-bind:src="currentUser.profilePicture"
+              v-bind:src="$store.getters.currentUser.profilePicture"
             ></v-img>
 
             <v-col>
@@ -91,7 +90,7 @@
               outlined
               readonly
               name="Comment"
-              :label="currentUser.username"
+              :label="$store.getters.currentUser.username"
               :value="item.comment"
             ></v-textarea>
           </div>
@@ -127,7 +126,6 @@ export default {
   emits: [],
   props: {
     ["item"]: Object,
-    ["currentUser"]: Object,
        ["taskList"]: Array,
   },
   components: {

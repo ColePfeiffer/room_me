@@ -37,8 +37,6 @@
             <v-list-item-title>Putzen</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
-
       </v-list>
     </v-navigation-drawer>
 

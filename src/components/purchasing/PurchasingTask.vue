@@ -1,8 +1,6 @@
 <template>
   <!--Card on the right!, background: orange -->
-
   <v-row dense class="card">
-    <!--Cards for shopping list:-->
     <v-col cols="8">
       <v-card class="purchasingCards">
         <v-row>
@@ -17,32 +15,30 @@
           </v-col>
           <v-col xs="6" s="6" md="6">
             <v-col>
-              <v-card-text class="stylingTextHeadline"
-                >{{ item.article }}
-                <v-btn text>
-                  <v-icon @click="toggleShowDialogEditItem(true)">edit</v-icon>
+              <v-card-text class="stylingTextHeadline">
+                {{ item.name }}
+                <v-btn text @click="toggleShowDialogeditArticle(true)">
+                  <v-icon>edit</v-icon>
                 </v-btn>
                 <v-row>
-                  <v-card-text class="stylingTextSubtitle">
-                    {{ item.description }}
-                  </v-card-text>
+                  <v-card-text class="stylingTextSubtitle">{{ item.comment }}</v-card-text>
                 </v-row>
-              </v-card-text> </v-col
-            ><v-col> </v-col> </v-col
-          ><v-col>
-            <v-row>
-              <v-card-text class="stylingDate">
-                {{ item.createdOn }}
               </v-card-text>
+            </v-col>
+            <v-col></v-col>
+          </v-col>
+          <v-col>
+            <v-row>
+              <v-card-text class="stylingDate">{{ item.createdOn }}</v-card-text>
 
               <v-row>
                 <div v-if="item.status === 0">
                   <v-card-actions>
                     <v-col class="text-right">
-                      <v-btn text>
-                        <v-icon @click="acceptItem(item)">mdi-check</v-icon>
+                      <v-btn text @click="acceptItem(item)">
+                        <v-icon>mdi-check</v-icon>
                       </v-btn>
-                      <v-btn text @click="cashUpItem(item)">
+                      <v-btn text @click="openDialogSplit(item)">
                         <v-icon>euro</v-icon>
                       </v-btn>
                     </v-col>
@@ -54,8 +50,8 @@
                 <div v-if="item.status === 1">
                   <v-card-actions>
                     <v-col class="text-left">
-                      <v-btn text>
-                        <v-icon @click="cashUpItem(item)">euro</v-icon>
+                      <v-btn text @click="openDialogSplit(item)">
+                        <v-icon>euro</v-icon>
                       </v-btn>
                     </v-col>
                   </v-card-actions>
@@ -72,162 +68,103 @@
             outlined
             readonly
             name="Comment"
-            :label="currentUser.username"
+            :label="$store.getters.currentUser.username"
             :value="item.comment"
           ></v-textarea>
         </div>
-        <PurchasingDialogEditItem
+        <DialogEditArticle
           :item="item"
           @save-changes="saveChangesInEditPage"
-          :showDialog="showDialogEditItem"
-          @toggle-showDialogEditItem="toggleShowDialogEditItem"
-        ></PurchasingDialogEditItem>
+          :showDialog="showDialogeditArticle"
+          @toggle-showDialogeditArticle="toggleShowDialogeditArticle"
+        ></DialogEditArticle>
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import PurchasingDialogEditItem from "./PurchasingDialogEditItem";
+import DialogEditArticle from "./DialogEditArticle";
 
 export default {
   name: "PurchasingTask",
   emits: [
     "set-newPurchaseName",
-    "toggle-dialogCashUp",
     "save-changesInEditPage",
+    "open-Dialog-Add-Article"
   ],
   props: {
-    ["currentUser"]: Object,
     ["shoppingList"]: Array,
-    ["item"]: Object,
+    ["item"]: Object
   },
   components: {
-    PurchasingDialogEditItem,
+    DialogEditArticle
   },
   data() {
     return {
       submittedItem: "",
-      showDialogEditItem: false,
+      showDialogeditArticle: false,
 
       completedPurchase: false,
       currentItemForCashingUp: {},
-
-      roomies: [
-        {
-          id: 0,
-          username: "Chris",
-          description: "Hi there!",
-          profilePicture:
-            "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: +3,
-          balancePlus: true,
-          selected: true,
-          color: "#1F85DE",
-          showProfilePage: false,
-          isLoggedIn: true,
-        },
-        {
-          id: 1,
-          username: "Hannah",
-          description: "Möpp",
-          profilePicture:
-            "https://images.unsplash.com/photo-1457131760772-7017c6180f05?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: -3,
-          balancePlus: false,
-          selected: true,
-          color: "#DE591F",
-          showProfilePage: false,
-          isLoggedIn: false,
-        },
-        {
-          id: 2,
-          username: "Rufus",
-          description: "",
-          profilePicture:
-            "https://images.unsplash.com/photo-1517423568366-8b83523034fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: 0,
-          balancePlus: true,
-          selected: true,
-          color: "#BDA0EC",
-          showProfilePage: false,
-          isLoggedIn: false,
-        },
-        {
-          id: 3,
-          username: "Tim",
-          description: "",
-          profilePicture:
-            "https://images.unsplash.com/photo-1516210673878-84fa2173547b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: 0,
-          balancePlus: true,
-          selected: true,
-          color: "#EBE386",
-          showProfilePage: false,
-          isLoggedIn: false,
-        },
-      ],
     };
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
     openItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function (value) {
+      return this.shoppingList.filter(function(value) {
         return value.status === 0;
       });
     },
     pendingItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function (value) {
+      return this.shoppingList.filter(function(value) {
         return value.status === status;
       });
     },
     billedItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function (value) {
+      return this.shoppingList.filter(function(value) {
         return value.status === 99;
       });
-    },
+    }
   },
   methods: {
     acceptItem(item) {
       this.item.status = 1;
-      this.item.acceptedBy = this.currentUser.username;
-      this.item.avatar = this.currentUser.profilePicture;
-      console.log("itemhier" + this.item.article);
+      this.item.acceptedBy = this.$store.getters.currentUser.username;
+      this.item.avatar = this.$store.getters.currentUser.profilePicture;
+      console.log("itemhier" + this.item.name);
       console.log("itemhier" + this.item.status);
       console.log(item);
     },
 
-    toggleShowDialogEditItem(newState) {
-      if (this.debug) console.log("old state: " + this.showDialogEditItem);
-      this.showDialogEditItem = newState;
-      if (this.debug) console.log("new state: " + this.showDialogEditItem);
+    toggleShowDialogeditArticle(newState) {
+      if (this.debug) console.log("old state: " + this.showDialogeditArticle);
+      this.showDialogeditArticle = newState;
+      if (this.debug) console.log("new state: " + this.showDialogeditArticle);
     },
 
     saveChangesInEditPage(item, changeData, keepAlive) {
       if (keepAlive) {
-        item.article = changeData.article;
+        item.name = changeData.name;
       } else {
         const position = this.shoppingList.indexOf(item);
         console.log(position);
         this.shoppingList.splice(position, 1);
       }
-      item.showDialogEditItem = false;
+      item.showDialogeditArticle = false;
     },
 
-    cashUpItem(item) {
-      this.completedPurchase = false;
-      this.currentItemForCashingUp = item;
-      this.$emit("toggle-dialogCashUp", true);
-      this.$emit("set-newPurchaseName", item.article);
+    openDialogSplit(item) {
+      this.$emit("open-Dialog-Add-Article", item);
     },
     addItem() {
       this.shoppingList.push({
-        article: this.submittedItem,
+        name: this.submittedItem,
         status: 0,
-        showEditDialog: false,
+        showEditDialog: false
       });
       this.submittedItem = "";
     },
@@ -237,8 +174,8 @@ export default {
       this.shoppingList.splice(index, 1);
       // beim Aufrufen IN DEM CLICK EVENT!!
       // v-for="(goal, index) in goals @click="removeGoal(index)"
-    },
-  },
+    }
+  }
 };
 </script>
 

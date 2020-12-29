@@ -1,15 +1,17 @@
 <template>
   <v-container justify-center>
-    <WGFamilyTreeDialogNewRoomie
+    <DialogNewRoomie
       :showDialog="showDialogForNewRoomie"
       :rooms="rooms"
+      @create-dummy="createDummy"
       @set-showDialog="showDialogForNewRoomie = false"
-    ></WGFamilyTreeDialogNewRoomie>
-    <WGFamilyTreeDialogRoomManager
+    ></DialogNewRoomie>
+    <DialogRoomManager
       :showDialog="showDialogForRoomManager"
       :rooms="rooms"
       @set-showDialog="showDialogForRoomManager = false"
-    ></WGFamilyTreeDialogRoomManager>
+      @create-new-room="createNewRoom"
+    ></DialogRoomManager>
 
     <v-speed-dial
       color="pink"
@@ -56,7 +58,7 @@
       <v-row justify="space-around">
         <div v-for="(i, index) in rooms" :key="i.id">
           <v-col xs="6" sm="6" md="3">
-            <WGFamilyTreeRoom :room="i" :showRoomName="true"></WGFamilyTreeRoom>
+            <FamilyTreeRoom :room="i" :showRoomName="true"></FamilyTreeRoom>
           </v-col>
           <v-col v-if="index == 1">fff</v-col>
         </div>
@@ -76,12 +78,12 @@
           sm="6"
           md="3"
           class="d-flex justify-center align-center"
-          style="background-color: #a83250;"
+          style="background-color: #a83250"
         >
           <div>
             <div>
               <v-icon @click="model--">mdi-minus</v-icon>
-              room {{model+1}}
+              room {{ model + 1 }}
               <v-icon @click="model++">mdi-plus</v-icon>
             </div>
           </div>
@@ -90,12 +92,12 @@
       <v-row justify="space-around">
         <v-col xs="12" sm="6" md="3">
           <v-carousel hide-delimiter-background :show-arrows="false" height="auto" v-model="model">
-            <v-carousel-item v-for="(room) in rooms" :key="room.id">
+            <v-carousel-item v-for="room in rooms" :key="room.id">
               <v-sheet height="100%">
                 <v-row class="fill-height" align="center" justify="center">
                   <div class="posts">
                     <v-card elevation="10" max-width="100%">
-                      <WGFamilyTreeRoom :room="room" :showRoomName="false"></WGFamilyTreeRoom>
+                      <FamilyTreeRoom :room="room" :showRoomName="false"></FamilyTreeRoom>
                     </v-card>
                   </div>
                 </v-row>
@@ -109,19 +111,19 @@
 </template>
 
 <script>
-import WGFamilyTreeRoom from "./WGFamilyTreeRoom";
-import WGFamilyTreeDialogNewRoomie from "./WGFamilyTreeDialogNewRoomie";
-import WGFamilyTreeDialogRoomManager from "./WGFamilyTreeDialogRoomManager";
+import FamilyTreeRoom from "./FamilyTreeRoom";
+import DialogNewRoomie from "./DialogNewRoomie";
+import DialogRoomManager from "./DialogRoomManager";
 
 export default {
-  name: "WGFamilyTree",
-  emits: [],
+  name: "TheFamilyTree",
+  emits: ["create-new-room"],
   components: {
-    WGFamilyTreeRoom,
-    WGFamilyTreeDialogNewRoomie,
-    WGFamilyTreeDialogRoomManager
+    FamilyTreeRoom,
+    DialogNewRoomie,
+    DialogRoomManager
   },
-  props: { rooms: Array },
+  props: { rooms: Array, roomName: String },
   data() {
     return {
       showDialogForNewRoomie: false,
@@ -142,8 +144,12 @@ export default {
     editFamilyTree() {
       // opens dialog
     },
-    addNewRoom() {
-      // opens dialog
+    createNewRoom(roomName) {
+      this.$emit("create-new-room", roomName);
+    },
+
+    createDummy(array) {
+      this.$emit("create-dummy", array);
     },
     isMobile() {
       if (

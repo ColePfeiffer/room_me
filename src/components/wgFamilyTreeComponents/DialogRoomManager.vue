@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showDialog" width="550">
+  <v-dialog :value="showDialog" width="550">
     <v-card class="removeScrollbar">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-card-title primary-title>
@@ -33,7 +33,7 @@
                                 <span class="currentRoomie">{{room.currentRoomie.username}}</span>
                               </v-col>
                               <v-col class="text-right">
-                                <v-btn x-small text @click="changeView('NEW_ROOM')">
+                                <v-btn x-small text @click="changeView('MOVE_OUT')">
                                   move out
                                   <v-icon right dark x-small>mdi-home</v-icon>
                                 </v-btn>
@@ -70,29 +70,30 @@
               <v-card class="ma-0 pa-0">
                 <v-card-text align="center">
                   Enter name and hit create.
-                  <v-col cols=8>
-                  <v-text-field
-                    class="ma-0 pa-0"
-                    outlined
-                    clearable
-                    dense
-                    :value="name"
-                    label="Name"
-                    sm="6"
-                    m="6"
-                    prepend-icon="mdi-account"
-                    :color="color"
-                    :rules="[rules.required]"
-                    maxlength="15"
-                    required
-                  ></v-text-field></v-col>
+                  <v-col cols="8">
+                    <v-text-field
+                      class="ma-0 pa-0"
+                      outlined
+                      clearable
+                      dense
+                      label="name"
+                      sm="6"
+                      m="6"
+                      prepend-icon="mdi-account"
+                      :color="color"
+                      :rules="[rules.required]"
+                      maxlength="15"
+                      required
+                      v-model="roomName"
+                    ></v-text-field>
+                  </v-col>
                 </v-card-text>
               </v-card>
             </v-col>
           </v-row>
         </v-container>
 
-        <v-container v-else-if="viewState == 'DELETE_USER'">
+        <v-container v-else-if="(viewState == 'DELETE_USER' || viewState == 'DELETE_USER_2')">
           <v-row align="center" justify="center">
             <v-col cols="10">
               <v-card>
@@ -102,7 +103,7 @@
           </v-row>
         </v-container>
 
-        <v-container v-else-if="viewState == 'DELETE_ROOM'">
+        <v-container v-else-if="(viewState == 'DELETE_ROOM' || viewState == 'DELETE_ROOM_2')">
           <v-row align="center" justify="center">
             <v-col cols="10">
               <v-card>
@@ -119,14 +120,10 @@
           <v-row justify="space-around">
             <v-col cols="4"></v-col>
             <v-col cols="4">
-              <v-btn
-                color="pink"
-                :disabled="!valid"
-                @click="changeView('NEW_ROOM')"
-              >{{ buttonLabel}}</v-btn>
+              <v-btn color="pink" :disabled="!valid" @click="changeView()">{{ buttonLabel}}</v-btn>
             </v-col>
             <v-col cols="4">
-              <v-btn v-if="showCancel" color="gray" @click="changeView('NADA')">cancel</v-btn>
+              <v-btn v-if="showCancel" color="gray" @click="reset()">cancel</v-btn>
             </v-col>
           </v-row>
         </v-card-actions>
@@ -138,7 +135,7 @@
 <script>
 export default {
   name: "WGFamilyTreeDialogRoomManager",
-  emits: ["set-showDialog"],
+  emits: ["set-showDialog", "create-new-room"],
 
   props: {
     showDialog: Boolean,
@@ -148,79 +145,93 @@ export default {
 
   data() {
     return {
+      // State Management
+      debug: true,
       showCancel: false,
+      viewState: "INIT",
       buttonLabel: "new room",
+
+      // Component Settings
       color: "#FF6F00", //dialogColor
-      creationType: "INVITE",
-      // NAME, DELETE_USER, DELETE_ROOM, NADA
-      viewState: "NADA",
-      name: "",
-      roomSelection: "",
       valid: true,
       rules: {
         required: value => !!value || "Required."
-      }
+      },
+
+      // Data
+      roomName: "room " + (this.rooms.length+1)
     };
   },
   methods: {
-    createNewRoom() {
-      //roomname, emit
-    },
-
     // changes View and label of button
     // WIP, bug test and usage of reset
     changeView(newState) {
-      switch (newState) {
-        case "NEW_ROOM":
-          if (this.viewState == "NADA") {
-            this.buttonLabel = "create";
-            this.showCancel = true;
-            this.viewState = newState;
-          } else if (this.viewState == "NEW_ROOM") {
-            this.reset();
-            this.createNewRoom();
+      switch (arguments.length) {
+        // if there are no parameters passed
+        case 0:
+          switch (this.viewState) {
+            // from init to new Room
+            case "INIT":
+              this.buttonLabel = "create";
+              this.viewState = "NEW_ROOM";
+              this.showCancel = true;
+              break;
+
+            case "NEW_ROOM": // from new room back to init
+              this.reset();
+              this.createNewRoom();
+              break;
+            // from anywhere to delete_Room
+            case "DELETE_ROOM":
+              this.buttonLabel = "delete";
+              this.showCancel = true;
+              this.viewState = "DELETE_ROOM_2";
+              break;
+            case "DELETE_ROOM_2":
+              this.reset();
+              this.deleteRoom();
+              break;
+            case "DELETE_USER":
+              this.buttonLabel = "delete";
+              this.showCancel = true;
+              this.viewState = "DELETE_USER_2";
+              break;
+
+            case "DELETE_USER_2":
+              this.reset();
+              this.deleteRoom();
+              break;
+
+            default:
+              break;
           }
           break;
-        case "NADA":
-          this.reset();
-          break;
-        case "DELETE_ROOM":
-          this.buttonLabel = "delete";
-          this.showCancel = true;
-          this.viewState = newState;
 
-          if (this.viewState == "DELETE_ROOM") {
-            this.reset();
-            // delete Room Function
-          }
-          break;
-        case "DELETE_USER":
-          this.buttonLabel = "delete";
-          this.showCancel = true;
+        case 1:
           this.viewState = newState;
-          break;
-
-        default:
+          this.changeView();
           break;
       }
+    },
+    createNewRoom() {
+      this.$emit("create-new-room", this.roomName);
+    },
+    deleteRoom() {
+      this.$emit("delete-room");
+    },
+    deleteUser() {
+      this.$emit("delete-user");
     },
     reset() {
       this.buttonLabel = "new room";
       this.showCancel = false;
-      this.viewState = "NADA";
+      this.viewState = "INIT";
+      if (this.debug) {
+        console.log("Resetted");
+      }
     },
     closeDialog() {
       this.$emit("set-showDialog");
-    },
-    create() {
-      // if this returns true, all required fields are filled out
-      if (this.$refs.form.validate()) {
-        if (this.creationType == "INVITE") {
-          console.log("generate code");
-        } else if (this.creationType == "DUMMY") {
-          console.log("created dummy");
-        }
-      }
     }
   }
 };

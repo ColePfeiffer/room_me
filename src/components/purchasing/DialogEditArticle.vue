@@ -5,30 +5,28 @@
         <span class="headline">Edit item</span>
       </v-card-title>
       <v-card-text>
- 
-          <v-row>
-            <v-col cols="12" sm="8" md="8">
-              <v-text-field
-                v-model="changeData.article"
-                persistent-hint
-                hint="edit name of article here"
-                required
-              ></v-text-field>
-            </v-col>
+        <v-row>
+          <v-col cols="12" sm="8" md="8">
+            <v-text-field
+              v-model="changeData.article"
+              persistent-hint
+              hint="edit name of article here"
+              required
+            ></v-text-field>
+          </v-col>
 
-            <v-col cols="12" sm="4" md="4">
-              <v-checkbox @click="disabled = !disabled" color="pink" hide-details></v-checkbox>
-              <small>Delete this Article?</small>
-            </v-col>
-            <v-col v-if="disabled === false" cols="12">
-              <v-text-field
-                v-model="comment"
-                :disabled="disabled"
-                label="Inform your roomies about your latest changing."
-              ></v-text-field>
-            </v-col>
-          </v-row>
-  
+          <v-col cols="12" sm="4" md="4">
+            <v-checkbox @click="disabled = !disabled" color="pink" hide-details></v-checkbox>
+            <small>Delete this Article?</small>
+          </v-col>
+          <v-col v-if="disabled === false" cols="12">
+            <v-text-field
+              v-model="comment"
+              :disabled="disabled"
+              label="Inform your roomies about your latest changing."
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -41,11 +39,11 @@
 
 <script>
 export default {
-  name: "PurchasingDialogEditItem",
+  name: "DialogEditArticle",
 
   props: {
     ["item"]: Object,
-    showDialog: Boolean,
+    showDialog: Boolean
   },
   emits: ["save-changes", "toggle-showDialogEditItem"],
   data() {
@@ -63,12 +61,11 @@ export default {
       this.closeDialog();
     },
     closeDialog() {
-       this.$emit("toggle-showDialogEditItem", false);
+      this.$emit("toggle-showDialogEditItem", false);
 
       // reset displayed data to item/shoppingList data
       this.changeData.article = this.item.article;
-    },
-       
+    }
   }
 };
 </script>

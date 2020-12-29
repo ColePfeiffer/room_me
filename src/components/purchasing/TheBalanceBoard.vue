@@ -5,7 +5,7 @@
         <v-list-item-content>
           <div class="overline">Overview</div>
           <v-list>
-            <v-list-item v-for="roomie in roomies" :key="roomie.id">
+            <v-list-item v-for="roomie in $store.state.roomies" :key="roomie.id">
               <DialogProfilePage :roomie="roomie" @save-changes="saveChangesInProfilePage"></DialogProfilePage>
               <div  class="text-center">
                 <v-list-item-avatar>
@@ -42,16 +42,15 @@
 </template>
 
 <script>
-import DialogProfilePage from "./DialogProfilePage";
+import DialogProfilePage from "../DialogProfilePage";
 
 export default {
-  name: "PurchasingBillingOverview",
+  name: "BalanceBoard",
   emits: ["save-changes", "toggle-dialogCashUp"],
   components: {
     DialogProfilePage
   },
   props: {
-    ["roomies"]: Array,
     currencySymbol: String
   },
   data() {

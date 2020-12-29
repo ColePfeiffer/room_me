@@ -14,35 +14,49 @@
     </v-row>
 
     <!-- current roomie -->
-    <v-row no-gutters id="wrapperForFTRoom">
-      <v-col cols="12" class="black lighten-5">
-        <div>
-          <WGFamilyTreeRoomie :roomie="room.currentRoomie"></WGFamilyTreeRoomie>
-        </div>
-      </v-col>
-    </v-row>
-    <br />
-    <!-- past Roomies -->
-    <div v-for="(n, index) in room.pastRoomies" :key="n.id">
+    <template v-if="room.currentRoomie != 'EMPTY'">
       <v-row no-gutters id="wrapperForFTRoom">
         <v-col cols="12" class="black lighten-5">
-          <WGFamilyTreeRoomie :roomie="n"></WGFamilyTreeRoomie>
-          <div v-if="index != room.pastRoomies.length-1" class="verticalLine"></div>
+          <div>
+            <FamilyTreeRoomie :roomie="room.currentRoomie"></FamilyTreeRoomie>
+          </div>
         </v-col>
       </v-row>
-    </div>
+      <br />
+    </template>
+    <template v-else>
+      <v-row>
+        <v-col>
+          <v-card align="center" elevation="10" max-width="100%" width="280px" dark>
+            <v-card-text>This room is currently empty.</v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </template>
+    <!-- past Roomies -->
+    <template v-if="room.pastRoomies.length > 0">
+      <div v-for="(n, index) in room.pastRoomies" :key="n.id">
+        <v-row no-gutters id="wrapperForFTRoom">
+          <v-col cols="12" class="black lighten-5">
+            <FamilyTreeRoomie :roomie="n"></FamilyTreeRoomie>
+            <div v-if="index != room.pastRoomies.length-1" class="verticalLine"></div>
+          </v-col>
+        </v-row>
+      </div>
+    </template>
+    <template v-else></template>
   </v-container>
 </template>
 
 <script>
-import WGFamilyTreeRoomie from "./WGFamilyTreeRoomie";
+import FamilyTreeRoomie from "./FamilyTreeRoomie";
 import QuickEdit from "vue-quick-edit";
 
 export default {
-  name: "WGFamilyTreeRoom",
+  name: "FamilyTreeRoom",
   emits: [],
   components: {
-    WGFamilyTreeRoomie,
+    FamilyTreeRoomie,
     QuickEdit
   },
   props: { room: Object, showRoomName: Boolean },
@@ -52,10 +66,7 @@ export default {
       pastRoomiesSize: this.room.pastRoomies.length
     };
   },
-  methods: {},
-  mounted() {
-    console.log(this.room.id, this.pastRoomiesSize);
-  }
+  methods: {}
 };
 </script>
 
