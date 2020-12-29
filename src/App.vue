@@ -47,9 +47,7 @@
         <v-toolbar-title></v-toolbar-title>
         <v-spacer></v-spacer>
         <!--                Buttons Profile-->
-        <v-btn text color="grey" icon to="/Login">
-          <v-icon color="grey">mdi-account</v-icon>
-        </v-btn>
+        <SettingsMenu></SettingsMenu>
         <v-btn text color="grey">
           <span>Ausloggen</span>
           <v-icon right>mdi-exit-to-app</v-icon>
@@ -70,13 +68,21 @@
 </template>
 
 <script>
+import SettingsMenu from "./components/SettingsMenu";
+
 export default {
   name: "App",
 
-  components: {},
+  components: {
+    SettingsMenu
+  },
   data: () => ({
     drawer: false
-  })
+  }),
+  // create standardOrder
+  created() {
+    this.$store.commit("createOrder");
+  }
 };
 
 // Colors: EEF5F0 - weiß
