@@ -14,19 +14,22 @@
         </v-sheet>
       </v-carousel-item>
     </v-carousel>
+    <CommentSectionHomePage></CommentSectionHomePage>
   </v-container>
 </template>
 
 <script>
 import axios from "axios";
-
+import CommentSectionHomePage from '../components/CommentSectionHomePage.vue';
 export default {
   /*
         beforeCreate: function () {
             document.body.className = 'home';
         },*/
   name: "Home",
-
+components: {
+  CommentSectionHomePage,
+},
   // Leer
   data() {
     return {
@@ -91,7 +94,7 @@ export default {
 <style>
 .comments {
   margin-top: 30px;
-  background: #b1493d;
+
   border-radius: 25px;
   padding: 20px;
   padding-bottom: 50px;
