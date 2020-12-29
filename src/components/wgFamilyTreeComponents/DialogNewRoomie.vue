@@ -24,9 +24,9 @@
             <!-- Select room -->
             <v-select
               :items="rooms"
-              v-model="roomSelection"
+              v-model="roomId"
               :color="color"
-              name="roomSelection"
+              name="roomId"
               item-text="name"
               item-value="id"
               label="Select room"
@@ -76,7 +76,7 @@ export default {
       color: "#FF6F00", //dialogColor
       creationType: "INVITE",
       name: "",
-      roomSelection: "",
+      roomId: "",
       valid: true,
       rules: {
         required: value => !!value || "Required."
@@ -96,7 +96,7 @@ export default {
           console.log("created dummy");
 
           // emit to parent, with room id
-          this.$emit("create-dummy", [this.roomSelection, this.name]);
+          this.$emit("create-dummy", [this.roomId, this.name]);
         }
       }
     }

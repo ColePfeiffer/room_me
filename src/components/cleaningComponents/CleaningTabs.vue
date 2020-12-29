@@ -41,7 +41,6 @@
             <div v-for="item in openTasks" :key="item.id">
               <CleaningTask
                 :item="item"
-                :currentUser="currentUser"
                 :taskList="taskList"
               ></CleaningTask>
             </div>
@@ -66,7 +65,6 @@
           <div v-for="item in doneTasks" :key="item.id">
             <CleaningTask
               :item="item"
-              :currentUser="currentUser"
               :taskList="taskList"
             ></CleaningTask>
           </div>
@@ -84,7 +82,6 @@ export default {
   emits: [],
   props: {
     ["taskList"]: Array,
-    ["currentUser"]: Object,
   },
   data() {
     return {};

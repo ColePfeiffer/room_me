@@ -5,7 +5,7 @@
         <v-list-item-content>
           <div class="overline">Overview</div>
           <v-list>
-            <v-list-item v-for="roomie in roomies" :key="roomie.id">
+            <v-list-item v-for="roomie in $store.state.roomies" :key="roomie.id">
               <DialogProfilePage :roomie="roomie" @save-changes="saveChangesInProfilePage"></DialogProfilePage>
               <div  class="text-center">
                 <v-list-item-avatar>
@@ -51,7 +51,6 @@ export default {
     DialogProfilePage
   },
   props: {
-    ["roomies"]: Array,
     currencySymbol: String
   },
   data() {

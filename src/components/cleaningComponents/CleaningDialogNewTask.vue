@@ -118,7 +118,6 @@ export default {
     ["taskList"]: Array,
     showDialog: Boolean,
     ["roomies"]: Array,
-    currentUser: Object,
 
     item: Object
   },
@@ -185,10 +184,10 @@ export default {
         completedOn: "",
         intervallDays: this.taskIntervallDays,
         status: 0,
-        taskCreator: this.currentUser.username,
+        taskCreator: this.$store.getters.currentUser.username,
         order: this.order,
         swapDecline: [{ roomie: "", type: "", comment: "" }],
-        currentUser: this.currentUser.username
+        currentUser: this.$store.getters.currentUser.username
       });
       this.$emit("saveNewTask", this.item);
       this.closeDialog();

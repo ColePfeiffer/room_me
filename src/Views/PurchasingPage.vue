@@ -2,8 +2,6 @@
   <div class="purchasing">
     <DialogAddArticle
       :showDialog="showDialogSplit"
-      :roomies="roomies"
-      :currentUser="currentUser"
       :view="ViewStateOfDialogSplit"
       :categories="categories"
       :existingArticle="existingArticle"
@@ -40,14 +38,14 @@
     </v-speed-dial>
     <v-container>
       <v-row wrap justify-space-around>
-        <TheBalanceBoard :roomies="roomies" :currencySymbol="currencySymbol"></TheBalanceBoard>
+        <TheBalanceBoard :currencySymbol="currencySymbol"></TheBalanceBoard>
         <ThePurchasingTabs
-          :currentUser="currentUser"
           :shoppingList="shoppingList"
           :currencySymbol="currencySymbol"
           @delete-article="deleteArticle"
           @open-Dialog-Add-Article="openDialogAddArticle"
         ></ThePurchasingTabs>
+       
       </v-row>
     </v-container>
   </div>
@@ -129,60 +127,6 @@ export default {
             "https://images.unsplash.com/photo-1494962227006-107baac595eb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mzh8fGRyaW5rc3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
         }
       ],
-      roomies: [
-        {
-          id: 0,
-          username: "Chris",
-          description: "Hi there!",
-          profilePicture:
-            "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: 0,
-          balancePlus: true,
-          selected: true,
-          color: "#1F85DE",
-          showProfilePage: false,
-          isLoggedIn: true
-        },
-        {
-          id: 1,
-          username: "Hannah",
-          description: "Möpp",
-          profilePicture:
-            "https://images.unsplash.com/photo-1457131760772-7017c6180f05?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: 0,
-          balancePlus: false,
-          selected: true,
-          color: "#DE591F",
-          showProfilePage: false,
-          isLoggedIn: false
-        },
-        {
-          id: 2,
-          username: "Rufus",
-          description: "",
-          profilePicture:
-            "https://images.unsplash.com/photo-1517423568366-8b83523034fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: 0,
-          balancePlus: true,
-          selected: true,
-          color: "#BDA0EC",
-          showProfilePage: false,
-          isLoggedIn: false
-        },
-        {
-          id: 3,
-          username: "Tim",
-          description: "",
-          profilePicture:
-            "https://images.unsplash.com/photo-1516210673878-84fa2173547b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          balance: 0,
-          balancePlus: true,
-          selected: true,
-          color: "#EBE386",
-          showProfilePage: false,
-          isLoggedIn: false
-        }
-      ],
       shoppingList: []
     };
   },
@@ -206,9 +150,9 @@ export default {
     },
     changeStatusOfArticle({ article, status }) {
       if (status === 1) {
-        article.acceptedBy = this.currentUser;
+        article.acceptedBy = this.$store.getters.currentUser;
       } else if (status === 2) {
-        article.purchasedBy = this.currentUser;
+        article.purchasedBy = this.$store.getters.currentUser;
       }
 
       article.status = status;
@@ -218,15 +162,15 @@ export default {
 
       switch (status) {
         case 0: // open
-          newArticle.createdBy = this.currentUser;
+          newArticle.createdBy = this.$store.getters.currentUser;
           break;
         case 1: // pending
           break;
         case 2: // bought
-          newArticle.createdBy = this.currentUser;
-          newArticle.acceptedBy = this.currentUser;
-          newArticle.purchasedBy = this.currentUser;
-          newArticle.avatar = this.currentUser.profilePicture;
+          newArticle.createdBy = this.$store.getters.currentUser;
+          newArticle.acceptedBy = this.$store.getters.currentUser;
+          newArticle.purchasedBy = this.$store.getters.currentUser;
+          newArticle.avatar = this.$store.getters.currentUser.profilePicture;
           break;
 
         default:
@@ -237,12 +181,6 @@ export default {
       newArticle.status = status;
 
       this.shoppingList.push(newArticle);
-    }
-  },
-  computed: {
-    currentUser() {
-      // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/find
-      return this.roomies.find(roomie => roomie.isLoggedIn === true);
     }
   }
 };

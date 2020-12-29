@@ -2,16 +2,19 @@ import Vue from "vue";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import router from "./router";
-import store from "./store";
+//import store from "./store";
+import Vuex from "vuex";
+
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 Vue.config.productionTip = false;
+Vue.use(Vuex);
 
 //require("./assets/global.css")
 //import "@/assets/global.css"
 
-export const data = new Vue({
-  data: {
+const store = new Vuex.Store({
+  state: {
     roomies: [
       {
         id: 0,
@@ -64,16 +67,65 @@ export const data = new Vue({
         color: "#EBE386",
         showProfilePage: false,
         isLoggedIn: false
+      },
+    ],
+    dummies: [
+      {
+        id: 19,
+        type: "DUMMY",
+        username: "David",
+        description: "Hi there!",
+        profilePicture: "https://i.imgur.com/eCG61tP.jpeg",
+        showProfilePage: false,
+        movedOut: true,
+        moveInDate: new Date(2015, 10, 15),
+        moveOutDate: new Date(2019, 5, 3)
       }
     ],
+    rooms: [
+      {
+        id: "1",
+        name: "room 1",
+        currentRoomie: {
+          id: 0,
+          username: "Chris",
+          description: "Hi there!",
+          profilePicture:
+            "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+          balance: +3,
+          balancePlus: true,
+          selected: true,
+          color: "#1F85DE",
+          showProfilePage: false,
+          isLoggedIn: true,
+          movedOut: false,
+          vacationMode: false,
+          moveInDate: new Date(2019, 5, 10),
+          moveOutDate: new Date(2017, 5, 3)
+        },
+        pastRoomies: [
+          {
+            id: 19,
+            type: "DUMMY",
+            username: "David",
+            description: "Hi there!",
+            profilePicture: "https://i.imgur.com/eCG61tP.jpeg",
+            showProfilePage: false,
+            movedOut: true,
+            moveInDate: new Date(2015, 10, 15),
+            moveOutDate: new Date(2019, 5, 3)
+          }
+        ]
+      }
+    ],
+    counter: "kdkdkdd"
   },
-  methods: {
-    changeAge(){
-      console.log("lol");
+  getters: {
+    currentUser: state => {
+      return state.roomies.find(roomie => roomie.isLoggedIn === true);
     }
   }
-
-});
+})
 
 
 new Vue({

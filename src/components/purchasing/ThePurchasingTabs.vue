@@ -39,7 +39,6 @@
             <div v-for="item in openItems.reverse()" :key="item.id">
               <PurchasingTask
                 :item="item"
-                :currentUser="currentUser"
                 :shoppingList="shoppingList"
                 @open-Dialog-Add-Article="openDialogAddArticle"
               ></PurchasingTask>
@@ -64,7 +63,6 @@
           <div v-for="item in pendingItems.reverse()" :key="item.id">
             <PurchasingTask
               :item="item"
-              :currentUser="currentUser"
               :shoppingList="shoppingList"
               @open-Dialog-Add-Article="openDialogAddArticle"
             ></PurchasingTask>
@@ -107,7 +105,6 @@ export default {
   emits: ["toggle-dialogCashUp", "delete-article"],
   props: {
     ["shoppingList"]: Array,
-    ["currentUser"]: Object,
     ["item"]: Object,
     ["currencySymbol"]: String
   },

@@ -109,7 +109,7 @@
                     <p class="text--secondary">Who did you buy it for?</p>
                   </legend>
                   <v-chip-group column multiple active-class="primary--text">
-                    <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+                    <v-row class="mx-2" v-for="roomie in $store.state.roomies" :key="roomie.id">
                       <v-chip
                         :color="roomie.color"
                         :outlined="roomieChipOutlined(roomie)"
@@ -214,7 +214,7 @@
                     <p class="text--secondary">Who did you buy it for?</p>
                   </legend>
                   <v-chip-group column multiple active-class="primary--text">
-                    <v-row class="mx-2" v-for="roomie in roomies" :key="roomie.id">
+                    <v-row class="mx-2" v-for="roomie in $store.state.roomies" :key="roomie.id">
                       <v-chip
                         :color="roomie.color"
                         :outlined="roomieChipOutlined(roomie)"
@@ -255,8 +255,6 @@ export default {
   emits: ["toggle-Dialog", "add-Article"],
   props: {
     showDialog: Boolean,
-    ["roomies"]: Array,
-    currentUser: Object,
     view: String, // CASH, NEW, CASH_UP_EXISTING
     categories: Array,
     existingArticle: Object // for cashing up existing items
@@ -294,7 +292,7 @@ export default {
   },
   methods: {
     selectRoomie(selected_roomie) {
-      this.roomies.forEach(function(roomie, index) {
+      this.$store.state.roomies.forEach(function(roomie, index) {
         if (roomie == selected_roomie) {
           roomie.selected = !roomie.selected;
           console.log(roomie.selected, index);
@@ -314,7 +312,7 @@ export default {
       this.$emit("toggle-Dialog", false);
 
       // reset everything
-      this.roomies.forEach(function(roomie) {
+      this.$store.state.roomies.forEach(function(roomie) {
         roomie.selected = true;
       });
 
@@ -371,9 +369,9 @@ export default {
     splitCosts(article) {
       // create list of involved roomies
       article.involvedRoomies = [];
-      for (let i = 0; i < this.roomies.length; i++) {
-        if (this.roomies[i].selected) {
-          article.involvedRoomies.push(this.roomies[i]);
+      for (let i = 0; i < this.$store.state.roomies.length; i++) {
+        if (this.$store.state.roomies[i].selected) {
+          article.involvedRoomies.push(this.$store.state.roomies[i]);
         }
       }
 
@@ -387,7 +385,7 @@ export default {
       if (this.debug) console.log("Individual Price: ", priceEach);
 
       // Calculating the new balance for the current user and all involved roomies
-      this.currentUser.balance = parseFloat(this.currentUser.balance + price);
+      this.$store.getters.currentUser.balance = parseFloat(this.$store.getters.currentUser.balance + price);
 
       for (let i = 0; i < article.involvedRoomies.length; i++) {
         article.involvedRoomies[i].balance =
