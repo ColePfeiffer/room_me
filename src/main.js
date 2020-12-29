@@ -120,7 +120,16 @@ const store = new Vuex.Store({
         ],
       },
     ],
+    //currentUser: {},
     counter: "kdkdkdd",
+  },
+  getters: {
+    currentUser: (state) => {
+      return state.roomies.find((roomie) => roomie.isLoggedIn === true);
+    },
+    getRoomieByID(state, id) {
+      return state.roomies.find((roomie) => roomie.id === id);
+    },
   },
   mutations: {
     createOrder(state) {
@@ -139,10 +148,17 @@ const store = new Vuex.Store({
 
       if (state.debug) console.log("Order created.");
     },
-  },
-  getters: {
-    currentUser: (state) => {
-      return state.roomies.find((roomie) => roomie.isLoggedIn === true);
+    toggleDebug(state) {
+      state.debug = !state.debug;
+      console.log("Debug changed to " + state.debug);
+    },
+    setCurrentUser(state, roomieId) {
+      state.roomies.forEach((roomie) => {
+        roomie.isLoggedIn = false;
+      });
+
+      let roomie = state.roomies.find((roomie) => roomie.id === roomieId);
+      roomie.isLoggedIn = true;
     },
   },
 });

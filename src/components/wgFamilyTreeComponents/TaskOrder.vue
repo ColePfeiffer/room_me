@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-divider></v-divider>
     <v-card-text>
       <v-chip-group column multiple active-class="primary--text">
         <div class="mx-2" v-for="(roomie, index) in $store.state.standardOrder" :key="roomie.id">
