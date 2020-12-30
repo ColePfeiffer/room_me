@@ -25,7 +25,7 @@
                   @input="$store.commit('setCurrentUser', $event)"
                 ></v-select>
               </v-list-item-title>
-              <v-list-item-subtitle>Room x {{ $store.getters.currentUser.username }}</v-list-item-subtitle>
+              <v-list-item-subtitle>Room x</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -35,7 +35,7 @@
         <v-list>
           <v-list-item>
             <v-list-item-action>
-              <v-switch v-model="debug" @click="$store.commit('toggleDebug')" color="purple"></v-switch>
+              <v-switch v-model="debug" @click="$store.commit('toggleDebug')" color="pink"></v-switch>
             </v-list-item-action>
             <v-list-item-title>Enable Debug-Mode</v-list-item-title>
           </v-list-item>
@@ -43,7 +43,6 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="pink" text @click="menu = false">Save</v-btn>
           <v-btn text @click="menu = false">Close</v-btn>
         </v-card-actions>
       </v-card>

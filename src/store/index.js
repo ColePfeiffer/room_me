@@ -1,16 +1,123 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-      counter: "mdmdmdmdmdmdmdmdmdmdmd"
+    debug: true,
+    standardOrder: [], // array, holds references to roomie objects within roomies
+    roomies: [
+      {
+        id: 0,
+        username: "Chris",
+        description: "Hi there!",
+        profilePicture: "https://i.imgur.com/ER53sz6.png",
+        moveInDate: new Date(2015, 10, 15),
+        moveOutDate: new Date(2019, 5, 3),
+        movedOut: false,
+        balance: 0,
+        color: "#1F85DE",
+        selected: true,
+        showProfilePage: false,
+        isLoggedIn: true
+      },
+      {
+        id: 1,
+        username: "Hannah",
+        description: "Möpp",
+        profilePicture: "https://i.imgur.com/9eCV1NG.png",
+        moveInDate: new Date(2015, 10, 15),
+        moveOutDate: new Date(2019, 5, 3),
+        movedOut: false,
+        balance: 0,
+        selected: true,
+        color: "#DE591F",
+        showProfilePage: false,
+        isLoggedIn: false
+      },
+      {
+        id: 2,
+        username: "Rufus",
+        description: "",
+        profilePicture: "https://i.imgur.com/ELDlNNK.png",
+        moveInDate: new Date(2015, 10, 15),
+        moveOutDate: new Date(2019, 2, 3),
+        movedOut: false,
+        balance: 0,
+        selected: true,
+        color: "#BDA0EC",
+        showProfilePage: false,
+        isLoggedIn: false
+      },
+      {
+        id: 3,
+        username: "Tim",
+        description: "",
+        profilePicture: "https://i.imgur.com/7xffhX9.png",
+        moveInDate: new Date(2015, 10, 15),
+        moveOutDate: new Date(2019, 3, 3),
+        movedOut: false,
+        balance: 0,
+        selected: true,
+        color: "#EBE386",
+        showProfilePage: false,
+        isLoggedIn: false
+      }
+    ],
+    dummies: [
+      {
+        id: 19,
+        type: "DUMMY",
+        username: "David",
+        description: "Hi there!",
+        profilePicture: "https://i.imgur.com/eCG61tP.jpeg",
+        showProfilePage: false,
+        movedOut: true,
+        moveInDate: new Date(2015, 10, 15),
+        moveOutDate: new Date(2019, 5, 3)
+      }
+    ],
+    rooms: [],
+    //currentUser: {},
+    counter: "kdkdkdd"
+  },
+  getters: {
+    currentUser: state => {
+      return state.roomies.find(roomie => roomie.isLoggedIn === true);
+    },
+    getRoomieByID(state, id) {
+      return state.roomies.find(roomie => roomie.id === id);
+    }
   },
   mutations: {
-  },
-  actions: {
-  },
-  modules: {
+    createOrder(state) {
+      state.standardOrder = [];
+      for (let i = 0; i < state.roomies.length; i++) {
+        state.standardOrder.push(state.roomies[i]);
+      }
+
+      if (state.debug) console.log("Order created.");
+    },
+    updateOrder(state) {
+      state.standardOrder = [];
+      for (let i = 0; i < state.roomies.length; i++) {
+        state.standardOrder.push(state.roomies[i]);
+      }
+
+      if (state.debug) console.log("Order created.");
+    },
+    toggleDebug(state) {
+      state.debug = !state.debug;
+      console.log("Debug changed to " + state.debug);
+    },
+    setCurrentUser(state, roomieId) {
+      state.roomies.forEach(roomie => {
+        roomie.isLoggedIn = false;
+      });
+
+      let roomie = state.roomies.find(roomie => roomie.id === roomieId);
+      roomie.isLoggedIn = true;
+    }
   }
-})
+});

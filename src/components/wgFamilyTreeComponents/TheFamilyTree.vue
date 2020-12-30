@@ -56,11 +56,10 @@
         </v-col>
       </v-row>
       <v-row justify="space-around">
-        <div v-for="(i, index) in rooms" :key="i.id">
+        <div v-for="(room) in rooms" :key="room.id">
           <v-col xs="6" sm="6" md="3">
-            <FamilyTreeRoom :room="i" :showRoomName="true"></FamilyTreeRoom>
+            <FamilyTreeRoom :room="room" :showRoomName="true"></FamilyTreeRoom>
           </v-col>
-          <v-col v-if="index == 1">fff</v-col>
         </div>
       </v-row>
     </div>
