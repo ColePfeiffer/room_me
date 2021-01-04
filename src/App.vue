@@ -106,9 +106,27 @@ export default {
             moveOutDate: new Date(2019, 5, 3)
             
           }*/
-        ]
+        ],
+        
       });
     }
+    this.$store.state.comments.push(
+      {
+        id: 1,
+        roomie: this.$store.state.roomies[0],
+        text: 'Der Chat funktioniert, juhu. Was geht!',
+      },
+      {
+        id: 3,                            
+        roomie: this.$store.state.roomies[2],
+        text: 'Steilo!',
+      },
+      {
+        id: 2,                            
+        roomie: this.$store.state.roomies[1],
+        text: 'Who let the dogs out, wuf - wuf - wuf...',
+      },
+      );
   }
 };
 

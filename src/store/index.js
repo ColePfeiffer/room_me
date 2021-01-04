@@ -85,6 +85,8 @@ export default new Vuex.Store({
         moveOutDate: new Date(2019, 5, 3),
       },
     ],
+    comments: [
+    ],
     rooms: [],
     counter: "kdkdkdd",
     shoppingList: [],

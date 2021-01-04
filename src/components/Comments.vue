@@ -2,7 +2,7 @@
     <div class="comments">
         <div :class="comments_wrapper_classes">
             <single-comment 
-                v-for="comment in comments"
+                v-for="comment in this.$store.state.comments"
                 :comment="comment"
                 :key="comment.id"
             ></single-comment>
@@ -10,14 +10,16 @@
         <hr>
         <div class="reply">
             <div class="avatar">
-                <img :src="$store.getters.currentUser.profilePicture" alt="">
+                <img 
+                :src="$store.getters.currentUser.profilePicture">
             </div>
             <input 
                 type="text" 
                 v-model.trim="reply" 
                 class="reply--text" 
                 placeholder="Leave a comment..."
-                maxlength="250"
+                :min="1"
+                :max="250"
                 required
                 @keyup.enter="submitComment"
             />
@@ -31,7 +33,7 @@
 </template>
 
 <script>
-import singleComment from './SingleComment'
+import singleComment from './SingleComment';
     export default {
         name: 'comments',
         components: {
@@ -50,7 +52,7 @@ import singleComment from './SingleComment'
                 }
             }
         },
-        props: ['comments', 'current_user', 'comments_wrapper_classes']
+        props: ['comments_wrapper_classes', ]
     }
 </script>
 
@@ -70,7 +72,7 @@ import singleComment from './SingleComment'
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: #fff;
 }
 .custom-scrollbar::-webkit-scrollbar
@@ -84,7 +86,7 @@ import singleComment from './SingleComment'
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     -moz-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-    background-color: #555;
+    background-color: #fff;
 }
 /* Reply component */
 .reply {
@@ -92,7 +94,7 @@ import singleComment from './SingleComment'
     position: relative;
     align-items: center;
     background-color: #EBEBEB;
-    border-radius: 30px;
+    border-radius: 8px;
     padding: 5px 10px;
     overflow: hidden;
 }
@@ -124,9 +126,9 @@ import singleComment from './SingleComment'
 .reply .reply--button {
     position: absolute;
     right: -100px;
-    border: 1px solid #2a629c;
+    border: 1px solid #E91E63;
     background-color: transparent;
-    color: #2a629c;
+    color: #E91E63;
     display: inline-block;
     font-weight: 400;
     text-align: center;
@@ -145,7 +147,7 @@ import singleComment from './SingleComment'
 }
 .reply .reply--button:hover {
     color: #fff;
-    background-color: #2a629c;
+    background-color: #E91E63;
 }
 .reply .reply--button:focus,
 .reply .reply--button:active {
