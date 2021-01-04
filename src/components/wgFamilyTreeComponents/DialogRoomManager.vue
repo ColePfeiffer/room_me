@@ -1,5 +1,6 @@
 <template>
-  <v-dialog :value="showDialog" width="550">
+<div @click="closeDialog()">
+    <v-dialog :value="showDialog" width="550">
     <v-card class="removeScrollbar">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-card-title primary-title>
@@ -130,12 +131,13 @@
       </v-form>
     </v-card>
   </v-dialog>
+</div>
 </template>
 
 <script>
 export default {
   name: "WGFamilyTreeDialogRoomManager",
-  emits: ["set-showDialog", "create-new-room"],
+  emits: ["toggle-visibility", "create-new-room"],
 
   props: {
     showDialog: Boolean,
@@ -231,7 +233,7 @@ export default {
       }
     },
     closeDialog() {
-      this.$emit("set-showDialog");
+      this.$emit("toggle-visibility");
     }
   }
 };
