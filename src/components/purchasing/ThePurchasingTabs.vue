@@ -37,11 +37,7 @@
 
           <div v-else>
             <div v-for="item in openItems.reverse()" :key="item.id">
-              <PurchasingTask
-                :item="item"
-                :shoppingList="shoppingList"
-                @open-Dialog-Add-Article="openDialogAddArticle"
-              ></PurchasingTask>
+              <PurchasingTask :item="item" @open-Dialog-Add-Article="openDialogAddArticle"></PurchasingTask>
             </div>
           </div>
         </div>
@@ -61,11 +57,7 @@
             </v-card>
           </div>
           <div v-for="item in pendingItems.reverse()" :key="item.id">
-            <PurchasingTask
-              :item="item"
-              :shoppingList="shoppingList"
-              @open-Dialog-Add-Article="openDialogAddArticle"
-            ></PurchasingTask>
+            <PurchasingTask :item="item" @open-Dialog-Add-Article="openDialogAddArticle"></PurchasingTask>
           </div>
         </div>
 
@@ -104,7 +96,6 @@ export default {
   name: "PurchasingTabs",
   emits: ["toggle-dialogCashUp", "delete-article"],
   props: {
-    ["shoppingList"]: Array,
     ["item"]: Object,
     ["currencySymbol"]: String
   },
@@ -116,19 +107,19 @@ export default {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
     openItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function(value) {
+      return this.$store.state.shoppingList.filter(function(value) {
         return value.status === 0;
       });
     },
     pendingItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function(value) {
+      return this.$store.state.shoppingList.filter(function(value) {
         return value.status === 1;
       });
     },
     doneItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function(value) {
+      return this.$store.state.shoppingList.filter(function(value) {
         return value.status === 2;
       });
     }

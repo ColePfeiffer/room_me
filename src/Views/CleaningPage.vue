@@ -23,80 +23,44 @@
         <div class="fab-text-custom pink">Add task</div>
       </v-btn>
     </v-speed-dial>
-
+    <DialogNewTask1
+      :showDialog="showDialogNewTask"
+      @toggle-showDialogNewTask="toggleShowDialogNewTask"
+    ></DialogNewTask1>
     <v-col xs="12" sm="9" md="9">
-      <CleaningTabs :taskList="taskList"></CleaningTabs>
+      <CleaningTabs></CleaningTabs>
     </v-col>
   </div>
 </template>
 
 <script>
 import CleaningTabs from "../components/cleaningComponents/CleaningTabs";
+import DialogNewTask1 from "../components/cleaningComponents/DialogNewTask1";
 
 export default {
   components: {
     CleaningTabs,
+    DialogNewTask1
   },
   data() {
     return {
       fab: false,
+      showDialogNewTask: false,
       colors: [
         "indigo",
         "warning",
         "pink darken-2",
         "red lighten-1",
-        "deep-purple accent-4",
-      ],
-      taskList: [
-        {
-          id: 1,
-          title: "Küche putzen",
-          description: "Küche muss geschrubbat werdn.",
-          endDate: "22.10.20",
-          startDate: "",
-          completedOn: "",
-          intervallDays: 2,
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 0,
-          order: [],
-          swapDecline: [{ roomie: "", type: "", comment: "" }],
-          color: "#315458",
-          taskCreator: "",
-        },
-        {
-          id: 2,
-          title: "Küche putzen",
-          description: "KHallo... ksksk dkdkd",
-          endDate: "22.10.20",
-          startDate: "",
-          completedOn: "",
-          intervallDays: 2,
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 0,
-          order: [],
-          swapDecline: [{ roomie: "", type: "", comment: "" }],
-          color: "#315458",
-        },
-        {
-          id: 5,
-          title: "Müll rausbringen",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ",
-          endDate: "",
-          startDate: "",
-          completedOn: "",
-          intervallDays: 2,
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 0,
-          order: [],
-          swapDecline: [{ roomie: "", type: "", comment: "" }],
-          color: "#315458",
-          taskCreator: "",
-        },
-      ],
+        "deep-purple accent-4"
+      ]
     };
   },
-  methods: {},
+  methods: {
+    toggleShowDialogNewTask(newState) {
+      this.showDialogNewTask = newState;
+      if (this.$store.state.debug) console.log("Closed Dialog: New Task");
+    }
+  }
 };
 </script>
 <style>

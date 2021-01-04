@@ -1,6 +1,6 @@
 <template>
   <v-main>
-        <v-speed-dial
+    <v-speed-dial
       color="pink"
       v-model="fab"
       dark
@@ -18,35 +18,16 @@
         </v-btn>
       </template>
 
-      <v-btn
-        fab
-        dark
-        small
-        color="orange"
-        class="ma-2 white--text"
-        @click="console.log('help')"
-      >
+      <v-btn fab dark small color="orange" class="ma-2 white--text">
         <v-icon>mdi-help</v-icon>
         <div class="fab-text-custom orange">Help</div>
       </v-btn>
-     
-      <v-btn
-        fab
-        dark
-        small
-        color="pink"
-        @click="showDialogForRoomManager = true"
-      >
+
+      <v-btn fab dark small color="pink" @click="showDialogForRoomManager = true">
         <v-icon>mdi-pencil</v-icon>
         <div class="fab-text-custom pink">Room Manager</div>
       </v-btn>
-      <v-btn
-        fab
-        dark
-        small
-        color="black"
- @click="showDialogForNewRoomie = true"
-      >
+      <v-btn fab dark small color="black" @click="showDialogForNewRoomie = true">
         <v-icon>mdi-plus</v-icon>
         <div class="fab-text-custom black">Add roomie</div>
       </v-btn>
@@ -60,8 +41,8 @@
         @toggle-visibility="showDialogForNewRoomie = !showDialogForNewRoomie"
       ></DialogNewRoomie>
       <DialogRoomManager
-              :showDialog="showDialogForRoomManager"
-          :rooms="$store.state.rooms"
+        :showDialog="showDialogForRoomManager"
+        :rooms="$store.state.rooms"
         @create-new-room="createNewRoom"
         @toggle-visibility="showDialogForRoomManager = !showDialogForRoomManager"
       ></DialogRoomManager>
@@ -94,14 +75,14 @@ export default {
     TheFamilyTree,
     TheHouseRules,
     DialogNewRoomie,
-    DialogRoomManager,
+    DialogRoomManager
   },
   props: [],
   data() {
     return {
       fab: false,
       showDialogForNewRoomie: false,
-      showDialogForRoomManager: false,
+      showDialogForRoomManager: false
     };
   },
   methods: {
@@ -110,7 +91,7 @@ export default {
         id: Math.floor(Math.random() * Date.now()),
         name: roomName,
         currentRoomie: "EMPTY",
-        pastRoomies: new Array(),
+        pastRoomies: new Array()
       });
     },
     createDummy(array) {
@@ -128,7 +109,7 @@ export default {
         showProfilePage: false,
         movedOut: false,
         moveInDate: new Date(),
-        moveOutDate: "",
+        moveOutDate: ""
       };
 
       //push to dummy array
@@ -143,9 +124,9 @@ export default {
     },
 
     selectRoom(roomId) {
-      return this.$store.state.rooms.find((room) => room.id === roomId);
-    },
-  },
+      return this.$store.state.rooms.find(room => room.id === roomId);
+    }
+  }
 };
 </script>
 

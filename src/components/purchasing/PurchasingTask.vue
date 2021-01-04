@@ -1,13 +1,12 @@
 <template>
   <!--Card on the right!, background: orange -->
   <v-row dense class="card">
-  
-        <DialogEditArticle
-          :item="item"
-          @save-changes="saveChangesInEditPage"
-          :showDialog="showDialogEditArticle"
-          @toggle-showDialogEditArticle="toggleShowDialogEditArticle"
-        ></DialogEditArticle>
+    <DialogEditArticle
+      :item="item"
+      @save-changes="saveChangesInEditPage"
+      :showDialog="showDialogEditArticle"
+      @toggle-showDialogEditArticle="toggleShowDialogEditArticle"
+    ></DialogEditArticle>
 
     <v-col cols="12">
       <v-card class="purchasingCards">
@@ -28,27 +27,18 @@
                 </v-btn>
               </v-card-text>
 
-              <label class="stylingDate"
-                >Created on: {{ item.createdOn }}</label
-              >
+              <label class="stylingDate">Created on: {{ item.createdOn }}</label>
             </v-col>
           </v-row>
           <div class="stylingTextSubtitle">
-            <label>
-              {{ item.comment }}
-            </label>
+            <label>{{ item.comment }}</label>
           </div>
 
-          <div
-            class="commentBox"
-            v-if="item.status === 3 && item.comment != ''"
-          >
+          <div class="commentBox" v-if="item.status === 3 && item.comment != ''">
             <!--If item is done, show comment:-->
             <fieldset style="text-align: center">
               <legend style="text-align: center">
-                <p class="text--black;">
-                  {{ $store.getters.currentUser.username }}
-                </p>
+                <p class="text--black;">{{ $store.getters.currentUser.username }}</p>
               </legend>
               <div
                 style="
@@ -56,9 +46,7 @@
                   padding-left: 15px;
                   padding-bottom: 15px;
                 "
-              >
-                {{ item.comment }}
-              </div>
+              >{{ item.comment }}</div>
             </fieldset>
           </div>
 
@@ -76,7 +64,7 @@
           </div>
           <div v-if="item.status === 1">
             <v-card-actions>
-               <v-col class="text-right">
+              <v-col class="text-right">
                 <v-btn text @click="openDialogSplit(item)">
                   <v-icon>euro</v-icon>
                 </v-btn>
@@ -84,7 +72,6 @@
             </v-card-actions>
           </div>
         </v-col>
-
       </v-card>
     </v-col>
   </v-row>
@@ -98,14 +85,13 @@ export default {
   emits: [
     "set-newPurchaseName",
     "save-changesInEditPage",
-    "open-Dialog-Add-Article",
+    "open-Dialog-Add-Article"
   ],
   props: {
-    ["shoppingList"]: Array,
-    ["item"]: Object,
+    ["item"]: Object
   },
   components: {
-    DialogEditArticle,
+    DialogEditArticle
   },
   data() {
     return {
@@ -113,29 +99,8 @@ export default {
       showDialogEditArticle: false,
 
       completedPurchase: false,
-      currentItemForCashingUp: {},
+      currentItemForCashingUp: {}
     };
-  },
-  computed: {
-    // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
-    openItems() {
-      // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function (value) {
-        return value.status === 0;
-      });
-    },
-    pendingItems() {
-      // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function (value) {
-        return value.status === status;
-      });
-    },
-    billedItems() {
-      // Javascript-Funktion zum Filtern von Arrays
-      return this.shoppingList.filter(function (value) {
-        return value.status === 99;
-      });
-    },
   },
   methods: {
     acceptItem(item) {
@@ -157,9 +122,9 @@ export default {
       if (keepAlive) {
         item.name = changeData.name;
       } else {
-        const position = this.shoppingList.indexOf(item);
+        const position = this.$store.state.shoppingList.indexOf(item);
         console.log(position);
-        this.shoppingList.splice(position, 1);
+        this.$store.state.shoppingList.splice(position, 1);
       }
       item.showDialogEditArticle = false;
     },
@@ -168,21 +133,21 @@ export default {
       this.$emit("open-Dialog-Add-Article", item);
     },
     addItem() {
-      this.shoppingList.push({
+      this.$store.state.shoppingList.push({
         name: this.submittedItem,
         status: 0,
-        showEditDialog: false,
+        showEditDialog: false
       });
       this.submittedItem = "";
     },
 
     // Should be an option if item is edited!
     removeItem(index) {
-      this.shoppingList.splice(index, 1);
+      this.$store.state.shoppingList.splice(index, 1);
       // beim Aufrufen IN DEM CLICK EVENT!!
       // v-for="(goal, index) in goals @click="removeGoal(index)"
-    },
-  },
+    }
+  }
 };
 </script>
 

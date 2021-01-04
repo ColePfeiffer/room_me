@@ -40,12 +40,10 @@
       <v-row wrap justify-space-around>
         <TheBalanceBoard :currencySymbol="currencySymbol"></TheBalanceBoard>
         <ThePurchasingTabs
-          :shoppingList="shoppingList"
           :currencySymbol="currencySymbol"
           @delete-article="deleteArticle"
           @open-Dialog-Add-Article="openDialogAddArticle"
         ></ThePurchasingTabs>
-       
       </v-row>
     </v-container>
   </div>
@@ -126,16 +124,15 @@ export default {
           avatar:
             "https://images.unsplash.com/photo-1559842438-2942c907c8fe?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
         }
-      ],
-      shoppingList: []
+      ]
     };
   },
   methods: {
     deleteArticle(article) {
-      const position = this.shoppingList.indexOf(article);
+      const position = this.$store.state.shoppingList.indexOf(article);
       if (this.debug)
         console.log("Position of " + article.name + " is " + position);
-      this.shoppingList.splice(position, 1);
+      this.$store.state.shoppingList.splice(position, 1);
     },
     openDialogAddArticle(item) {
       this.changeDialogState("CASH_UP_EXISTING");
@@ -180,7 +177,7 @@ export default {
       // avatar, category
       newArticle.status = status;
 
-      this.shoppingList.push(newArticle);
+      this.$store.state.shoppingList.push(newArticle);
     }
   }
 };

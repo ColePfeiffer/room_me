@@ -116,7 +116,13 @@ export default {
 // 9FB18F, helles grün, F6C01D gelb, rot B1493D, tannengrün 315458
 </script>
 
-<style scoped>
+<style>
+.removeScrollbar {
+  overflow: hidden !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 .header {
   background: #333;
   color: #fff;

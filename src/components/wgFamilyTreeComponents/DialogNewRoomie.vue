@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog :value="showDialog" persistent width="500">
-      <v-card>
+      <v-card class="removeScrollbar">
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-title primary-title>
             <div>
@@ -50,8 +50,13 @@
 
           <v-card-actions>
             <v-row justify="space-around">
-              <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
-              <v-btn color="pink" :disabled="!valid" @click="createRoomie">Create</v-btn>
+              <v-col cols="4"></v-col>
+              <v-col cols="4">
+                <v-btn color="pink" :disabled="!valid" @click="createRoomie">Create</v-btn>
+              </v-col>
+              <v-col cols="4">
+                <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
+              </v-col>
             </v-row>
           </v-card-actions>
         </v-form>

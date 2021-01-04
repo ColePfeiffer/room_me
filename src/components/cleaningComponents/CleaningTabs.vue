@@ -13,34 +13,24 @@
         <v-icon color="green">mdi-checkbox-multiple-marked-circle</v-icon>
       </v-tab>
 
-      <v-tab-item
-        class="someStyling"
-        v-for="i in 2"
-        :key="i"
-        :value="'tab-' + i"
-      >
+      <v-tab-item class="someStyling" v-for="i in 2" :key="i" :value="'tab-' + i">
         <div v-if="i == 1">
           <div v-if="openTasks.length === 0 && pendingTasks.length === 0">
             <v-card class="purchasingCards">
               <v-col>
-                <v-card-text class="stylingTextHeadline"
-                  >No open or pending items added yet.
-                </v-card-text>
+                <v-card-text class="stylingTextHeadline">No open or pending items added yet.</v-card-text>
 
                 <div class="padding15">
-                  <label class="stylingTextSubtitle">
-                    Click on button in the right corner to add a new item.
-                  </label>
+                  <label
+                    class="stylingTextSubtitle"
+                  >Click on button in the right corner to add a new item.</label>
                 </div>
               </v-col>
             </v-card>
           </div>
           <div v-else>
             <div v-for="item in openTasks" :key="item.id">
-              <CleaningTask
-                :item="item"
-                :taskList="taskList"
-              ></CleaningTask>
+              <CleaningTask :item="item"></CleaningTask>
             </div>
           </div>
         </div>
@@ -48,23 +38,18 @@
           <div v-if="doneTasks.length === 0">
             <v-card class="purchasingCards">
               <v-col>
-                <v-card-text class="stylingTextHeadline"
-                  >No tasks done so far.
-                </v-card-text>
+                <v-card-text class="stylingTextHeadline">No tasks done so far.</v-card-text>
 
                 <div class="padding15">
-                  <label class="stylingTextSubtitle">
-                    Check a task as finished to see it in this overview.
-                  </label>
+                  <label
+                    class="stylingTextSubtitle"
+                  >Check a task as finished to see it in this overview.</label>
                 </div>
               </v-col>
             </v-card>
           </div>
           <div v-for="item in doneTasks" :key="item.id">
-            <CleaningTask
-              :item="item"
-              :taskList="taskList"
-            ></CleaningTask>
+            <CleaningTask :item="item"></CleaningTask>
           </div>
         </div>
       </v-tab-item>
@@ -78,42 +63,39 @@ import CleaningTask from "./CleaningTask";
 export default {
   name: "CleaningTabs",
   emits: [],
-  props: {
-    ["taskList"]: Array,
-  },
+  props: {},
   data() {
     return {};
   },
   methods: {},
   components: {
-    CleaningTask,
+    CleaningTask
   },
   computed: {
     openTasks() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.taskList.filter(function (value) {
+      return this.$store.state.taskList.filter(function(value) {
         return value.status === 0 || value.status === 1;
       });
     },
     pendingTasks() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.taskList.filter(function (value) {
+      return this.$store.state.taskList.filter(function(value) {
         return value.status === 1;
       });
     },
 
     doneTasks() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.taskList.filter(function (value) {
+      return this.$store.state.taskList.filter(function(value) {
         return value.status === 3;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
-
 .someStyling {
   padding: 10px;
 }

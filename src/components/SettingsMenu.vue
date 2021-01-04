@@ -39,6 +39,12 @@
             </v-list-item-action>
             <v-list-item-title>Enable Debug-Mode</v-list-item-title>
           </v-list-item>
+          <v-list-item>
+            <v-list-item-action>
+              <v-switch v-model="phone" @click="$store.commit('togglePhone')" color="pink"></v-switch>
+            </v-list-item-action>
+            <v-list-item-title>Enable Phone-Mode</v-list-item-title>
+          </v-list-item>
         </v-list>
 
         <v-card-actions>
@@ -55,7 +61,8 @@ export default {
   data: () => ({
     fav: true,
     menu: false,
-    debug: true
+    debug: true,
+    phone: false
   })
 };
 </script>

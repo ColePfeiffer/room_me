@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-model="showDialog" persistent width="500">
-      <v-card>
+      <v-card class="removeScrollbar">
         <v-card-title class="headline ighten-2">Add new task</v-card-title>
         <v-card-text cols="12" sm="12">
           <v-row>
@@ -64,7 +64,7 @@
               <!-- Roomie Chip if usser selects to switch their task:-->
               <div v-if="isNewOrderSelected === true">
                 <v-chip-group column multiple active-class="primary--text">
-                  <div class="mx-2" v-for="(roomie, index) in roomies" :key="roomie.id">
+                  <div class="mx-2" v-for="(roomie, index) in $store.state.roomie" :key="roomie.id">
                     <v-chip
                       :color="roomie.color"
                       :outlined="roomie.selected"
@@ -115,14 +115,11 @@ export default {
     "save-endDateInput"
   ],
   props: {
-    ["taskList"]: Array,
-    showDialog: Boolean,
-    ["roomies"]: Array,
-
-    item: Object
+    showDialog: Boolean
   },
   data() {
     return {
+      item: {},
       numberRule: v => {
         if (!v.trim()) return true;
         if (!isNaN(parseFloat(v)) && v >= 0 && v <= 90) return true;
@@ -174,7 +171,7 @@ export default {
       // Für Task Vorweg 50
       // this.item.id = LatestId + 1
       console.log("Iwas??" + this.selectedTaskDate + this.timestamp);
-      this.taskList.push({
+      this.$store.state.taskList.push({
         // id needs to be generated somehow.
         // id: this.id,
         title: this.taskTitle,
