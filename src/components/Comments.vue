@@ -2,7 +2,7 @@
     <div class="comments">
         <div :class="comments_wrapper_classes">
             <single-comment 
-                v-for="comment in comments"
+                v-for="comment in this.$store.state.comments"
                 :comment="comment"
                 :key="comment.id"
             ></single-comment>
@@ -11,7 +11,7 @@
         <div class="reply">
             <div class="avatar">
                 <img 
-                :src="$store.getters.currentUser.profilePicture" alt="">
+                :src="$store.getters.currentUser.profilePicture">
             </div>
             <input 
                 type="text" 
@@ -52,7 +52,7 @@ import singleComment from './SingleComment';
                 }
             }
         },
-        props: ['comments', 'current_user', 'comments_wrapper_classes']
+        props: ['comments_wrapper_classes', ]
     }
 </script>
 

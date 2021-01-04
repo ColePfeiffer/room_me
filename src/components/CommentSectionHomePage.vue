@@ -8,7 +8,6 @@
       </div>
       <comments
         :comments_wrapper_classes="['custom-scrollbar', 'comments-wrapper']"
-        :comments="comments"
         @submit-comment="submitComment"
       ></comments>
     </div>
@@ -35,10 +34,9 @@ export default {
   },
   methods: {
     submitComment: function(reply) {
-      this.comments.push({
-        id: this.comments.length + 1,
-        user: this.$store.getters.currentUser.username,
-        avatar: this.$store.getters.currentUser.profilePicture,
+      this.$store.state.comments.push({
+        id: this.$store.state.comments.length + 1,
+        roomie: this.$store.getters.currentUser,
         text: reply
       });
     },
