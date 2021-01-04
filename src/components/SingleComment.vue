@@ -4,7 +4,8 @@
             <img :src="comment.avatar" alt="">
         </div>
         <div class="text">
-            <a class="username" href="#">@{{ comment.user }}</a> <span>{{ comment.text }}</span>
+            <a class="username"   
+            > {{ comment.user }}</a> <span>{{ comment.text }}</span>
         </div>
     </div>
 </template>
@@ -25,7 +26,7 @@
     align-items: center;
     color: #333;
     background-color: #F2F2F2;
-    border-radius: 30px;
+    border-radius: 8px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 .comment .avatar {
