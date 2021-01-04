@@ -63,7 +63,7 @@
 <script>
 export default {
   name: "WGFamilyTreeDialogNewRoomie",
-  emits: ["set-showDialog"],
+  emits: ["toggle-visibility"],
 
   props: {
     showDialog: Boolean,
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     closeDialog() {
-      this.$emit("set-showDialog");
+      this.$emit("toggle-visibility");
     },
     createRoomie() {
       // if this returns true, all required fields are filled out
