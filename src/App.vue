@@ -81,7 +81,34 @@ export default {
   }),
   // create standardOrder
   created() {
+    // create Standard Order
     this.$store.commit("createOrder");
+
+    // create rooms
+    for (let i = 0; i < this.$store.state.roomies.length; i++) {
+      console.log("reeee");
+      this.$store.state.rooms.push({
+        id: i,
+        name: "room " + (i + 1),
+        currentRoomie: this.$store.state.roomies[i],
+        pastRoomies: [
+          /*
+          {
+           
+            id: 19,
+            type: "DUMMY",
+            username: "David",
+            description: "Hi there!",
+            profilePicture: "https://i.imgur.com/eCG61tP.jpeg",
+            showProfilePage: false,
+            movedOut: true,
+            moveInDate: new Date(2015, 10, 15),
+            moveOutDate: new Date(2019, 5, 3)
+            
+          }*/
+        ]
+      });
+    }
   }
 };
 
