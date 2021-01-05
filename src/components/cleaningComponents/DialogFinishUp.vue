@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="showDialogFinishUp" persistent width="500">
+    <v-dialog v-model="showDialog" persistent width="500">
       <v-card>
         <v-card-title class="headline ighten-2">Check your task</v-card-title>
         <v-card-text cols="12" sm="12">
@@ -9,7 +9,7 @@
               <v-row class="mx-0">
                 <!-- Task -->
                 <v-text-field
-                  :value="task.title"
+                  :value="task.name"
                   label="Task"
                   readonly
                   sm="6"
@@ -79,10 +79,10 @@
 export default {
   name: "CleaningDialog",
   //name: "PurchasingDialogCashUp",
-  emits: ["toggle-showDialogFinishUp", "save-calendarCompletedOn"],
+  emits: ["toggle-visibility", "save-calendarCompletedOn"],
 
   props: {
-    showDialogFinishUp: Boolean,
+    showDialog: Boolean,
     ["roomies"]: Array,
     task: Object
     //newPurchase: Object
@@ -99,20 +99,7 @@ export default {
       // Shows todays date:
       timestamp: new Date().toISOString().substr(0, 10),
       //completedOnDate: new Date().toISOString().substr(0, 10),
-      comment: "",
-
-      // Current User that chooses Task:
-      currentUser: {
-        id: 0,
-        username: "Chris",
-        description: "Hi there!",
-        profilePicture:
-          "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-        balance: +3,
-        balancePlus: true,
-        selected: true,
-        color: "#1F85DE"
-      }
+      comment: ""
     };
   },
   methods: {
@@ -131,7 +118,7 @@ export default {
       this.closeDialog();
     },
     closeDialog() {
-      this.$emit("toggle-showDialogFinishUp", false);
+      this.$emit("toggle-visibility", false);
       this.comment = "";
       this.completed = this.timestamp;
       this.currentUser = "";

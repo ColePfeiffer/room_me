@@ -1,5 +1,13 @@
 <template>
   <div>
+    <DialogCalendar
+      :showDialog="showDialogCalendar"
+      :initialDate="dateInCalendar"
+      :vCardText="'Select the end date.'"
+      @toggle-visibility="toggleCalendar"
+      @set-date="setDate"
+    ></DialogCalendar>
+
     <v-dialog :value="showDialog" persistent width="500">
       <v-card class="removeScrollbar">
         <v-form ref="form" v-model="valid" lazy-validation>
@@ -18,10 +26,10 @@
                   label="Name"
                   sm="6"
                   m="6"
-                  prepend-icon="mdi-account"
+                  prepend-icon="mdi-broom"
                   :color="color"
                   :rules="[rules.required]"
-                  maxlength="15"
+                  maxlength="50"
                   required
                 ></v-text-field>
               </v-col>
@@ -58,7 +66,7 @@
                   :disabled="EndDateIsDisabled"
                   label="Needs to be done by"
                   prepend-icon="mdi-calendar"
-                  @click="toggleCalendar(true)"
+                  @click="toggleCalendar"
                   :rules="[rules.required]"
                   required
                 ></v-text-field>
@@ -109,36 +117,24 @@
         </v-form>
       </v-card>
     </v-dialog>
-
-    <!-- Calender Dialog -->
-    <v-dialog v-model="showDialogCalendar" persistent max-width="290">
-      <v-card>
-        <v-card-title class="headline lighten-2">Choose end date</v-card-title>
-
-        <v-date-picker v-model="dateInCalendar" color="pink"></v-date-picker>
-        <v-card-text>When should this task be finished?</v-card-text>
-        <v-card-actions>
-          <v-btn color="pink" text @click="toggleCalendar(false)">Close</v-btn>
-          <v-btn color="pink" text @click="setDate()">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
 <script>
 import TaskOrder from "../wgFamilyTreeComponents/TaskOrder";
+import DialogCalendar from "../UI/DialogCalendar";
+
 import { uuid } from "vue-uuid";
 
 export default {
   name: "DialogNewTask",
   emits: ["toggle-visibility"],
   components: {
-    TaskOrder
+    TaskOrder,
+    DialogCalendar
   },
   props: {
-    showDialog: Boolean,
-    rooms: Array
+    showDialog: Boolean
   },
   data() {
     return {
@@ -152,12 +148,13 @@ export default {
         id: 0,
         name: "",
         description: "",
+        comment: "",
         status: 0,
         createdBy: "",
         assignedTo: "",
         // doneBy,
         currentEndDate: new Date().toISOString().substr(0, 10),
-        completedOnLast: "",
+        completedOn: "",
         numberOfDaysInBetween: "",
         order: [{ roomie: "roomieRef", isAssignedToTask: false }]
         //swapDecline: [{ roomie: "ref", type: "", comment: "" }]
@@ -168,15 +165,6 @@ export default {
     };
   },
   methods: {
-    // Calendar Functions
-    setDate() {
-      this.task.currentEndDate = this.dateInCalendar;
-      this.toggleCalendar(false);
-    },
-    toggleCalendar(state) {
-      this.dateInCalendar = this.task.currentEndDate;
-      this.showDialogCalendar = state;
-    },
     enableEndDateFieldAndCalcDate() {
       // add days to date
       let result = this.addDays(new Date(), this.task.numberOfDaysInBetween);
@@ -199,11 +187,8 @@ export default {
         // add to taskList and close Dialog
         this.$store.state.taskList.push(this.task);
         this.closeDialog();
-      } else {
-        console.log("noo");
       }
     },
-
     closeDialog() {
       this.$emit("toggle-visibility");
       this.reset();
@@ -219,7 +204,7 @@ export default {
         assignedTo: "",
         // doneBy,
         currentEndDate: new Date().toISOString().substr(0, 10),
-        completedOnLast: "",
+        completedOn: "",
         numberOfDaysInBetween: "",
         order: []
       };
@@ -229,6 +214,14 @@ export default {
       var result = new Date(date);
       result.setDate(result.getDate() + days);
       return result;
+    },
+    // Calendar Functions
+    setDate(newDate) {
+      this.task.currentEndDate = newDate;
+      this.toggleCalendar();
+    },
+    toggleCalendar() {
+      this.showDialogCalendar = !this.showDialogCalendar;
     }
   }
 };

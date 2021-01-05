@@ -14,64 +14,7 @@ export default new Vuex.Store({
       { text: "Every month", days: 30 },
       { text: "Every two months", days: 60 }
     ],
-    roomies: [
-      {
-        id: 0,
-        username: "Chris",
-        description: "Hi there!",
-        profilePicture: "https://i.imgur.com/ER53sz6.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 5, 3),
-        movedOut: false,
-        balance: 0,
-        color: "#1F85DE",
-        selected: true,
-        showProfilePage: false,
-        isLoggedIn: true
-      },
-      {
-        id: 1,
-        username: "Hannah",
-        description: "Möpp",
-        profilePicture: "https://i.imgur.com/9eCV1NG.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 5, 3),
-        movedOut: false,
-        balance: 0,
-        selected: true,
-        color: "#DE591F",
-        showProfilePage: false,
-        isLoggedIn: false
-      },
-      {
-        id: 2,
-        username: "Rufus",
-        description: "",
-        profilePicture: "https://i.imgur.com/ELDlNNK.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 2, 3),
-        movedOut: false,
-        balance: 0,
-        selected: true,
-        color: "#BDA0EC",
-        showProfilePage: false,
-        isLoggedIn: false
-      },
-      {
-        id: 3,
-        username: "Tim",
-        description: "",
-        profilePicture: "https://i.imgur.com/7xffhX9.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 3, 3),
-        movedOut: false,
-        balance: 0,
-        selected: true,
-        color: "#EBE386",
-        showProfilePage: false,
-        isLoggedIn: false
-      }
-    ],
+    roomies: [],
     dummies: [
       {
         id: 19,
