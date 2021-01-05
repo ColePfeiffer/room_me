@@ -198,6 +198,7 @@ export default {
         id: 0,
         name: "",
         description: "",
+        comment: "",
         // Status: 0 - offen, accepted: 1, declined: 2, done: 3
         status: 0,
         createdBy: "",

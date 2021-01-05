@@ -72,6 +72,7 @@
 
 <script>
 import DialogCalendar from "../UI/DialogCalendar";
+import { uuid } from "vue-uuid";
 
 export default {
   name: "CleaningDialog",
@@ -95,7 +96,37 @@ export default {
     checkOffTask() {
       this.task.status = 3;
       this.task.completedOn = this.currentDate;
+      this.createNewTask();
       this.closeDialog();
+    },
+    createNewTask() {
+      let newEndDate = this.addDays(
+        this.task.completedOn,
+        this.task.numberOfDaysInBetween
+      )
+        .toISOString()
+        .substr(0, 10);
+
+      let newTask = {
+        id: uuid.v4(),
+        name: this.task.name,
+        description: this.task.description,
+        comment: "",
+        // Status: 0 - offen, accepted: 1, declined: 2, done: 3
+        status: 0,
+        createdBy: this.task.createdBy,
+        // needs to utilize the order, then assign a roomie. This is temporary:
+        assignedTo: this.$store.getters.currentUser,
+        // doneBy,
+        currentEndDate: newEndDate,
+        completedOn: "",
+        numberOfDaysInBetween: this.task.numberOfDaysInBetween,
+        // needs to be modified and shifted
+        order: this.task.order
+      };
+
+      // add to taskList
+      this.$store.state.taskList.push(newTask);
     },
     closeDialog() {
       this.$emit("toggle-visibility");
@@ -105,6 +136,12 @@ export default {
       this.comment = "";
       this.currentDate = new Date().toISOString().substr(0, 10);
     },
+    addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    },
+
     // Calendar Functions
     setDate(newDate) {
       this.currentDate = newDate;

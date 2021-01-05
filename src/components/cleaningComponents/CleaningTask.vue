@@ -50,18 +50,17 @@
               </fieldset>
             </div>
 
-            <div v-if="task.status === 0 || task.status === 1">
-              <v-card-actions>
-                <v-col class="text-right">
-                  <v-btn text @click="toggleDialogFinishUp(true)">
-                    <v-icon>mdi-check</v-icon>
-                  </v-btn>
-                  <v-btn text @click="toggleDialogDeclineTask(true)">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-col>
-              </v-card-actions>
-            </div>
+            <!-- ACTIONS -->
+            <v-card-actions v-if="task.status === 0 || task.status === 1">
+              <v-col class="text-right">
+                <v-btn :disabled="isUserLoggedIn" text @click="toggleDialogFinishUp(true)">
+                  <v-icon>mdi-check</v-icon>
+                </v-btn>
+                <v-btn :disabled="isUserLoggedIn" text @click="toggleDialogDeclineTask(true)">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-col>
+            </v-card-actions>
           </v-col>
         </v-card>
       </v-col>
@@ -94,6 +93,17 @@ export default {
     },
     toggleDialogDeclineTask(newState) {
       this.showDialogDeclineTask = newState;
+    }
+  },
+  computed: {
+    isUserLoggedIn() {
+      if (this.$store.getters.currentUser === this.task.assignedTo) {
+        console.log("yes");
+        return false;
+      } else {
+        console.log("nahhh, not the same");
+        return true;
+      }
     }
   }
 };
