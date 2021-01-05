@@ -3,6 +3,7 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import router from "./router";
 import store from "./store";
+import UUID from "vue-uuid";
 
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 
@@ -13,6 +14,7 @@ new Vue({
     iconfont: "md"
   },
   vuetify,
+  UUID,
   router,
   store,
   render: h => h(App)

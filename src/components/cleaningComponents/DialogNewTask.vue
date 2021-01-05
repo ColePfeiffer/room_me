@@ -1,105 +1,130 @@
 <template>
   <div>
-    <v-dialog v-model="showDialog" persistent width="500">
+    <v-dialog :value="showDialog" persistent width="500">
       <v-card class="removeScrollbar">
-        <v-card-title class="headline ighten-2">Add new task</v-card-title>
-        <v-card-text cols="12" sm="12">
-          <v-row>
-            <v-col>
-              <v-row class="mx-0">
-                <!-- Name -->
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">Task Creator</h3>
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <!-- Name and End Date -->
+            <v-row>
+              <v-col cols="6">
+                <!-- Enter name -->
                 <v-text-field
-                  v-model="taskTitle"
-                  label="Task"
+                  v-model="task.name"
+                  label="Name"
                   sm="6"
                   m="6"
-                  prepend-icon="mdi-broom"
+                  prepend-icon="mdi-account"
+                  :color="color"
+                  :rules="[rules.required]"
+                  maxlength="15"
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="6">
+                <v-select
+                  :items="$store.state.timeOptions"
+                  v-model="task.numberOfDaysInBetween"
+                  :color="color"
+                  name="roomId"
+                  item-text="text"
+                  item-value="days"
+                  label="How often?"
+                  prepend-icon="mdi-timer"
+                  :rules="[rules.required]"
+                  required
+                  v-on:change="enableEndDateFieldAndCalcDate"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <!-- Description -->
+            <v-row no-gutters>
+              <v-col cols="6">
+                <v-text-field
+                  v-model="task.description"
+                  label="Description"
+                  sm="6"
+                  m="6"
+                  prepend-icon="mdi-information"
                   color="#FF6F00"
                 ></v-text-field>
+              </v-col>
+              <v-col cols="6">
                 <!-- End Date -->
                 <v-text-field
-                  :value="timestamp"
-                  label="End date"
+                  :value="task.currentEndDate"
+                  :disabled="EndDateIsDisabled"
+                  label="Needs to be done by"
                   sm="6"
                   m="6"
                   prepend-icon="mdi-calendar"
-                  @click="toggleSelectedTaskDate(true)"
+                  @click="toggleCalendar(true)"
+                  :rules="[rules.required]"
+                  required
                 ></v-text-field>
-              </v-row>
-              <v-text-field
-                v-model="taskIntervallDays"
-                :rules="[numberRule]"
-                label="Rythm of task"
-                sm="6"
-                m="6"
-                prepend-icon="mdi-timer"
-                color="#FF6F00"
-              ></v-text-field>
+              </v-col>
+            </v-row>
 
-              <!-- Description -->
-              <v-text-field
-                v-model="taskDescription"
-                label="Description"
-                sm="6"
-                m="6"
-                prepend-icon="mdi-information"
-                color="#FF6F00"
-              ></v-text-field>
-              <section class="sectionStling">
-                <label class="labelStyling">Choose an order:</label>
-              </section>
-              <v-col class="radioRowStyling">
-                <section class="fontStyling">
-                  <input type="radio" v-model="isNewOrderSelected" v-bind:value="true" />
-                  New order
-                  <input
-                    type="radio"
-                    v-model="isNewOrderSelected"
-                    v-bind:value="false"
-                  />
-                  Standard Order
-                </section>
+            <!-- Order Pre-Settings -->
+            <v-row no-gutters>
+              <label class="labelStyling">Who is it for?</label>
+            </v-row>
+            <v-row align="center" justify="center" no-gutters>
+              <v-col cols="6">
+                <v-radio-group v-model="orderType">
+                  <v-radio label="normal order" value="STANDARD" :color="color"></v-radio>
+                  <v-radio label="custom order" value="CUSTOM" :color="color"></v-radio>
+                </v-radio-group>
               </v-col>
 
-              <!-- Roomie Chip if usser selects to switch their task:-->
-              <div v-if="isNewOrderSelected === true">
-                <v-chip-group column multiple active-class="primary--text">
-                  <div class="mx-2" v-for="(roomie, index) in $store.state.roomie" :key="roomie.id">
-                    <v-chip
-                      :color="roomie.color"
-                      :outlined="roomie.selected"
-                      @click="selectRoomie(roomie, index)"
-                    >
-                      <v-avatar left>
-                        <v-img v-bind:src="roomie.profilePicture"></v-img>
-                      </v-avatar>
-                      <strong>{{ roomie.username }}</strong>&nbsp;
-                    </v-chip>
-                  </div>
-                </v-chip-group>
-              </div>
-              <div
-                v-else
-              >The standard order moves on for each task created, so that tasks will be distributed fairly.</div>
-            </v-col>
-          </v-row>
-          <v-row justify="space-around">
-            <v-btn color="gray" @click="closeDialog">Close</v-btn>
-            <v-btn color="pink" @click="addNewTask" v-model="submittedTask">Save</v-btn>
-          </v-row>
-        </v-card-text>
-        <v-card-actions></v-card-actions>
+              <v-col
+                cols="6"
+                v-if="orderType == 'STANDARD'"
+              >Everyone has to do this task. No extras.</v-col>
+              <v-col
+                cols="6"
+                v-else-if="orderType == 'CUSTOM'"
+              >This task should only be assigned to certain roomies.</v-col>
+            </v-row>
+
+            <!-- Change Order -->
+            <v-row align="center" justify="center" no-gutters>
+              <v-col v-if="orderType == 'CUSTOM'">
+                <TaskOrder :showStandardOrder="false" :order="task.order"></TaskOrder>
+              </v-col>
+            </v-row>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-row justify="space-around">
+              <v-col cols="4"></v-col>
+              <v-col cols="4">
+                <v-btn color="pink" :disabled="!valid" @click="createNewTask">Create</v-btn>
+              </v-col>
+              <v-col cols="4">
+                <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="showDialogSelectedTaskDate" persistent max-width="290">
+
+    <!-- Calender Dialog -->
+    <v-dialog v-model="showDialogCalendar" persistent max-width="290">
       <v-card>
         <v-card-title class="headline lighten-2">Choose end date</v-card-title>
 
-        <v-date-picker v-model="timestamp" color="pink"></v-date-picker>
+        <v-date-picker v-model="dateInCalendar" color="pink"></v-date-picker>
         <v-card-text>When should this task be finished?</v-card-text>
         <v-card-actions>
-          <v-btn color="pink" text @click="toggleSelectedTaskDate(false)">Close</v-btn>
-          <v-btn color="pink" text @click="saveSelectedTaskDate(selectedTaskDate)">Save</v-btn>
+          <v-btn color="pink" text @click="toggleCalendar(false)">Close</v-btn>
+          <v-btn color="pink" text @click="setDate()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -107,150 +132,118 @@
 </template>
 
 <script>
+import TaskOrder from "../wgFamilyTreeComponents/TaskOrder";
+import { uuid } from "vue-uuid";
+
 export default {
-  name: "CleaningDialogNewTask",
-  emits: [
-    "toggle-showDialogEndDateInput",
-    "toggle-showDialogNewTask",
-    "save-endDateInput"
-  ],
-  props: {
-    showDialog: Boolean
+  name: "DialogNewTask",
+  emits: ["toggle-visibility"],
+  components: {
+    TaskOrder
   },
+
+  props: {
+    showDialog: Boolean,
+    rooms: Array
+  },
+  created() {},
+
   data() {
     return {
-      item: {},
-      numberRule: v => {
-        if (!v.trim()) return true;
-        if (!isNaN(parseFloat(v)) && v >= 0 && v <= 90) return true;
-        return "Number has to be between 0 and 90";
+      showDialogCalendar: false,
+      task: {
+        id: 0,
+        name: "",
+        description: "",
+        status: 0,
+        createdBy: "",
+        assignedTo: "",
+        // doneBy,
+        currentEndDate: new Date().toISOString().substr(0, 10),
+        completedOnLast: "",
+        numberOfDaysInBetween: "",
+        order: [{ roomie: "roomieRef", isAssignedToTask: false }]
+        //swapDecline: [{ roomie: "ref", type: "", comment: "" }]
       },
-      debug: true,
-      submittedTask: "",
-      isNewOrderSelected: false,
-      showDialogSelectedTaskDate: false,
-      timestamp: new Date().toISOString().substr(0, 10),
-      comment: "",
-      taskTitle: "",
-      taskDescription: "",
-      taskIntervallDays: "",
-      selectedTaskDate: "",
-      order: [],
-      basicCounterForNewOrder: 0
+      color: "#FF6F00", //dialogColor
+      dateInCalendar: "",
+      orderType: "STANDARD",
+      EndDateIsDisabled: true,
+      name: "",
+      roomId: "",
+      valid: true,
+      rules: {
+        required: value => !!value || "Required."
+      }
     };
   },
-  computed: {},
   methods: {
-    saveSelectedTaskDate() {
-      this.selectedTaskDate = this.timestamp;
-      this.$emit("save-selectedTaskDate", this.selectedTaskDate);
-
-      this.toggleSelectedTaskDate(false);
-      console.log("saved timestamp: " + this.timestamp);
+    // Calendar Functions
+    setDate() {
+      this.task.currentEndDate = this.dateInCalendar;
+      this.toggleCalendar(false);
     },
-    toggleSelectedTaskDate(newState) {
-      this.showDialogSelectedTaskDate = newState;
+    toggleCalendar(state) {
+      this.dateInCalendar = this.task.currentEndDate;
+      this.showDialogCalendar = state;
     },
+    enableEndDateFieldAndCalcDate() {
+      // add days to date
+      let result = this.addDays(new Date(), this.task.numberOfDaysInBetween);
+      this.task.currentEndDate = result.toISOString().substr(0, 10);
 
-    addNewTask() {
-      // set new order
-      if (this.isNewOrderSelected) {
-        this.createNewOrder();
+      // set date for the Calendar
+      this.dateInCalendar = this.task.currentEndDate;
+      this.EndDateIsDisabled = false;
+    },
+    createNewTask() {
+      // if this returns true, all required fields are filled out
+      if (this.$refs.form.validate()) {
+        // set data
+        this.task.id = uuid.v4();
+        this.task.createdBy = this.$store.getters.currentUser;
+
+        // needs to utilize the order, then assign a roomie. This is temporary:
+        this.task.assignedTo = this.$store.getters.currentUser;
+
+        // add to taskList and close Dialog
+        this.$store.state.taskList.push(this.task);
+        this.closeDialog();
       } else {
-        // need a way to access standard order from WGRules
-        /*
-        // standard order abrufen
-        this.order = this.standardOrder;
-        // Standard Order anpassen, sodass der erste Roomie nach hinten rutscht
-        move(this.standardOrder, 0, this.standardOrder.length)
-        */
-        if (this.debug)
-          console.log("Standard Order selected. Not yet implemented.");
+        console.log("noo");
       }
-
-      // Für Task Vorweg 50
-      // this.item.id = LatestId + 1
-      console.log("Iwas??" + this.selectedTaskDate + this.timestamp);
-      this.$store.state.taskList.push({
-        // id needs to be generated somehow.
-        // id: this.id,
-        title: this.taskTitle,
-        description: this.taskDescription,
-        endDate: this.timestamp,
-        startDate: this.timestamp,
-        completedOn: "",
-        intervallDays: this.taskIntervallDays,
-        status: 0,
-        taskCreator: this.$store.getters.currentUser.username,
-        order: this.order,
-        swapDecline: [{ roomie: "", type: "", comment: "" }],
-        currentUser: this.$store.getters.currentUser.username
-      });
-      this.$emit("saveNewTask", this.item);
-      this.closeDialog();
     },
+
     closeDialog() {
-      this.$emit("toggle-showDialogNewTask", false);
-      this.comment = "";
-      this.completed = this.timestamp;
-      this.currentUser = "";
+      this.$emit("toggle-visibility");
+      this.reset();
     },
-
-    move(arr, old_index, new_index) {
-      while (old_index < 0) {
-        old_index += arr.length;
-      }
-      while (new_index < 0) {
-        new_index += arr.length;
-      }
-      if (new_index >= arr.length) {
-        var k = new_index - arr.length;
-        while (k-- + 1) {
-          arr.push(undefined);
-        }
-      }
-      arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-      return arr;
+    reset() {
+      this.task = {
+        id: 0,
+        name: "",
+        description: "",
+        status: 0,
+        createdBy: "",
+        assignedTo: "",
+        // doneBy,
+        currentEndDate: new Date().toISOString().substr(0, 10),
+        completedOnLast: "",
+        numberOfDaysInBetween: "",
+        order: []
+      };
+      this.EndDateIsDisabled = true;
     },
-
-    selectRoomie(roomie, index) {
-      if (!roomie.selected) {
-        console.log("roomie deselected");
-        // wird abgewählt
-        if (this.basicCounterForNewOrder >= 0) {
-          console.log("counter--");
-          this.basicCounterForNewOrder--;
-        }
-      } else {
-        console.log("roomie selected");
-        if (this.basicCounterForNewOrder <= this.roomies.length) {
-          console.log("counter++");
-          this.move(this.roomies, index, this.basicCounterForNewOrder);
-          this.basicCounterForNewOrder++;
-        }
-      }
-
-      roomie.selected = !roomie.selected;
-    },
-
-    createNewOrder() {
-      for (let i = 0; i < this.roomies.length; i++) {
-        if (!this.roomies[i].selected) {
-          this.order.push(this.roomies[i]);
-        }
-      }
-      if (this.debug) console.log("New order created:", this.order);
+    addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
     }
   }
 };
 </script>
+
 <style scoped>
-.radioRowStyling {
-  padding-left: 18px;
-}
-.fontStyling {
-  font-size: 1rem;
-}
 .labelStyling {
   font-size: 1.2rem;
 }

@@ -23,7 +23,7 @@
         <div class="fab-text-custom pink">Add task</div>
       </v-btn>
     </v-speed-dial>
-    <DialogNewTask1 :showDialog="showDialogNewTask" @toggle-visibility="showDialogNewTask = false"></DialogNewTask1>
+    <DialogNewTask :showDialog="showDialogNewTask" @toggle-visibility="showDialogNewTask = false"></DialogNewTask>
     <v-col xs="12" sm="9" md="9">
       <CleaningTabs></CleaningTabs>
     </v-col>
@@ -32,12 +32,12 @@
 
 <script>
 import CleaningTabs from "../components/cleaningComponents/CleaningTabs";
-import DialogNewTask1 from "../components/cleaningComponents/DialogNewTask1";
+import DialogNewTask from "../components/cleaningComponents/DialogNewTask";
 
 export default {
   components: {
     CleaningTabs,
-    DialogNewTask1
+    DialogNewTask
   },
   data() {
     return {

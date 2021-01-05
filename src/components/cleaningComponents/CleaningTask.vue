@@ -1,13 +1,13 @@
 <template>
   <v-row dense class="paddingCards">
     <DialogFinishUp
-      :item="item"
+      :task="task"
       :showDialogFinishUp="showDialogFinishUp"
       @toggle-showDialogFinishUp="toggleShowDialogFinishUp"
     ></DialogFinishUp>
 
     <DialogDeclineTask
-      :item="item"
+      :task="task"
       :roomies="roomies"
       :showDialogDeclineTask="showDialogDeclineTask"
       @toggle-showDialogDeclineTask="toggleShowDialogDeclineTask"
@@ -21,37 +21,37 @@
               class="profile-picture rounded-circle"
               max-width="60"
               max-height="60"
-              v-bind:src="$store.getters.currentUser.profilePicture"
+              v-bind:src="task.acceptedBy.profilePicture"
             ></v-img>
 
             <v-col>
-              <v-card-text class="stylingTextHeadline">{{ item.name }}</v-card-text>
+              <v-card-text class="stylingTextHeadline">{{ task.name }}</v-card-text>
 
-              <label class="stylingDate">End date: {{ item.endDate }}</label>
+              <label class="stylingDate">End date: {{ task.endDate }}</label>
               <!--If task is done, show completedOnDate: -->
               <label
                 class="stylingDateComplete"
-                v-if="item.completedOnDate != null"
-              >Done: {{ item.completedOnDate }}</label>
+                v-if="task.completedOnDate != null"
+              >Done: {{ task.completedOnDate }}</label>
             </v-col>
           </v-row>
           <div class="stylingTextSubtitle">
-            <label>{{ item.description }}</label>
+            <label>{{ task.description }}</label>
           </div>
 
-          <div class="commentBox" v-if="item.status === 3 && item.comment != '' ">
-            <!--If item is done, show comment:-->
+          <div class="commentBox" v-if="task.status === 3 && task.comment != '' ">
+            <!--If task is done, show comment:-->
             <fieldset style="text-align: center">
               <legend style="text-align: center">
                 <p class="text--black;">{{ $store.getters.currentUser.username }}</p>
               </legend>
               <div
                 style="text-align: left; padding-left: 15px; padding-bottom: 15px"
-              >{{ item.comment }}</div>
+              >{{ task.comment }}</div>
             </fieldset>
           </div>
 
-          <div v-if="item.status === 0 || item.status === 1">
+          <div v-if="task.status === 0 || task.status === 1">
             <v-card-actions>
               <v-col class="text-right">
                 <v-btn text @click="toggleShowDialogFinishUp(true)">
@@ -77,7 +77,7 @@ export default {
   name: "CleaningTask",
   emits: [],
   props: {
-    ["item"]: Object
+    ["task"]: Object
   },
   components: {
     DialogFinishUp,

@@ -143,11 +143,6 @@ export default new Vuex.Store({
     },
     getRoomieByID(state, id) {
       return state.roomies.find(roomie => roomie.id === id);
-    },
-    generateID() {
-      let id = Math.floor(Math.random() * Date.now());
-      console.log("id " + id);
-      return id;
     }
   },
   mutations: {
