@@ -11,8 +11,8 @@ export default new Vuex.Store({
       { text: "Every day", days: 1 },
       { text: "Every week", days: 7 },
       { text: "Every 2 weeks", days: 14 },
-      { text: "Every month", value: 30 },
-      { text: "Every two months", days: 60 },
+      { text: "Every month", days: 30 },
+      { text: "Every two months", days: 60 }
     ],
     roomies: [
       {
@@ -27,7 +27,7 @@ export default new Vuex.Store({
         color: "#1F85DE",
         selected: true,
         showProfilePage: false,
-        isLoggedIn: true,
+        isLoggedIn: true
       },
       {
         id: 1,
@@ -41,7 +41,7 @@ export default new Vuex.Store({
         selected: true,
         color: "#DE591F",
         showProfilePage: false,
-        isLoggedIn: false,
+        isLoggedIn: false
       },
       {
         id: 2,
@@ -55,7 +55,7 @@ export default new Vuex.Store({
         selected: true,
         color: "#BDA0EC",
         showProfilePage: false,
-        isLoggedIn: false,
+        isLoggedIn: false
       },
       {
         id: 3,
@@ -69,8 +69,8 @@ export default new Vuex.Store({
         selected: true,
         color: "#EBE386",
         showProfilePage: false,
-        isLoggedIn: false,
-      },
+        isLoggedIn: false
+      }
     ],
     dummies: [
       {
@@ -82,11 +82,10 @@ export default new Vuex.Store({
         showProfilePage: false,
         movedOut: true,
         moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 5, 3),
-      },
+        moveOutDate: new Date(2019, 5, 3)
+      }
     ],
-    comments: [
-    ],
+    comments: [],
     rooms: [],
     counter: "kdkdkdd",
     shoppingList: [],
@@ -104,7 +103,7 @@ export default new Vuex.Store({
         order: [],
         swapDecline: [{ roomie: "", type: "", comment: "" }],
         color: "#315458",
-        taskCreator: "",
+        taskCreator: ""
       },
       {
         id: 2,
@@ -118,7 +117,7 @@ export default new Vuex.Store({
         status: 0,
         order: [],
         swapDecline: [{ roomie: "", type: "", comment: "" }],
-        color: "#315458",
+        color: "#315458"
       },
       {
         id: 5,
@@ -134,17 +133,22 @@ export default new Vuex.Store({
         order: [],
         swapDecline: [{ roomie: "", type: "", comment: "" }],
         color: "#315458",
-        taskCreator: "",
-      },
-    ],
+        taskCreator: ""
+      }
+    ]
   },
   getters: {
-    currentUser: (state) => {
-      return state.roomies.find((roomie) => roomie.isLoggedIn === true);
+    currentUser: state => {
+      return state.roomies.find(roomie => roomie.isLoggedIn === true);
     },
     getRoomieByID(state, id) {
-      return state.roomies.find((roomie) => roomie.id === id);
+      return state.roomies.find(roomie => roomie.id === id);
     },
+    generateID() {
+      let id = Math.floor(Math.random() * Date.now());
+      console.log("id " + id);
+      return id;
+    }
   },
   mutations: {
     createOrder(state) {
@@ -176,12 +180,12 @@ export default new Vuex.Store({
     },
 
     setCurrentUser(state, roomieId) {
-      state.roomies.forEach((roomie) => {
+      state.roomies.forEach(roomie => {
         roomie.isLoggedIn = false;
       });
 
-      let roomie = state.roomies.find((roomie) => roomie.id === roomieId);
+      let roomie = state.roomies.find(roomie => roomie.id === roomieId);
       roomie.isLoggedIn = true;
-    },
-  },
+    }
+  }
 });

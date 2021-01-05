@@ -23,10 +23,7 @@
         <div class="fab-text-custom pink">Add task</div>
       </v-btn>
     </v-speed-dial>
-    <DialogNewTask1
-      :showDialog="showDialogNewTask"
-      @toggle-showDialogNewTask="toggleShowDialogNewTask"
-    ></DialogNewTask1>
+    <DialogNewTask1 :showDialog="showDialogNewTask" @toggle-visibility="showDialogNewTask = false"></DialogNewTask1>
     <v-col xs="12" sm="9" md="9">
       <CleaningTabs></CleaningTabs>
     </v-col>
@@ -55,12 +52,7 @@ export default {
       ]
     };
   },
-  methods: {
-    toggleShowDialogNewTask(newState) {
-      this.showDialogNewTask = newState;
-      if (this.$store.state.debug) console.log("Closed Dialog: New Task");
-    }
-  }
+  methods: {}
 };
 </script>
 <style>

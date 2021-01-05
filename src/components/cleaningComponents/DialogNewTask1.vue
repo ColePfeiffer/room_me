@@ -29,7 +29,7 @@
               <v-col cols="6">
                 <v-select
                   :items="$store.state.timeOptions"
-                  v-model="numberOfDaysInBetween"
+                  v-model="task.numberOfDaysInBetween"
                   :color="color"
                   name="roomId"
                   item-text="text"
@@ -38,7 +38,7 @@
                   prepend-icon="mdi-timer"
                   :rules="[rules.required]"
                   required
-                  v-on:change="CreatedOnDisabled = true"
+                  v-on:change="enableEndDateFieldAndCalcDate"
                 ></v-select>
               </v-col>
             </v-row>
@@ -58,12 +58,12 @@
                 <!-- End Date -->
                 <v-text-field
                   :value="task.createdOn"
-                  disabled="CreatedOnDisabled"
+                  :disabled="EndDateIsDisabled"
                   label="Needs to be done by"
                   sm="6"
                   m="6"
                   prepend-icon="mdi-calendar"
-                  @click="toggleSelectedTaskDate(true)"
+                  @click="toggleCalendar(true)"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -92,7 +92,9 @@
 
             <!-- Change Order -->
             <v-row align="center" justify="center" no-gutters>
-              <v-col v-if="orderType == 'CUSTOM'"></v-col>
+              <v-col v-if="orderType == 'CUSTOM'">
+                <TaskOrder :showStandardOrder="false" :order="task.order"></TaskOrder>
+              </v-col>
             </v-row>
           </v-card-text>
 
@@ -112,15 +114,15 @@
     </v-dialog>
 
     <!-- Calender Dialog -->
-    <v-dialog v-model="showDialogSelectedTaskDate" persistent max-width="290">
+    <v-dialog v-model="showDialogCalendar" persistent max-width="290">
       <v-card>
         <v-card-title class="headline lighten-2">Choose end date</v-card-title>
 
-        <v-date-picker v-model="createdOn" color="pink"></v-date-picker>
+        <v-date-picker v-model="dateInCalendar" color="pink"></v-date-picker>
         <v-card-text>When should this task be finished?</v-card-text>
         <v-card-actions>
-          <v-btn color="pink" text @click="toggleSelectedTaskDate(false)">Close</v-btn>
-          <v-btn color="pink" text @click="saveSelectedTaskDate(selectedTaskDate)">Save</v-btn>
+          <v-btn color="pink" text @click="toggleCalendar(false)">Close</v-btn>
+          <v-btn color="pink" text @click="setDate()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -128,9 +130,14 @@
 </template>
 
 <script>
+import TaskOrder from "../wgFamilyTreeComponents/TaskOrder";
+
 export default {
   name: "DialogNewTask",
   emits: ["toggle-visibility"],
+  components: {
+    TaskOrder
+  },
 
   props: {
     showDialog: Boolean,
@@ -140,18 +147,21 @@ export default {
 
   data() {
     return {
-      timestamp: "",
+      showDialogCalendar: false,
       task: {
         id: 0,
         name: "",
         description: "",
-        createdOn: "",
+        createdOn: new Date().toISOString().substr(0, 10),
         createdBy: "",
-        numberOfDaysInBetween: ""
+        numberOfDaysInBetween: "",
+        currentEndDate: "",
+        order: [{ roomie: "roomieRef", isAssignedToTask: false }]
       },
       color: "#FF6F00", //dialogColor
+      dateInCalendar: "",
       orderType: "STANDARD",
-      CreatedOnDisabled: true,
+      EndDateIsDisabled: true,
       name: "",
       roomId: "",
       valid: true,
@@ -161,8 +171,36 @@ export default {
     };
   },
   methods: {
+    // Calendar Functions
+    setDate() {
+      this.task.createdOn = this.dateInCalendar;
+      this.toggleCalendar(false);
+    },
+    toggleCalendar(state) {
+      this.dateInCalendar = this.task.createdOn;
+      this.showDialogCalendar = state;
+    },
+    enableEndDateFieldAndCalcDate() {
+      // add days to date
+      let result = this.addDays(new Date(), this.task.numberOfDaysInBetween);
+      this.task.createdOn = result.toISOString().substr(0, 10);
+
+      // set date for the Calendar
+      this.dateInCalendar = this.task.createdOn;
+      this.EndDateIsDisabled = false;
+    },
+    createNewTask() {
+      // get all data and emit
+      // close
+      let id = this.$store.getters.generateID;
+      console.log(id);
+
+      this.closeDialog();
+    },
+
     closeDialog() {
       this.$emit("toggle-visibility");
+      this.reset();
     },
     createRoomie() {
       // if this returns true, all required fields are filled out
@@ -176,6 +214,23 @@ export default {
           this.$emit("create-dummy", [this.roomId, this.name]);
         }
       }
+    },
+    reset() {
+      this.task = {
+        id: 0,
+        name: "",
+        description: "",
+        createdOn: new Date().toISOString().substr(0, 10),
+        createdBy: "",
+        numberOfDaysInBetween: "",
+        currentEndDate: "",
+        order: []
+      };
+    },
+    addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
     }
   }
 };
