@@ -29,8 +29,8 @@
             </v-card>
           </div>
           <div v-else>
-            <div v-for="item in openTasks" :key="item.id">
-              <CleaningTask :item="item"></CleaningTask>
+            <div v-for="task in openTasks" :key="task.id">
+              <CleaningTask :task="task"></CleaningTask>
             </div>
           </div>
         </div>
@@ -48,8 +48,8 @@
               </v-col>
             </v-card>
           </div>
-          <div v-for="item in doneTasks" :key="item.id">
-            <CleaningTask :item="item"></CleaningTask>
+          <div v-for="task in doneTasks" :key="task.id">
+            <CleaningTask :task="task"></CleaningTask>
           </div>
         </div>
       </v-tab-item>

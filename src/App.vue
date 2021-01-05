@@ -106,27 +106,55 @@ export default {
             moveOutDate: new Date(2019, 5, 3)
             
           }*/
-        ],
-        
+        ]
       });
     }
     this.$store.state.comments.push(
       {
         id: 1,
         roomie: this.$store.state.roomies[0],
-        text: 'Der Chat funktioniert, juhu. Was geht!',
+        text: "Der Chat funktioniert, juhu. Was geht!"
       },
       {
-        id: 3,                            
+        id: 3,
         roomie: this.$store.state.roomies[2],
-        text: 'Steilo!',
+        text: "Steilo!"
       },
       {
-        id: 2,                            
+        id: 2,
         roomie: this.$store.state.roomies[1],
-        text: 'Who let the dogs out, wuf - wuf - wuf...',
+        text: "Who let the dogs out, wuf - wuf - wuf..."
+      }
+    );
+
+    this.$store.state.taskList.push(
+      {
+        id: 0,
+        name: "Küche putzen",
+        description: "Küche muss geschrubbat werdn.",
+        status: 0,
+        createdBy: this.$store.state.roomies[0],
+        assignedTo: this.$store.state.roomies[0],
+        // doneBy,
+        currentEndDate: new Date().toISOString().substr(0, 10),
+        completedOnLast: "",
+        numberOfDaysInBetween: "7",
+        order: []
       },
-      );
+      {
+        id: 3233,
+        name: "Müll rausbringen",
+        description: "Glasmüll auch.",
+        status: 0,
+        createdBy: this.$store.state.roomies[2],
+        assignedTo: this.$store.state.roomies[3],
+        // doneBy,
+        currentEndDate: new Date().toISOString().substr(0, 10),
+        completedOnLast: "",
+        numberOfDaysInBetween: "7",
+        order: []
+      }
+    );
   }
 };
 

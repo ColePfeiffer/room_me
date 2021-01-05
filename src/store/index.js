@@ -89,53 +89,7 @@ export default new Vuex.Store({
     rooms: [],
     counter: "kdkdkdd",
     shoppingList: [],
-    taskList: [
-      {
-        id: 1,
-        name: "Küche putzen",
-        description: "Küche muss geschrubbat werdn.",
-        endDate: "22.10.20",
-        startDate: "",
-        completedOn: "",
-        intervallDays: 2,
-        // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-        status: 0,
-        order: [],
-        swapDecline: [{ roomie: "", type: "", comment: "" }],
-        color: "#315458",
-        taskCreator: ""
-      },
-      {
-        id: 2,
-        name: "Küche putzen",
-        description: "KHallo... ksksk dkdkd",
-        endDate: "22.10.20",
-        startDate: "",
-        completedOn: "",
-        intervallDays: 2,
-        // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-        status: 0,
-        order: [],
-        swapDecline: [{ roomie: "", type: "", comment: "" }],
-        color: "#315458"
-      },
-      {
-        id: 5,
-        name: "Müll rausbringen",
-        description:
-          "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ",
-        endDate: "",
-        startDate: "",
-        completedOn: "",
-        intervallDays: 2,
-        // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-        status: 0,
-        order: [],
-        swapDecline: [{ roomie: "", type: "", comment: "" }],
-        color: "#315458",
-        taskCreator: ""
-      }
-    ]
+    taskList: []
   },
   getters: {
     currentUser: state => {

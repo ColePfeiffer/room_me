@@ -31,7 +31,6 @@
                   :items="$store.state.timeOptions"
                   v-model="task.numberOfDaysInBetween"
                   :color="color"
-                  name="roomId"
                   item-text="text"
                   item-value="days"
                   label="How often?"
@@ -43,13 +42,11 @@
               </v-col>
             </v-row>
             <!-- Description -->
-            <v-row no-gutters>
+            <v-row>
               <v-col cols="6">
                 <v-text-field
                   v-model="task.description"
                   label="Description"
-                  sm="6"
-                  m="6"
                   prepend-icon="mdi-information"
                   color="#FF6F00"
                 ></v-text-field>
@@ -60,8 +57,6 @@
                   :value="task.currentEndDate"
                   :disabled="EndDateIsDisabled"
                   label="Needs to be done by"
-                  sm="6"
-                  m="6"
                   prepend-icon="mdi-calendar"
                   @click="toggleCalendar(true)"
                   :rules="[rules.required]"
@@ -141,16 +136,18 @@ export default {
   components: {
     TaskOrder
   },
-
   props: {
     showDialog: Boolean,
     rooms: Array
   },
-  created() {},
-
   data() {
     return {
+      color: "#FF6F00", //dialogColor
       showDialogCalendar: false,
+      orderType: "STANDARD", // STANDARD, CUSTOM
+      EndDateIsDisabled: true,
+      dateInCalendar: "",
+      valid: true, // for validation
       task: {
         id: 0,
         name: "",
@@ -165,13 +162,6 @@ export default {
         order: [{ roomie: "roomieRef", isAssignedToTask: false }]
         //swapDecline: [{ roomie: "ref", type: "", comment: "" }]
       },
-      color: "#FF6F00", //dialogColor
-      dateInCalendar: "",
-      orderType: "STANDARD",
-      EndDateIsDisabled: true,
-      name: "",
-      roomId: "",
-      valid: true,
       rules: {
         required: value => !!value || "Required."
       }
@@ -223,6 +213,7 @@ export default {
         id: 0,
         name: "",
         description: "",
+        // Status: 0 - offen, accepted: 1, declined: 2, done: 3
         status: 0,
         createdBy: "",
         assignedTo: "",
