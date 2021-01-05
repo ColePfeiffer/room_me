@@ -98,10 +98,8 @@ export default {
   computed: {
     isUserLoggedIn() {
       if (this.$store.getters.currentUser === this.task.assignedTo) {
-        console.log("yes");
         return false;
       } else {
-        console.log("nahhh, not the same");
         return true;
       }
     }

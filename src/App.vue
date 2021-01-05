@@ -1,57 +1,45 @@
 <template>
   <v-app class>
-    <v-navigation-drawer v-model="drawer" app clipped color="#241c24" expand-on-hover dark>
-      <v-list dense>
-        <v-list-item to="/home">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item to="/meineWG">
-          <v-list-item-action>
-            <v-icon>mdi-account-switch</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Meine WG</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item to="/einkaufen">
-          <v-list-item-action>
-            <v-icon>mdi-shopping</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Einkaufen</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item to="/putzen">
-          <v-list-item-action>
-            <v-icon>mdi-broom</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Putzen</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
     <v-card color="grey lighten-4" flat tile>
-      <v-toolbar dark dense color="#211E21">
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar dark color="#211E21">
         <!--                 Title for Toolbar-->
-        <v-toolbar-title></v-toolbar-title>
+        <v-toolbar-title style="cursor: pointer" @click="goToPageAndSetColor('/home')">
+          RoomMe
+          <v-icon right></v-icon>
+        </v-toolbar-title>
+        <v-btn class="no-background-hover" text color="white" @click="goToPageAndSetColor('/home')">
+          <span></span>
+          <v-icon :color="getColor('/home')">mdi-home</v-icon>
+        </v-btn>
+        <v-btn
+          class="no-background-hover"
+          text
+          color="white"
+          @click="goToPageAndSetColor('/meineWG')"
+        >
+          <span></span>
+          <v-icon :color="getColor('/meineWG')">mdi-account-switch</v-icon>
+        </v-btn>
+        <v-btn
+          class="no-background-hover"
+          text
+          color="white"
+          @click="goToPageAndSetColor('/einkaufen')"
+        >
+          <span></span>
+          <v-icon :color="getColor('/einkaufen')">mdi-shopping</v-icon>
+        </v-btn>
+        <v-btn class="no-background-hover" text @click="goToPageAndSetColor('/putzen')">
+          <span></span>
+          <v-icon :color="getColor('/putzen')">mdi-broom</v-icon>
+        </v-btn>
         <v-spacer></v-spacer>
         <!--                Buttons Profile-->
         <SettingsMenu></SettingsMenu>
-        <v-btn text color="grey">
-          <span>Ausloggen</span>
-          <v-icon right>mdi-exit-to-app</v-icon>
-        </v-btn>
+        <!-- <v-btn text>-->
+        <!--   <span></span>-->
+        <!--   <v-icon>mdi-exit-to-app</v-icon>-->
+        <!-- </v-btn>-->
       </v-toolbar>
     </v-card>
 
@@ -77,8 +65,29 @@ export default {
     SettingsMenu
   },
   data: () => ({
-    drawer: false
+    currentPage: ""
   }),
+  computed: {
+    currentRouteName() {
+      console.log("path" + this.$router.history.current.path);
+      return this.$router.history.current.path;
+    }
+  },
+  methods: {
+    goToPageAndSetColor(page) {
+      this.currentPage = page;
+      this.$router.push(page);
+    },
+    getColor(page) {
+      if (this.currentPage === page) {
+        console.log("yesss: " + this.currentPage + " " + page);
+        return "pink";
+      } else {
+        console.log("naaaah" + this.currentPage + " " + page);
+        return "white";
+      }
+    }
+  },
   // create standardOrder
   created() {
     if (this.$store.state.debug) console.log("Creating roomies");
@@ -231,6 +240,20 @@ export default {
   overflow: hidden !important;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+.titleStyling {
+  text-transform: capitalize;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.no-background-hover::before {
+  background-color: transparent !important;
+}
+
+.active-class-color {
+  background-color: red;
 }
 
 .header {

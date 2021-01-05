@@ -1,5 +1,6 @@
 <template>
-  <div class="cleaning">
+  <v-container>
+    <!-- Fab Button -->
     <v-speed-dial
       color="pink"
       v-model="fab"
@@ -23,11 +24,15 @@
         <div class="fab-text-custom pink">Add task</div>
       </v-btn>
     </v-speed-dial>
+    <!-- Dialogs -->
     <DialogNewTask :showDialog="showDialogNewTask" @toggle-visibility="showDialogNewTask = false"></DialogNewTask>
-    <v-col xs="12" sm="9" md="9">
-      <CleaningTabs></CleaningTabs>
-    </v-col>
-  </div>
+
+    <v-row align="center" justify="center" no-gutters>
+      <v-col xs="12" sm="9" md="9" m="9">
+        <CleaningTabs></CleaningTabs>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -64,5 +69,9 @@ export default {
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
     0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
+}
+
+.v-speed-dial {
+  position: absolute;
 }
 </style>
