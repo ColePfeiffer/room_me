@@ -235,11 +235,11 @@ export default {
         case "INIT":
           this.reset();
           this.closeDialog();
-          console.log("Closing");
           break;
         default:
           this.reset();
-          console.log("Going back to previous state");
+          if (this.$store.state.debug)
+            console.log("Going back to previous state");
           break;
       }
     },
@@ -248,9 +248,6 @@ export default {
       //this.showCancel = false;
 
       this.viewState = "INIT";
-      if (this.debug) {
-        console.log("Resetted");
-      }
     },
     closeDialog() {
       this.$emit("toggle-visibility");

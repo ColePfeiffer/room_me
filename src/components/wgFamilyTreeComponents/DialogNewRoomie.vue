@@ -103,9 +103,10 @@ export default {
       // if this returns true, all required fields are filled out
       if (this.$refs.form.validate()) {
         if (this.creationType == "INVITE") {
-          if (this.$store.state.debug) console.log("generate code");
+          if (this.$store.state.debug)
+            console.log("Generate code. NOT YET IMPLEMENTED.");
         } else if (this.creationType == "DUMMY") {
-          if (this.$store.state.debug) console.log("created dummy");
+          if (this.$store.state.debug) console.log("Created dummy");
 
           this.createDummy();
         }
