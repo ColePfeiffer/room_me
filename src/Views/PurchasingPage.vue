@@ -1,5 +1,6 @@
 <template>
   <div class="purchasing">
+    <!-- Dialogs -->
     <DialogAddArticle
       :showDialog="showDialogSplit"
       :view="ViewStateOfDialogSplit"
@@ -10,6 +11,7 @@
       @change-Status-Of-Article="changeStatusOfArticle"
     ></DialogAddArticle>
 
+    <!-- Fab Button -->
     <v-speed-dial
       color="pink"
       v-model="fab"
@@ -36,14 +38,34 @@
         <div class="fab-text-custom pink">Add to shopping list</div>
       </v-btn>
     </v-speed-dial>
-    <v-container>
-      <v-row wrap justify-space-around>
-        <TheBalanceBoard :currencySymbol="currencySymbol"></TheBalanceBoard>
-        <ThePurchasingTabs
-          :currencySymbol="currencySymbol"
-          @delete-article="deleteArticle"
-          @open-Dialog-Add-Article="openDialogAddArticle"
-        ></ThePurchasingTabs>
+
+    <v-container fill-height fluid>
+      <v-row wrap align="center" justify="center">
+        <v-col
+          xs="12"
+          sm="12"
+          md="6"
+          lg="6"
+          xl="6"
+          class="fill-height d-flex flex-column justify-center align-center"
+        >
+          <TheBalanceBoard class="test" :currencySymbol="currencySymbol"></TheBalanceBoard>
+        </v-col>
+        <v-col
+          xs="12"
+          sm="12"
+          md="6"
+          lg="6"
+          xl="6"
+          class="fill-height d-flex flex-column justify-center align-center"
+        >
+          <ThePurchasingTabs
+            class="test"
+            :currencySymbol="currencySymbol"
+            @delete-article="deleteArticle"
+            @open-Dialog-Add-Article="openDialogAddArticle"
+          ></ThePurchasingTabs>
+        </v-col>
       </v-row>
     </v-container>
   </div>
@@ -184,6 +206,9 @@ export default {
 </script>
 
 <style>
+.test {
+  padding: 20px;
+}
 .balance-plus {
   color: green;
 }
