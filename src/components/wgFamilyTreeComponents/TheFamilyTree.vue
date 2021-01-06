@@ -1,6 +1,6 @@
 <template>
   <v-container justify-center>
-    <div v-show="$store.state.phone == false">
+    <div v-if="$store.state.phone === false">
       <!-- FOR DESKTOP VIEW -->
       <v-row justify="space-around">
         <v-col>
@@ -17,7 +17,7 @@
     </div>
 
     <!-- FOR MOBILE VIEW -->
-    <div v-show="$store.state.phone == true">
+    <div v-else>
       <v-row>
         <v-col>
           <div class="overline">Room Overview</div>

@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-container>
     <v-speed-dial
       class="fab-button"
       color="pink"
@@ -31,20 +31,20 @@
       </v-btn>
     </v-speed-dial>
 
-    <v-row class="align-start pa-8">
-      <DialogNewRoomie
-        :showDialog="showDialogForNewRoomie"
-        :rooms="$store.state.rooms"
-        @create-dummy="createDummy"
-        @toggle-visibility="showDialogForNewRoomie = !showDialogForNewRoomie"
-      ></DialogNewRoomie>
-      <DialogRoomManager
-        :showDialog="showDialogForRoomManager"
-        :rooms="$store.state.rooms"
-        @create-new-room="createNewRoom"
-        @toggle-visibility="showDialogForRoomManager = !showDialogForRoomManager"
-      ></DialogRoomManager>
+    <DialogNewRoomie
+      :showDialog="showDialogForNewRoomie"
+      :rooms="$store.state.rooms"
+      @create-dummy="createDummy"
+      @toggle-visibility="showDialogForNewRoomie = !showDialogForNewRoomie"
+    ></DialogNewRoomie>
+    <DialogRoomManager
+      :showDialog="showDialogForRoomManager"
+      :rooms="$store.state.rooms"
+      @create-new-room="createNewRoom"
+      @toggle-visibility="showDialogForRoomManager = !showDialogForRoomManager"
+    ></DialogRoomManager>
 
+    <v-row class="align-start pa-8">
       <v-col xs="6" sm="6" md="8">
         <TheFamilyTree
           :rooms="$store.state.rooms"
@@ -56,7 +56,7 @@
         <TheHouseRules :roomies="$store.state.roomies"></TheHouseRules>
       </v-col>
     </v-row>
-  </v-main>
+  </v-container>
 </template>
 
 <script>

@@ -5,7 +5,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    // For Debugging
     debug: true,
+    phone: false,
+
+    // Task Management
     standardOrder: [], // array, holds references to roomie objects within roomies
     lastRoomieSelectedForStandardOrder: "",
     timeOptions: [
@@ -15,6 +19,8 @@ export default new Vuex.Store({
       { text: "Every month", days: 30 },
       { text: "Every two months", days: 60 }
     ],
+
+    // Data
     roomies: [],
     dummies: [
       {
