@@ -132,24 +132,25 @@ export default {
     getRoomieFromCustomOrder() {
       let roomieTaskGetsAssignedTo;
       let roomieFound = false;
-      console.log("Entering while: ");
       while (!roomieFound) {
         if (this.task.order[0].isAssignedToTask === true) {
-          console.log(
-            "Assigning " + this.task.order[0].roomie.username + " to the job. "
-          );
+          if (this.$store.state.debug)
+            console.log(
+              "Assigning " +
+                this.task.order[0].roomie.username +
+                " to the job. "
+            );
           roomieFound = true;
           roomieTaskGetsAssignedTo = this.task.order[0].roomie;
         } else {
-          console.log(
-            this.task.order[0].roomie.username +
-              " isn't assigned, going to the next one..."
-          );
-          console.log("Shifting.");
+          if (this.$store.state.debug)
+            console.log(
+              this.task.order[0].roomie.username +
+                " isn't assigned, going to the next roomie by shifting once..."
+            );
           this.task.order.push(this.task.order.shift());
         }
       }
-      console.log("Shifting once: ");
       this.task.order.push(this.task.order.shift());
       return roomieTaskGetsAssignedTo;
     },
