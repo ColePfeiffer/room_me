@@ -65,7 +65,7 @@ export default {
     SettingsMenu
   },
   data: () => ({
-    currentPage: ""
+    currentPage: "/home"
   }),
   computed: {
     currentRouteName() {

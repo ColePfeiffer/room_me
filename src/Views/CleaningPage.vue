@@ -2,14 +2,12 @@
   <v-container>
     <!-- Fab Button -->
     <v-speed-dial
+      class="fab-button"
       color="pink"
       v-model="fab"
-      dark
-      small
-      absolute
       fixed
-      bottom
       right
+      bottom
       slide-y-reverse-transition
     >
       <template v-slot:activator>
@@ -60,7 +58,12 @@ export default {
   methods: {}
 };
 </script>
-<style>
+<style scoped>
+.fab-button {
+  padding: 10 px;
+  position: fixed;
+}
+
 .fab-text-custom {
   position: absolute;
   right: 50px;
@@ -69,9 +72,5 @@ export default {
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
     0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
-}
-
-.v-speed-dial {
-  position: absolute;
 }
 </style>

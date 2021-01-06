@@ -1,26 +1,13 @@
 <template>
   <div class="purchasing">
-    <!-- Dialogs -->
-    <DialogAddArticle
-      :showDialog="showDialogSplit"
-      :view="ViewStateOfDialogSplit"
-      :categories="categories"
-      :existingArticle="existingArticle"
-      @toggle-Dialog="toggleDialogSplit"
-      @add-Article="addArticle"
-      @change-Status-Of-Article="changeStatusOfArticle"
-    ></DialogAddArticle>
-
     <!-- Fab Button -->
     <v-speed-dial
+      class="fab-button"
       color="pink"
       v-model="fab"
-      dark
-      small
-      absolute
       fixed
-      bottom
       right
+      bottom
       slide-y-reverse-transition
     >
       <template v-slot:activator>
@@ -38,6 +25,16 @@
         <div class="fab-text-custom pink">Add to shopping list</div>
       </v-btn>
     </v-speed-dial>
+    <!-- Dialogs -->
+    <DialogAddArticle
+      :showDialog="showDialogSplit"
+      :view="ViewStateOfDialogSplit"
+      :categories="categories"
+      :existingArticle="existingArticle"
+      @toggle-Dialog="toggleDialogSplit"
+      @add-Article="addArticle"
+      @change-Status-Of-Article="changeStatusOfArticle"
+    ></DialogAddArticle>
 
     <v-container>
       <v-row wrap align="center" justify="center">
@@ -49,7 +46,7 @@
           xl="6"
           class="d-flex flex-column justify-center align-center"
         >
-          <TheBalanceBoard class="test" :currencySymbol="currencySymbol"></TheBalanceBoard>
+          <TheBalanceBoard class="add-padding" :currencySymbol="currencySymbol"></TheBalanceBoard>
         </v-col>
         <v-col
           xs="12"
@@ -60,7 +57,7 @@
           class="d-flex flex-column justify-center align-center"
         >
           <ThePurchasingTabs
-            class="test"
+            class="add-padding"
             :currencySymbol="currencySymbol"
             @delete-article="deleteArticle"
             @open-Dialog-Add-Article="openDialogAddArticle"
@@ -206,16 +203,11 @@ export default {
 </script>
 
 <style>
-.test {
-  padding: 20px;
-}
-.balance-plus {
-  color: green;
+.fab-button {
+  padding: 10 px;
+  position: fixed;
 }
 
-.balance-minus {
-  color: red;
-}
 .fab-text-custom {
   position: absolute;
   right: 50px;
@@ -224,5 +216,9 @@ export default {
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
     0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
+}
+
+.add-padding {
+  padding: 20px;
 }
 </style>

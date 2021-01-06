@@ -77,4 +77,11 @@ export default {
 </script>
 
 <style>
+.balance-plus {
+  color: green;
+}
+
+.balance-minus {
+  color: red;
+}
 </style>
