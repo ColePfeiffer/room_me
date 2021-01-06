@@ -12,7 +12,7 @@
             <v-row justify="space-around">
               <v-col xs="12" sm="12" md="12">
                 <v-carousel height="auto" hide-delimiters show-arrows-on-hover>
-                  <v-carousel-item v-for="(room) in rooms" :key="room.id">
+                  <v-carousel-item v-for="(room) in $store.state.rooms" :key="room.id">
                     <v-sheet height="100%">
                       <v-row class="fill-height" align="center" justify="center">
                         <v-card elevation="10" max-width="100%" width="280px">
@@ -85,7 +85,7 @@
                         :rules="[rules.required]"
                         maxlength="15"
                         required
-                        v-model="roomName"
+                        v-model="roomNumber"
                       ></v-text-field>
                     </v-col>
                   </v-card-text>
@@ -142,8 +142,7 @@ export default {
   emits: ["toggle-visibility", "create-new-room"],
 
   props: {
-    showDialog: Boolean,
-    rooms: Array
+    showDialog: Boolean
   },
   data() {
     return {
@@ -160,10 +159,18 @@ export default {
       rules: {
         required: value => !!value || "Required."
       },
-
-      // Data
-      roomName: "room " + (this.rooms.length + 1)
+      name: "NO_NAME_SET"
     };
+  },
+  computed: {
+    roomNumber: {
+      get() {
+        return "room " + (this.$store.state.numberOfRooms + 1);
+      },
+      set(newName) {
+        this.name = newName;
+      }
+    }
   },
   methods: {
     // changes View and label of button
@@ -181,8 +188,8 @@ export default {
               break;
 
             case "NEW_ROOM": // from new room back to init
-              this.reset();
               this.createNewRoom();
+              this.reset();
               break;
             // from anywhere to delete_Room
             case "DELETE_ROOM":
@@ -191,8 +198,8 @@ export default {
               this.viewState = "DELETE_ROOM_2";
               break;
             case "DELETE_ROOM_2":
-              this.reset();
               this.deleteRoom();
+              this.reset();
               break;
             case "DELETE_USER":
               this.buttonLabel = "delete";
@@ -217,12 +224,21 @@ export default {
       }
     },
     createNewRoom() {
+      let roomName;
+      if (this.name === "NO_NAME_SET") {
+        roomName = this.roomNumber;
+      } else {
+        roomName = this.name;
+      }
+
       this.$store.state.rooms.push({
         id: uuid.v4(),
-        name: this.roomName,
+        name: roomName,
         currentRoomie: "EMPTY",
         pastRoomies: new Array()
       });
+
+      this.$store.commit("incrementNumberOfRooms");
     },
     deleteRoom() {
       this.$emit("delete-room");
@@ -245,6 +261,7 @@ export default {
     },
     reset() {
       this.buttonLabel = "new room";
+      this.name = "NO_NAME_SET";
       //this.showCancel = false;
 
       this.viewState = "INIT";

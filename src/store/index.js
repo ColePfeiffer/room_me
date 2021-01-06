@@ -37,6 +37,7 @@ export default new Vuex.Store({
     ],
     comments: [],
     rooms: [],
+    numberOfRooms: 0,
     counter: "kdkdkdd",
     shoppingList: [],
     taskList: []
@@ -72,6 +73,10 @@ export default new Vuex.Store({
       console.log("Standard Order shifted!");
     },
     // Setters and Toggles
+    incrementNumberOfRooms(state) {
+      state.numberOfRooms += 1;
+      console.log("NumberOfRooms set to " + state.numberOfRooms);
+    },
     toggleDebug(state) {
       state.debug = !state.debug;
       console.log("Debug mode was turned " + state.debug);
