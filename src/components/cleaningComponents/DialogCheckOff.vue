@@ -89,6 +89,7 @@ export default {
       color: "#FF6F00", //dialogColor
       showDialogCalendar: false,
       dateInCalendar: "",
+      roomieFound: false,
       currentDate: new Date().toISOString().substr(0, 10)
     };
   },
@@ -116,7 +117,7 @@ export default {
         status: 0,
         createdBy: this.task.createdBy,
         // needs to utilize the order, then assign a roomie. This is temporary:
-        assignedTo: this.$store.getters.currentUser,
+        assignedTo: this.getRoomieFromCustomOrder(),
         // doneBy,
         currentEndDate: newEndDate,
         completedOn: "",
@@ -128,6 +129,30 @@ export default {
       // add to taskList
       this.$store.state.taskList.push(newTask);
     },
+    getRoomieFromCustomOrder() {
+      let roomieTaskGetsAssignedTo;
+      let roomieFound = false;
+      console.log("Entering while: ");
+      while (!roomieFound) {
+        if (this.task.order[0].isAssignedToTask === true) {
+          console.log(
+            "Assigning " + this.task.order[0].roomie.username + " to the job. "
+          );
+          roomieFound = true;
+          roomieTaskGetsAssignedTo = this.task.order[0].roomie;
+        } else {
+          console.log(
+            this.task.order[0].roomie.username +
+              " isn't assigned, going to the next one..."
+          );
+          console.log("Shifting.");
+          this.task.order.push(this.task.order.shift());
+        }
+      }
+      console.log("Shifting once: ");
+      this.task.order.push(this.task.order.shift());
+      return roomieTaskGetsAssignedTo;
+    },
     closeDialog() {
       this.$emit("toggle-visibility");
       this.reset();
@@ -135,6 +160,7 @@ export default {
     reset() {
       this.comment = "";
       this.currentDate = new Date().toISOString().substr(0, 10);
+      this.roomieFound = false;
     },
     addDays(date, days) {
       var result = new Date(date);

@@ -80,87 +80,86 @@ export default {
     },
     getColor(page) {
       if (this.currentPage === page) {
-        console.log("yesss: " + this.currentPage + " " + page);
         return "pink";
       } else {
-        console.log("naaaah" + this.currentPage + " " + page);
         return "white";
       }
-    }
-  },
-  // create standardOrder
-  created() {
-    if (this.$store.state.debug) console.log("Creating roomies");
-    this.$store.state.roomies.push(
-      {
-        id: 0,
-        username: "Chris",
-        description: "Hi there!",
-        profilePicture: "https://i.imgur.com/ER53sz6.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 5, 3),
-        movedOut: false,
-        balance: 0,
-        color: "#1F85DE",
-        selected: true,
-        showProfilePage: false,
-        isLoggedIn: true
-      },
-      {
-        id: 1,
-        username: "Hannah",
-        description: "Möpp",
-        profilePicture: "https://i.imgur.com/9eCV1NG.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 5, 3),
-        movedOut: false,
-        balance: 0,
-        selected: true,
-        color: "#DE591F",
-        showProfilePage: false,
-        isLoggedIn: false
-      },
-      {
-        id: 2,
-        username: "Rufus",
-        description: "",
-        profilePicture: "https://i.imgur.com/ELDlNNK.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 2, 3),
-        movedOut: false,
-        balance: 0,
-        selected: true,
-        color: "#BDA0EC",
-        showProfilePage: false,
-        isLoggedIn: false
-      },
-      {
-        id: 3,
-        username: "Tim",
-        description: "",
-        profilePicture: "https://i.imgur.com/7xffhX9.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 3, 3),
-        movedOut: false,
-        balance: 0,
-        selected: true,
-        color: "#EBE386",
-        showProfilePage: false,
-        isLoggedIn: false
-      }
-    );
-    // create Standard Order
-    this.$store.commit("createOrder");
+    },
 
-    // create rooms
-    if (this.$store.state.debug) console.log("Creating rooms");
-    for (let i = 0; i < this.$store.state.roomies.length; i++) {
-      this.$store.state.rooms.push({
-        id: i,
-        name: "room " + (i + 1),
-        currentRoomie: this.$store.state.roomies[i],
-        pastRoomies: [
-          /*
+    setupForDebugging() {
+      // creating roomies
+      if (this.$store.state.debug) console.log("Creating roomies");
+      this.$store.state.roomies.push(
+        {
+          id: 0,
+          username: "Chris",
+          description: "Hi there!",
+          profilePicture: "https://i.imgur.com/ER53sz6.png",
+          moveInDate: new Date(2015, 10, 15),
+          moveOutDate: new Date(2019, 5, 3),
+          movedOut: false,
+          balance: 0,
+          color: "#1F85DE",
+          selected: true,
+          showProfilePage: false,
+          isLoggedIn: true
+        },
+        {
+          id: 1,
+          username: "Hannah",
+          description: "Möpp",
+          profilePicture: "https://i.imgur.com/9eCV1NG.png",
+          moveInDate: new Date(2015, 10, 15),
+          moveOutDate: new Date(2019, 5, 3),
+          movedOut: false,
+          balance: 0,
+          selected: true,
+          color: "#DE591F",
+          showProfilePage: false,
+          isLoggedIn: false
+        },
+        {
+          id: 2,
+          username: "Rufus",
+          description: "",
+          profilePicture: "https://i.imgur.com/ELDlNNK.png",
+          moveInDate: new Date(2015, 10, 15),
+          moveOutDate: new Date(2019, 2, 3),
+          movedOut: false,
+          balance: 0,
+          selected: true,
+          color: "#BDA0EC",
+          showProfilePage: false,
+          isLoggedIn: false
+        },
+        {
+          id: 3,
+          username: "Tim",
+          description: "",
+          profilePicture: "https://i.imgur.com/7xffhX9.png",
+          moveInDate: new Date(2015, 10, 15),
+          moveOutDate: new Date(2019, 3, 3),
+          movedOut: false,
+          balance: 0,
+          selected: true,
+          color: "#EBE386",
+          showProfilePage: false,
+          isLoggedIn: false
+        }
+      );
+
+      // create Standard Order
+      this.$store.commit("createOrder");
+
+      // create rooms
+      if (this.$store.state.debug) console.log("Creating rooms");
+      for (let i = 0; i < this.$store.state.roomies.length; i++) {
+        this.$store.state.rooms.push({
+          id: i,
+          name: "room " + (i + 1),
+          currentRoomie: this.$store.state.roomies[i],
+          pastRoomies: [
+            /*
           {
            
             id: 19,
@@ -174,60 +173,65 @@ export default {
             moveOutDate: new Date(2019, 5, 3)
             
           }*/
-        ]
-      });
+          ]
+        });
+      }
+
+      if (this.$store.state.debug) console.log("Creating comments");
+      this.$store.state.comments.push(
+        {
+          id: 1,
+          roomie: this.$store.state.roomies[0],
+          text: "Der Chat funktioniert, juhu. Was geht!"
+        },
+        {
+          id: 3,
+          roomie: this.$store.state.roomies[2],
+          text: "Steilo!"
+        },
+        {
+          id: 2,
+          roomie: this.$store.state.roomies[1],
+          text: "Who let the dogs out, wuf - wuf - wuf..."
+        }
+      );
+
+      if (this.$store.state.debug) console.log("Creating tasks");
+      this.$store.state.taskList.push(
+        {
+          id: 0,
+          name: "Küche putzen",
+          description: "Küche muss geschrubbat werdn.",
+          comment: "",
+          status: 0,
+          createdBy: this.$store.state.roomies[0],
+          assignedTo: this.$store.state.roomies[0],
+          // doneBy,
+          currentEndDate: new Date().toISOString().substr(0, 10),
+          completedOn: "",
+          numberOfDaysInBetween: "7",
+          order: []
+        },
+        {
+          id: 3233,
+          name: "Müll rausbringen",
+          description: "Glasmüll auch.",
+          comment: "",
+          status: 0,
+          createdBy: this.$store.state.roomies[2],
+          assignedTo: this.$store.state.roomies[3],
+          // doneBy,
+          currentEndDate: new Date().toISOString().substr(0, 10),
+          completedOn: "",
+          numberOfDaysInBetween: "7",
+          order: []
+        }
+      );
     }
+  },
 
-    if (this.$store.state.debug) console.log("Creating comments");
-    this.$store.state.comments.push(
-      {
-        id: 1,
-        roomie: this.$store.state.roomies[0],
-        text: "Der Chat funktioniert, juhu. Was geht!"
-      },
-      {
-        id: 3,
-        roomie: this.$store.state.roomies[2],
-        text: "Steilo!"
-      },
-      {
-        id: 2,
-        roomie: this.$store.state.roomies[1],
-        text: "Who let the dogs out, wuf - wuf - wuf..."
-      }
-    );
-
-    if (this.$store.state.debug) console.log("Creating tasks");
-    this.$store.state.taskList.push(
-      {
-        id: 0,
-        name: "Küche putzen",
-        description: "Küche muss geschrubbat werdn.",
-        comment: "",
-        status: 0,
-        createdBy: this.$store.state.roomies[0],
-        assignedTo: this.$store.state.roomies[0],
-        // doneBy,
-        currentEndDate: new Date().toISOString().substr(0, 10),
-        completedOn: "",
-        numberOfDaysInBetween: "7",
-        order: []
-      },
-      {
-        id: 3233,
-        name: "Müll rausbringen",
-        description: "Glasmüll auch.",
-        comment: "",
-        status: 0,
-        createdBy: this.$store.state.roomies[2],
-        assignedTo: this.$store.state.roomies[3],
-        // doneBy,
-        currentEndDate: new Date().toISOString().substr(0, 10),
-        completedOn: "",
-        numberOfDaysInBetween: "7",
-        order: []
-      }
-    );
+  created() {
+    this.setupForDebugging();
   }
 };
 

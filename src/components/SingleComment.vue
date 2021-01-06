@@ -1,6 +1,6 @@
 <template>
   <div class="comment">
-       <DialogProfilePage :roomie="comment.roomie" @save-changes="saveChangesInProfilePage"></DialogProfilePage>
+    <DialogProfilePage :roomie="comment.roomie" @save-changes="saveChangesInProfilePage"></DialogProfilePage>
     <div class="avatar">
       <v-img
         @click="comment.roomie.showProfilePage = true"
@@ -9,11 +9,10 @@
       ></v-img>
     </div>
     <div class="text">
-      <span class="username"> {{ comment.roomie.username }}:</span>
+      <span class="username">{{ comment.roomie.username }}:</span>
       <span>{{ comment.text }}</span>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -24,6 +23,15 @@ export default {
     DialogProfilePage
   },
   props: ["comment"],
+  methods: {
+    saveChangesInProfilePage(roomie, changeData) {
+      roomie.username = changeData.username;
+      roomie.description = changeData.description;
+      roomie.profilePicture = changeData.profilePicture;
+      roomie.color = changeData.color;
+      roomie.showProfilePage = false;
+    }
+  }
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="roomie.showProfilePage" persistent width="500">
-    <v-card>
-      <v-card-title class="headline grey lighten-2">Profile Page</v-card-title>
+    <v-card dark>
+      <v-card-title>Profile Page</v-card-title>
       <v-card-text cols="12" sm="12">
         <v-row class="justify-center mt-5">
           <div class="container">
@@ -16,7 +16,7 @@
             ></v-img>
 
             <div>
-              <v-btn fab color="pink" class="btn" depressed @click="onButtonClick">
+              <v-btn fab color="pink" class="btn" depressed @click="buttonToUploadClicked">
                 <v-icon absolute>mdi-plus</v-icon>
               </v-btn>
 
@@ -32,18 +32,19 @@
           </div>
         </v-row>
 
-        <v-row>
-          <v-col>
-            <v-textarea
+        <v-row class="justify-center">
+          <v-col cols="10">
+            <v-text-field
               class="mx-2"
               placeholder="Name"
               v-model="changeData.username"
               :disabled="!roomie.isLoggedIn"
-              rows="1"
-              append-outer-icon="edit"
+              label="Name"
               prepend-icon="mdi-account"
-            ></v-textarea>
-
+              append-outer-icon="edit"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="10">
             <v-textarea
               class="mx-2"
               label="Info"
@@ -55,7 +56,24 @@
               prepend-icon="info"
             ></v-textarea>
           </v-col>
+
+          <v-row class="justify-center mx-5" v-if="roomie.isLoggedIn">
+            <v-col cols="10">
+              <label class="mx-6">Color</label>
+              <v-color-picker
+                v-model="changeData.color"
+                dot-size="8"
+                hide-canvas
+                hide-inputs
+                hide-mode-switch
+                mode="hsla"
+                class="mx-2"
+                swatches-max-height="120"
+              ></v-color-picker>
+            </v-col>
+          </v-row>
         </v-row>
+        <v-row class="justify-center"></v-row>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -90,7 +108,20 @@ export default {
     };
   },
   methods: {
-    onButtonClick() {
+    saveChanges() {
+      this.$emit("save-changes", this.roomie, this.changeData);
+    },
+    closeDialog() {
+      this.roomie.showProfilePage = false;
+      this.reset();
+    },
+    reset() {
+      this.changeData.username = this.roomie.username;
+      this.changeData.description = this.roomie.description;
+      this.changeData.profilePicture = this.roomie.profilePicture;
+      this.changeData.color = this.roomie.color;
+    },
+    buttonToUploadClicked() {
       this.isSelecting = true;
       window.addEventListener(
         "focus",
@@ -99,25 +130,8 @@ export default {
         },
         { once: true }
       );
-
       this.$refs.uploader.click();
     },
-
-    saveChanges() {
-      console.log();
-      this.$emit("save-changes", this.roomie, this.changeData);
-    },
-
-    closeDialog() {
-      this.roomie.showProfilePage = false;
-
-      // reset displayed data to roomies data
-      this.changeData.username = this.roomie.username;
-      this.changeData.description = this.roomie.description;
-      this.changeData.profilePicture = this.roomie.profilePicture;
-      this.changeData.color = this.roomie.color;
-    },
-
     uploadPicture: function(event) {
       // Reference to the DOM input element
       var input = event.target;
@@ -129,9 +143,7 @@ export default {
         reader.onload = e => {
           // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
           // Read image as base64 and set to imageData
-          this.roomie.profilePicture = e.target.result;
           this.changeData.profilePicture = e.target.result;
-          //this.profilePicture = e.target.result;
         };
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(input.files[0]);

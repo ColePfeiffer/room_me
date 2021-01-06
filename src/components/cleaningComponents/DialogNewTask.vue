@@ -98,7 +98,7 @@
             <!-- Change Order -->
             <v-row align="center" justify="center" no-gutters>
               <v-col v-if="orderType == 'CUSTOM'">
-                <TaskOrder :showStandardOrder="false" :order="task.order"></TaskOrder>
+                <TaskOrder :order="task.order" @orderChanged="updateOrder"></TaskOrder>
               </v-col>
             </v-row>
           </v-card-text>
@@ -156,7 +156,7 @@ export default {
         currentEndDate: new Date().toISOString().substr(0, 10),
         completedOn: "",
         numberOfDaysInBetween: "",
-        order: [{ roomie: "roomieRef", isAssignedToTask: false }]
+        order: this.$store.state.standardOrder
         //swapDecline: [{ roomie: "ref", type: "", comment: "" }]
       },
       rules: {
@@ -181,13 +181,53 @@ export default {
         this.task.id = uuid.v4();
         this.task.createdBy = this.$store.getters.currentUser;
 
-        // needs to utilize the order, then assign a roomie. This is temporary:
-        this.task.assignedTo = this.$store.getters.currentUser;
+        // Assigning Task to next Roomie using the Task Order
+        if (this.orderType === "STANDARD") {
+          console.log("Using Standard Order!");
+          this.task.assignedTo = this.$store.state.standardOrder[0].roomie;
+          this.$store.commit(
+            "setLastRoomieSelectedForStandardOrder",
+            this.task.assignedTo
+          );
+          this.$store.commit("moveTaskOrder");
+        } else {
+          console.log("Using Custom Order!");
+          this.task.assignedTo = this.getRoomieFromCustomOrder();
+        }
 
         // add to taskList and close Dialog
         this.$store.state.taskList.push(this.task);
         this.closeDialog();
       }
+    },
+    updateOrder(newOrder) {
+      this.task.order = newOrder;
+      console.log("Order changed!");
+    },
+    moveTaskOrder() {},
+    getRoomieFromCustomOrder() {
+      let roomieTaskGetsAssignedTo;
+      let roomieFound = false;
+      console.log("Entering while: ");
+      while (!roomieFound) {
+        if (this.task.order[0].isAssignedToTask === true) {
+          console.log(
+            "Assigning " + this.task.order[0].roomie.username + " to the job. "
+          );
+          roomieFound = true;
+          roomieTaskGetsAssignedTo = this.task.order[0].roomie;
+        } else {
+          console.log(
+            this.task.order[0].roomie.username +
+              " isn't assigned, going to the next one..."
+          );
+          console.log("Shifting.");
+          this.task.order.push(this.task.order.shift());
+        }
+      }
+      console.log("Shifting once: ");
+      this.task.order.push(this.task.order.shift());
+      return roomieTaskGetsAssignedTo;
     },
     closeDialog() {
       this.$emit("toggle-visibility");
@@ -207,9 +247,11 @@ export default {
         currentEndDate: new Date().toISOString().substr(0, 10),
         completedOn: "",
         numberOfDaysInBetween: "",
-        order: []
+        order: this.$store.state.standardOrder
       };
       this.EndDateIsDisabled = true;
+      this.valid = false;
+      this.orderType = "STANDARD";
     },
     addDays(date, days) {
       var result = new Date(date);

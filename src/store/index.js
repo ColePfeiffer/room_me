@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     debug: true,
     standardOrder: [], // array, holds references to roomie objects within roomies
+    lastRoomieSelectedForStandardOrder: "",
     timeOptions: [
       { text: "Every day", days: 1 },
       { text: "Every week", days: 7 },
@@ -40,26 +41,30 @@ export default new Vuex.Store({
     },
     getRoomieByID(state, id) {
       return state.roomies.find(roomie => roomie.id === id);
+    },
+    getRoomieFromTaskOrder(state, commit) {
+      let roomieTaskGetsAssignedTo = state.standardOrder[0];
+      commit.moveTaskOrder(state);
+      return roomieTaskGetsAssignedTo;
     }
   },
   mutations: {
+    // creates the standard order based on the order in the roomie array
     createOrder(state) {
       state.standardOrder = [];
-      for (let i = 0; i < state.roomies.length; i++) {
-        state.standardOrder.push(state.roomies[i]);
-      }
 
+      for (let i = 0; i < state.roomies.length; i++) {
+        state.standardOrder.push({
+          roomie: state.roomies[i],
+          isAssignedToTask: true
+        });
+      }
       if (state.debug) console.log("Order created.");
     },
-    updateOrder(state) {
-      state.standardOrder = [];
-      for (let i = 0; i < state.roomies.length; i++) {
-        state.standardOrder.push(state.roomies[i]);
-      }
-
-      if (state.debug) console.log("Order created.");
+    moveTaskOrder(state) {
+      state.standardOrder.push(state.standardOrder.shift());
+      console.log("Standard Order shifted!");
     },
-
     // Setters and Toggles
     toggleDebug(state) {
       state.debug = !state.debug;
@@ -78,6 +83,9 @@ export default new Vuex.Store({
 
       let roomie = state.roomies.find(roomie => roomie.id === roomieId);
       roomie.isLoggedIn = true;
+    },
+    setLastRoomieSelectedForStandardOrder(state, roomie) {
+      state.lastRoomieSelectedForStandardOrder = roomie;
     }
   }
 });
