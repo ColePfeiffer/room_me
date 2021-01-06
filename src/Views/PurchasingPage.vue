@@ -39,7 +39,7 @@
       </v-btn>
     </v-speed-dial>
 
-    <v-container fill-height fluid>
+    <v-container>
       <v-row wrap align="center" justify="center">
         <v-col
           xs="12"
@@ -47,7 +47,7 @@
           md="6"
           lg="6"
           xl="6"
-          class="fill-height d-flex flex-column justify-center align-center"
+          class="d-flex flex-column justify-center align-center"
         >
           <TheBalanceBoard class="test" :currencySymbol="currencySymbol"></TheBalanceBoard>
         </v-col>
@@ -57,7 +57,7 @@
           md="6"
           lg="6"
           xl="6"
-          class="fill-height d-flex flex-column justify-center align-center"
+          class="d-flex flex-column justify-center align-center"
         >
           <ThePurchasingTabs
             class="test"
