@@ -8,7 +8,7 @@
         </v-col>
       </v-row>
       <v-row justify="space-around">
-        <div v-for="room in rooms" :key="room.id">
+        <div v-for="room in $store.state.rooms" :key="room.id">
           <v-col xs="6" sm="6" md="3">
             <FamilyTreeRoom :room="room" :showRoomName="true"></FamilyTreeRoom>
           </v-col>
@@ -43,7 +43,7 @@
       <v-row justify="space-around">
         <v-col xs="12" sm="6" md="3">
           <v-carousel hide-delimiter-background :show-arrows="false" height="auto" v-model="model">
-            <v-carousel-item v-for="room in rooms" :key="room.id">
+            <v-carousel-item v-for="room in $store.state.rooms" :key="room.id">
               <v-sheet height="100%">
                 <v-row class="fill-height" align="center" justify="center">
                   <div class="posts">
@@ -66,12 +66,11 @@ import FamilyTreeRoom from "./FamilyTreeRoom";
 
 export default {
   name: "TheFamilyTree",
-  emits: ["create-new-room", "create-dummy"],
+  emits: [],
   components: {
     FamilyTreeRoom
   },
   props: {
-    rooms: Array,
     roomName: String,
     showDialogForNewRoomie: Boolean,
     showDialogForRoomManager: Boolean
@@ -90,13 +89,6 @@ export default {
     };
   },
   methods: {
-    createNewRoom(roomName) {
-      this.$emit("create-new-room", roomName);
-    },
-
-    createDummy(array) {
-      this.$emit("create-dummy", array);
-    },
     isMobile() {
       if (
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
