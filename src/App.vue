@@ -178,6 +178,13 @@ export default {
         this.$store.commit("incrementNumberOfRooms");
       }
 
+      this.$store.state.rooms.push({
+        id: 423425,
+        name: "room empty",
+        currentRoomie: "EMPTY",
+        pastRoomies: []
+      });
+
       if (this.$store.state.debug) console.log("Creating comments");
       this.$store.state.comments.push(
         {
