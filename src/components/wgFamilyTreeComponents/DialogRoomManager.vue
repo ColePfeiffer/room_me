@@ -135,6 +135,8 @@
 </template>
 
 <script>
+import { uuid } from "vue-uuid";
+
 export default {
   name: "WGFamilyTreeDialogRoomManager",
   emits: ["toggle-visibility", "create-new-room"],
@@ -143,8 +145,6 @@ export default {
     showDialog: Boolean,
     rooms: Array
   },
-  created() {},
-
   data() {
     return {
       // State Management
@@ -217,7 +217,12 @@ export default {
       }
     },
     createNewRoom() {
-      this.$emit("create-new-room", this.roomName);
+      this.$store.state.rooms.push({
+        id: uuid.v4(),
+        name: this.roomName,
+        currentRoomie: "EMPTY",
+        pastRoomies: new Array()
+      });
     },
     deleteRoom() {
       this.$emit("delete-room");
