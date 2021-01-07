@@ -19,7 +19,7 @@
 
       <v-btn fab dark small color="pink" @click="showDialogNewTask = true">
         <v-icon>mdi-broom</v-icon>
-        <div class="fab-text-custom pink">Add task</div>
+        <div class="fab-text-custom pink">Add to task list</div>
       </v-btn>
     </v-speed-dial>
     <!-- Dialogs -->
@@ -51,8 +51,54 @@ export default {
         "warning",
         "pink darken-2",
         "red lighten-1",
-        "deep-purple accent-4"
-      ]
+        "deep-purple accent-4",
+      ],
+      taskList: [
+        {
+          id: 1,
+          title: "Küche putzen",
+          description: "Küche muss geschrubbat werdn.",
+          endDate: "22.10.20",
+          startDate: "",
+          completedOn: "",
+          intervallDays: 2,
+          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
+          status: 0,
+          order: [],
+          swapDecline: [{ roomie: "", type: "", comment: "" }],
+
+          taskCreator: "",
+        },
+        {
+          id: 2,
+          title: "Küche putzen",
+          description: "KHallo... ksksk dkdkd",
+          endDate: "22.10.20",
+          startDate: "",
+          completedOn: "",
+          intervallDays: 2,
+          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
+          status: 0,
+          order: [],
+          swapDecline: [{ roomie: "", type: "", comment: "" }],
+        },
+        {
+          id: 5,
+          title: "Müll rausbringen",
+          description:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ",
+          endDate: "",
+          startDate: "",
+          completedOn: "",
+          intervallDays: 2,
+          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
+          status: 0,
+          order: [],
+          swapDecline: [{ roomie: "", type: "", comment: "" }],
+
+          taskCreator: "",
+        },
+      ],
     };
   },
   methods: {}
