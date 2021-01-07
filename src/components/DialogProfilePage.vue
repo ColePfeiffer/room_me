@@ -16,7 +16,7 @@
             ></v-img>
 
             <div>
-              <v-btn fab color="pink" class="btn" depressed @click="buttonToUploadClicked">
+              <v-btn v-if="roomie.isLoggedIn" fab color="pink" class="btn" depressed @click="buttonToUploadClicked">
                 <v-icon absolute>mdi-plus</v-icon>
               </v-btn>
 
@@ -41,7 +41,7 @@
               :disabled="!roomie.isLoggedIn"
               label="Name"
               prepend-icon="mdi-account"
-              append-outer-icon="edit"
+              :append-outer-icon="roomie.isLoggedIn ? 'edit' : ' '"
             ></v-text-field>
           </v-col>
           <v-col cols="10">
@@ -52,7 +52,7 @@
               v-model="changeData.description"
               :disabled="!roomie.isLoggedIn"
               rows="1"
-              append-outer-icon="edit"
+                :append-outer-icon="roomie.isLoggedIn ? 'edit' : ' '"
               prepend-icon="info"
             ></v-textarea>
           </v-col>

@@ -187,12 +187,12 @@ export default {
         },
         {
           id: 3,
-          roomie: this.$store.state.roomies[2],
+          roomie: this.$store.state.roomies[3],
           text: "Steilo!"
         },
         {
           id: 2,
-          roomie: this.$store.state.roomies[1],
+          roomie: this.$store.state.roomies[2],
           text: "Who let the dogs out, wuf - wuf - wuf..."
         }
       );
