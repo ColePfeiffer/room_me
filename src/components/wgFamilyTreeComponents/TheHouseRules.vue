@@ -58,7 +58,7 @@
           </v-card-actions>
 
           <v-expand-transition>
-            <TaskOrder v-show="showTaskOrder"></TaskOrder>
+            <TaskOrder :showStandardOrder="true" v-show="showTaskOrder"></TaskOrder>
           </v-expand-transition>
         </v-card>
       </v-col>

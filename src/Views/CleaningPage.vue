@@ -1,14 +1,13 @@
 <template>
-  <div class="cleaning">
+  <v-container>
+    <!-- Fab Button -->
     <v-speed-dial
+      class="fab-button"
       color="pink"
       v-model="fab"
-      dark
-      small
-      absolute
       fixed
-      bottom
       right
+      bottom
       slide-y-reverse-transition
     >
       <template v-slot:activator>
@@ -23,83 +22,48 @@
         <div class="fab-text-custom pink">Add task</div>
       </v-btn>
     </v-speed-dial>
+    <!-- Dialogs -->
+    <DialogNewTask :showDialog="showDialogNewTask" @toggle-visibility="showDialogNewTask = false"></DialogNewTask>
 
-    <v-col xs="12" sm="9" md="9">
-      <CleaningTabs :taskList="taskList"></CleaningTabs>
-    </v-col>
-  </div>
+    <v-row align="center" justify="center" no-gutters>
+      <v-col xs="12" sm="9" md="9" m="9">
+        <CleaningTabs></CleaningTabs>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import CleaningTabs from "../components/cleaningComponents/CleaningTabs";
+import DialogNewTask from "../components/cleaningComponents/DialogNewTask";
 
 export default {
   components: {
     CleaningTabs,
+    DialogNewTask
   },
   data() {
     return {
       fab: false,
+      showDialogNewTask: false,
       colors: [
         "indigo",
         "warning",
         "pink darken-2",
         "red lighten-1",
-        "deep-purple accent-4",
-      ],
-      taskList: [
-        {
-          id: 1,
-          title: "Küche putzen",
-          description: "Küche muss geschrubbat werdn.",
-          endDate: "22.10.20",
-          startDate: "",
-          completedOn: "",
-          intervallDays: 2,
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 0,
-          order: [],
-          swapDecline: [{ roomie: "", type: "", comment: "" }],
-          color: "#315458",
-          taskCreator: "",
-        },
-        {
-          id: 2,
-          title: "Küche putzen",
-          description: "KHallo... ksksk dkdkd",
-          endDate: "22.10.20",
-          startDate: "",
-          completedOn: "",
-          intervallDays: 2,
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 0,
-          order: [],
-          swapDecline: [{ roomie: "", type: "", comment: "" }],
-          color: "#315458",
-        },
-        {
-          id: 5,
-          title: "Müll rausbringen",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ",
-          endDate: "",
-          startDate: "",
-          completedOn: "",
-          intervallDays: 2,
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 0,
-          order: [],
-          swapDecline: [{ roomie: "", type: "", comment: "" }],
-          color: "#315458",
-          taskCreator: "",
-        },
-      ],
+        "deep-purple accent-4"
+      ]
     };
   },
-  methods: {},
+  methods: {}
 };
 </script>
-<style>
+<style scoped>
+.fab-button {
+  padding: 10 px;
+  position: fixed;
+}
+
 .fab-text-custom {
   position: absolute;
   right: 50px;

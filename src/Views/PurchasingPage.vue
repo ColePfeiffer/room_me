@@ -1,24 +1,13 @@
 <template>
   <div class="purchasing">
-    <DialogAddArticle
-      :showDialog="showDialogSplit"
-      :view="ViewStateOfDialogSplit"
-      :categories="categories"
-      :existingArticle="existingArticle"
-      @toggle-Dialog="toggleDialogSplit"
-      @add-Article="addArticle"
-      @change-Status-Of-Article="changeStatusOfArticle"
-    ></DialogAddArticle>
-
+    <!-- Fab Button -->
     <v-speed-dial
+      class="fab-button"
       color="pink"
       v-model="fab"
-      dark
-      small
-      absolute
       fixed
-      bottom
       right
+      bottom
       slide-y-reverse-transition
     >
       <template v-slot:activator>
@@ -36,16 +25,44 @@
         <div class="fab-text-custom pink">Add to shopping list</div>
       </v-btn>
     </v-speed-dial>
+    <!-- Dialogs -->
+    <DialogAddArticle
+      :showDialog="showDialogSplit"
+      :view="ViewStateOfDialogSplit"
+      :categories="categories"
+      :existingArticle="existingArticle"
+      @toggle-Dialog="toggleDialogSplit"
+      @add-Article="addArticle"
+      @change-Status-Of-Article="changeStatusOfArticle"
+    ></DialogAddArticle>
+
     <v-container>
-      <v-row wrap justify-space-around>
-        <TheBalanceBoard :currencySymbol="currencySymbol"></TheBalanceBoard>
-        <ThePurchasingTabs
-          :shoppingList="shoppingList"
-          :currencySymbol="currencySymbol"
-          @delete-article="deleteArticle"
-          @open-Dialog-Add-Article="openDialogAddArticle"
-        ></ThePurchasingTabs>
-       
+      <v-row wrap align="center" justify="center">
+        <v-col
+          xs="12"
+          sm="12"
+          md="6"
+          lg="6"
+          xl="6"
+          class="d-flex flex-column justify-center align-center"
+        >
+          <TheBalanceBoard class="add-padding" :currencySymbol="currencySymbol"></TheBalanceBoard>
+        </v-col>
+        <v-col
+          xs="12"
+          sm="12"
+          md="6"
+          lg="6"
+          xl="6"
+          class="d-flex flex-column justify-center align-center"
+        >
+          <ThePurchasingTabs
+            class="add-padding"
+            :currencySymbol="currencySymbol"
+            @delete-article="deleteArticle"
+            @open-Dialog-Add-Article="openDialogAddArticle"
+          ></ThePurchasingTabs>
+        </v-col>
       </v-row>
     </v-container>
   </div>
@@ -126,16 +143,15 @@ export default {
           avatar:
             "https://images.unsplash.com/photo-1559842438-2942c907c8fe?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
         }
-      ],
-      shoppingList: []
+      ]
     };
   },
   methods: {
     deleteArticle(article) {
-      const position = this.shoppingList.indexOf(article);
+      const position = this.$store.state.shoppingList.indexOf(article);
       if (this.debug)
         console.log("Position of " + article.name + " is " + position);
-      this.shoppingList.splice(position, 1);
+      this.$store.state.shoppingList.splice(position, 1);
     },
     openDialogAddArticle(item) {
       this.changeDialogState("CASH_UP_EXISTING");
@@ -180,20 +196,18 @@ export default {
       // avatar, category
       newArticle.status = status;
 
-      this.shoppingList.push(newArticle);
+      this.$store.state.shoppingList.push(newArticle);
     }
   }
 };
 </script>
 
 <style>
-.balance-plus {
-  color: green;
+.fab-button {
+  padding: 10 px;
+  position: fixed;
 }
 
-.balance-minus {
-  color: red;
-}
 .fab-text-custom {
   position: absolute;
   right: 50px;
@@ -202,5 +216,9 @@ export default {
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
     0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
+}
+
+.add-padding {
+  padding: 20px;
 }
 </style>

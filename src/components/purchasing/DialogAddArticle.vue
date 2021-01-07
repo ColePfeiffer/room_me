@@ -292,10 +292,9 @@ export default {
   },
   methods: {
     selectRoomie(selected_roomie) {
-      this.$store.state.roomies.forEach(function(roomie, index) {
+      this.$store.state.roomies.forEach(function(roomie) {
         if (roomie == selected_roomie) {
           roomie.selected = !roomie.selected;
-          console.log(roomie.selected, index);
         }
       });
     },
@@ -341,15 +340,12 @@ export default {
       }
 
       this.closeDialog();
-      if (this.debug) console.log("Split complete!");
     },
     addPurchase() {
-      console.log("AddPurchase: Inside");
       // checks if all required fields are filled out correctly, if so returns true
       if (this.$refs.form.validate()) {
         if (this.view === "NEW") {
           // NEW_ARTICLE VIEW
-          console.log("Artikel: " + this.newArticle + this.newArticle.category);
           this.setCategory(this.newArticle);
           this.$emit("add-Article", { newArticle: this.newArticle, status: 0 });
         } else {
@@ -360,9 +356,8 @@ export default {
         }
 
         this.closeDialog();
-        if (this.debug) console.log("Split complete!");
       } else {
-        console.log("nah");
+        if (this.$store.state.debug) console.log("Nah.");
       }
     },
 
@@ -376,16 +371,18 @@ export default {
       }
 
       let price = parseFloat(article.price);
-      if (this.debug) console.log("Total Cost: " + price);
+      if (this.$store.state.debug) console.log("Total Cost: " + price);
 
       // Calculating the price each roomie involved has to pay
       let priceEach = parseFloat(
         (price / article.involvedRoomies.length).toFixed(2)
       );
-      if (this.debug) console.log("Individual Price: ", priceEach);
+      if (this.$store.state.debug) console.log("Individual Price: ", priceEach);
 
       // Calculating the new balance for the current user and all involved roomies
-      this.$store.getters.currentUser.balance = parseFloat(this.$store.getters.currentUser.balance + price);
+      this.$store.getters.currentUser.balance = parseFloat(
+        this.$store.getters.currentUser.balance + price
+      );
 
       for (let i = 0; i < article.involvedRoomies.length; i++) {
         article.involvedRoomies[i].balance =
@@ -395,7 +392,6 @@ export default {
 
     setCategory(article) {
       // in case no category was picked, the default category will be chosen
-      console.log("debugging");
       if (article.category === "") {
         let defaultCat = this.categories.find(cat => cat.isDefault === true);
         article.category = defaultCat.id;

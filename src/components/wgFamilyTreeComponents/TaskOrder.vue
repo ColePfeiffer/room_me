@@ -1,30 +1,50 @@
 <template>
-  <div>
-    <v-card-text>
-      <v-chip-group column multiple active-class="primary--text">
-        <div class="mx-2" v-for="(roomie, index) in $store.state.standardOrder" :key="roomie.id">
-          <v-chip
-            :color="roomie.color"
-            :outlined="roomie.selected"
-            @click="selectRoomie(roomie, index)"
-          >
-            <v-avatar left>
-              <v-img v-bind:src="roomie.profilePicture"></v-img>
-            </v-avatar>
-            <strong>{{ roomie.username }}</strong>&nbsp;
-          </v-chip>
-        </div>
-      </v-chip-group>
-    </v-card-text>
-  </div>
+  <!-- STANDARD ORDER -->
+  <v-chip-group column multiple active-class="primary--text">
+    <div class="mx-2" v-for="(orderElement, index) in newOrder" :key="orderElement.roomie.id">
+      <v-chip
+        :color="orderElement.roomie.color"
+        :outlined="!orderElement.roomie.selected"
+        @click="selectRoomie(orderElement.roomie, index)"
+      >
+        <v-avatar left>
+          <v-img v-bind:src="orderElement.roomie.profilePicture"></v-img>
+        </v-avatar>
+        <strong>{{ orderElement.roomie.username }}</strong>&nbsp;
+      </v-chip>
+    </div>
+  </v-chip-group>
 </template>
 
 <script>
 export default {
-  data: () => ({
-    basicCounterForNewOrder: -1
-  }),
+  emits: ["orderChanged"],
+  data() {
+    return {
+      basicCounterForNewOrder: -1,
+      newOrder: this.$store.state.standardOrder // { roomie: ... , isAssignedToTasK: true/false }
+    };
+  },
+  created() {
+    this.initiate();
+  },
   methods: {
+    initiate() {
+      console.log("All set to true");
+      this.$store.state.roomies.forEach(roomie => {
+        roomie.selected = true;
+      });
+    },
+    updateCustomOrder() {
+      this.newOrder.forEach(element => {
+        if (element.roomie.selected) {
+          element.isAssignedToTask = true;
+        } else {
+          element.isAssignedToTask = false;
+        }
+      });
+      this.$emit("orderChanged", this.newOrder);
+    },
     move(arr, old_index, new_index) {
       while (old_index < 0) {
         old_index += arr.length;
@@ -41,10 +61,9 @@ export default {
       arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
       return arr;
     },
-
     selectRoomie(roomie, index) {
       // DESELECTING A ROOMIE
-      if (!roomie.selected) {
+      if (roomie.selected) {
         if (this.basicCounterForNewOrder >= 0) {
           this.basicCounterForNewOrder--;
           if (this.$store.state.debug) {
@@ -57,9 +76,7 @@ export default {
         }
         // SELECTING A ROOMIE
       } else {
-        if (
-          this.basicCounterForNewOrder < this.$store.state.standardOrder.length
-        ) {
+        if (this.basicCounterForNewOrder < this.newOrder.length) {
           this.basicCounterForNewOrder++;
           if (this.$store.state.debug) {
             console.log(
@@ -69,15 +86,27 @@ export default {
             );
           }
         }
-        this.move(
-          this.$store.state.standardOrder,
-          index,
-          this.basicCounterForNewOrder
-        );
+        this.move(this.newOrder, index, this.basicCounterForNewOrder);
       }
-
       roomie.selected = !roomie.selected;
-      console.log(this.$store.state.standardOrder);
+      this.updateCustomOrder();
+      console.log(
+        this.newOrder[0].roomie.username +
+          " " +
+          this.newOrder[0].isAssignedToTask +
+          " " +
+          this.newOrder[1].roomie.username +
+          " " +
+          this.newOrder[1].isAssignedToTask +
+          " " +
+          this.newOrder[2].roomie.username +
+          " " +
+          this.newOrder[2].isAssignedToTask +
+          " " +
+          this.newOrder[3].roomie.username +
+          " " +
+          this.newOrder[3].isAssignedToTask
+      );
     }
   }
 };

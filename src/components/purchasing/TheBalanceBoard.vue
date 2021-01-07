@@ -1,13 +1,13 @@
 <template>
-  <v-col xs="12" sm="6" md="3">
-    <v-card max-width="444">
+  <v-container>
+    <v-card>
       <v-list-item>
         <v-list-item-content>
           <div class="overline">Overview</div>
           <v-list>
             <v-list-item v-for="roomie in $store.state.roomies" :key="roomie.id">
               <DialogProfilePage :roomie="roomie" @save-changes="saveChangesInProfilePage"></DialogProfilePage>
-              <div  class="text-center">
+              <div class="text-center">
                 <v-list-item-avatar>
                   <v-img
                     @click="roomie.showProfilePage = true"
@@ -35,10 +35,9 @@
         </v-list-item-content>
       </v-list-item>
 
-     
       <br />
     </v-card>
-  </v-col>
+  </v-container>
 </template>
 
 <script>
@@ -78,5 +77,11 @@ export default {
 </script>
 
 <style>
+.balance-plus {
+  color: green;
+}
 
+.balance-minus {
+  color: red;
+}
 </style>

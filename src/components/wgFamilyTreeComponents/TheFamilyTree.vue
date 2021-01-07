@@ -1,13 +1,6 @@
 <template>
   <v-container justify-center>
-
-
-    <v-btn @click="debuggingIsMobile = !debuggingIsMobile"
-      >debug: toggle view mode</v-btn
-    >
-    <div v-if="!debuggingIsMobile">
-      <!-- <div v-if="!isMobile()"> -->
-
+    <div v-if="$store.state.phone === false">
       <!-- FOR DESKTOP VIEW -->
       <v-row justify="space-around">
         <v-col>
@@ -15,7 +8,7 @@
         </v-col>
       </v-row>
       <v-row justify="space-around">
-        <div v-for="room in rooms" :key="room.id">
+        <div v-for="room in $store.state.rooms" :key="room.id">
           <v-col xs="6" sm="6" md="3">
             <FamilyTreeRoom :room="room" :showRoomName="true"></FamilyTreeRoom>
           </v-col>
@@ -49,21 +42,13 @@
       </v-row>
       <v-row justify="space-around">
         <v-col xs="12" sm="6" md="3">
-          <v-carousel
-            hide-delimiter-background
-            :show-arrows="false"
-            height="auto"
-            v-model="model"
-          >
-            <v-carousel-item v-for="room in rooms" :key="room.id">
+          <v-carousel hide-delimiter-background :show-arrows="false" height="auto" v-model="model">
+            <v-carousel-item v-for="room in $store.state.rooms" :key="room.id">
               <v-sheet height="100%">
                 <v-row class="fill-height" align="center" justify="center">
                   <div class="posts">
                     <v-card elevation="10" max-width="100%">
-                      <FamilyTreeRoom
-                        :room="room"
-                        :showRoomName="false"
-                      ></FamilyTreeRoom>
+                      <FamilyTreeRoom :room="room" :showRoomName="false"></FamilyTreeRoom>
                     </v-card>
                   </div>
                 </v-row>
@@ -81,15 +66,14 @@ import FamilyTreeRoom from "./FamilyTreeRoom";
 
 export default {
   name: "TheFamilyTree",
-  emits: ["create-new-room", "create-dummy"],
+  emits: [],
   components: {
-    FamilyTreeRoom,
+    FamilyTreeRoom
   },
   props: {
-    rooms: Array,
     roomName: String,
     showDialogForNewRoomie: Boolean,
-    showDialogForRoomManager: Boolean,
+    showDialogForRoomManager: Boolean
   },
   data() {
     return {
@@ -99,20 +83,12 @@ export default {
         "warning",
         "pink darken-2",
         "red lighten-1",
-        "deep-purple accent-4",
+        "deep-purple accent-4"
       ],
-      debuggingIsMobile: false,
-      model: 0,
+      model: 0
     };
   },
   methods: {
-    createNewRoom(roomName) {
-      this.$emit("create-new-room", roomName);
-    },
-
-    createDummy(array) {
-      this.$emit("create-dummy", array);
-    },
     isMobile() {
       if (
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -124,8 +100,8 @@ export default {
         return false;
         //return true;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

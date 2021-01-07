@@ -5,66 +5,23 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    // For Debugging
     debug: true,
+    phone: false,
+
+    // Task Management
     standardOrder: [], // array, holds references to roomie objects within roomies
-    roomies: [
-      {
-        id: 0,
-        username: "Chris",
-        description: "Hi there!",
-        profilePicture: "https://i.imgur.com/ER53sz6.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 5, 3),
-        movedOut: false,
-        balance: 0,
-        color: "#1F85DE",
-        selected: true,
-        showProfilePage: false,
-        isLoggedIn: true
-      },
-      {
-        id: 1,
-        username: "Hannah",
-        description: "Möpp",
-        profilePicture: "https://i.imgur.com/9eCV1NG.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 5, 3),
-        movedOut: false,
-        balance: 0,
-        selected: true,
-        color: "#DE591F",
-        showProfilePage: false,
-        isLoggedIn: false
-      },
-      {
-        id: 2,
-        username: "Rufus",
-        description: "",
-        profilePicture: "https://i.imgur.com/ELDlNNK.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 2, 3),
-        movedOut: false,
-        balance: 0,
-        selected: true,
-        color: "#BDA0EC",
-        showProfilePage: false,
-        isLoggedIn: false
-      },
-      {
-        id: 3,
-        username: "Tim",
-        description: "",
-        profilePicture: "https://i.imgur.com/7xffhX9.png",
-        moveInDate: new Date(2015, 10, 15),
-        moveOutDate: new Date(2019, 3, 3),
-        movedOut: false,
-        balance: 0,
-        selected: true,
-        color: "#EBE386",
-        showProfilePage: false,
-        isLoggedIn: false
-      }
+    lastRoomieSelectedForStandardOrder: "",
+    timeOptions: [
+      { text: "Every day", days: 1 },
+      { text: "Every week", days: 7 },
+      { text: "Every 2 weeks", days: 14 },
+      { text: "Every month", days: 30 },
+      { text: "Every two months", days: 60 }
     ],
+
+    // Data
+    roomies: [],
     dummies: [
       {
         id: 19,
@@ -78,11 +35,12 @@ export default new Vuex.Store({
         moveOutDate: new Date(2019, 5, 3)
       }
     ],
-    comments: [
-    ],
+    comments: [],
     rooms: [],
-    //currentUser: {},
-    counter: "kdkdkdd"
+    numberOfRooms: 0,
+    counter: "kdkdkdd",
+    shoppingList: [],
+    taskList: []
   },
   getters: {
     currentUser: state => {
@@ -90,29 +48,45 @@ export default new Vuex.Store({
     },
     getRoomieByID(state, id) {
       return state.roomies.find(roomie => roomie.id === id);
+    },
+    getRoomieFromTaskOrder(state, commit) {
+      let roomieTaskGetsAssignedTo = state.standardOrder[0];
+      commit.moveTaskOrder(state);
+      return roomieTaskGetsAssignedTo;
     }
   },
   mutations: {
+    // creates the standard order based on the order in the roomie array
     createOrder(state) {
       state.standardOrder = [];
-      for (let i = 0; i < state.roomies.length; i++) {
-        state.standardOrder.push(state.roomies[i]);
-      }
 
+      for (let i = 0; i < state.roomies.length; i++) {
+        state.standardOrder.push({
+          roomie: state.roomies[i],
+          isAssignedToTask: true
+        });
+      }
       if (state.debug) console.log("Order created.");
     },
-    updateOrder(state) {
-      state.standardOrder = [];
-      for (let i = 0; i < state.roomies.length; i++) {
-        state.standardOrder.push(state.roomies[i]);
-      }
-
-      if (state.debug) console.log("Order created.");
+    moveTaskOrder(state) {
+      state.standardOrder.push(state.standardOrder.shift());
+      console.log("Standard Order shifted!");
+    },
+    // Setters and Toggles
+    incrementNumberOfRooms(state) {
+      state.numberOfRooms += 1;
+      console.log("NumberOfRooms set to " + state.numberOfRooms);
     },
     toggleDebug(state) {
       state.debug = !state.debug;
-      console.log("Debug changed to " + state.debug);
+      console.log("Debug mode was turned " + state.debug);
     },
+
+    togglePhone(state) {
+      state.phone = !state.phone;
+      console.log("Phone mode was turned " + state.phone);
+    },
+
     setCurrentUser(state, roomieId) {
       state.roomies.forEach(roomie => {
         roomie.isLoggedIn = false;
@@ -120,6 +94,9 @@ export default new Vuex.Store({
 
       let roomie = state.roomies.find(roomie => roomie.id === roomieId);
       roomie.isLoggedIn = true;
+    },
+    setLastRoomieSelectedForStandardOrder(state, roomie) {
+      state.lastRoomieSelectedForStandardOrder = roomie;
     }
   }
 });
