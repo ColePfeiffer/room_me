@@ -1,8 +1,7 @@
 <template>
   <v-container>
     <v-speed-dial
-      class="fab-button"
-      color="pink"
+      class="fab-button" 
       v-model="fab"
       fixed
       right
@@ -10,7 +9,7 @@
       slide-y-reverse-transition
     >
       <template v-slot:activator>
-        <v-btn v-model="fab" color="blue darken-2" dark fab>
+        <v-btn v-model="fab" dark fab>
           <v-icon v-if="fab">mdi-close</v-icon>
           <v-icon v-else>mdi-plus</v-icon>
         </v-btn>
@@ -83,7 +82,7 @@ export default {
 
 <style scoped>
 .fab-button {
-  padding: 10 px;
+  margin-bottom: 1%;
   position: fixed;
 }
 
