@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mouseOverMe" @mouseover ="cardIsActive = true" @mouseout ="cardIsActive = false">
     <v-row dense class="paddingCards">
       <v-col cols="12">
         <v-card class="cleaningCards">
@@ -12,13 +12,16 @@
                 v-bind:src="task.assignedTo.profilePicture"
               ></v-img>
               <v-col>
-                <v-card-text class="stylingTextHeadline">{{ task.name }}</v-card-text>
-                <label class="stylingDate">End date: {{ task.currentEndDate }}</label>
+                <v-card-text class="stylingTextHeadline">{{
+                  task.name
+                }}</v-card-text>
+                <label class="stylingDate"
+                  >End date: {{ task.currentEndDate }}</label
+                >
                 <!--If task is done, show completedOnDate: -->
-                <label
-                  class="stylingDateComplete"
-                  v-if="task.completedOn != ''"
-                >Done: {{ task.completedOn }}</label>
+                <label class="stylingDateComplete" v-if="task.completedOn != ''"
+                  >Done: {{ task.completedOn }}</label
+                >
               </v-col>
             </v-row>
             <div class="stylingTextSubtitle">
@@ -26,26 +29,49 @@
             </div>
 
             <!-- FOR DONE TASKS ONLY -->
-            <div class="commentBox" v-if="task.status === 3 && task.comment != '' ">
+            <div
+              class="commentBox"
+              v-if="task.status === 3 && task.comment != ''"
+            >
               <!--If task is done, show comment:-->
               <fieldset style="text-align: center">
                 <legend style="text-align: center">
-                  <p class="text--black;">{{ $store.getters.currentUser.username }}</p>
+                  <p class="text--black;">
+                    {{ $store.getters.currentUser.username }}
+                  </p>
                 </legend>
                 <div
-                  style="text-align: left; padding-left: 15px; padding-bottom: 15px"
-                >{{ task.comment }}</div>
+                  style="
+                    text-align: left;
+                    padding-left: 15px;
+                    padding-bottom: 15px;
+                  "
+                >
+                  {{ task.comment }}
+                </div>
               </fieldset>
             </div>
 
             <!-- ACTIONS -->
             <v-card-actions v-if="task.status === 0 || task.status === 1">
-              <v-col v-if="isUserLoggedIn" class="text-right">
+              <v-col class="text-right" v-if="isUserLoggedIn">
                 <v-btn text @click="showCheckOffTask">
                   <v-icon>mdi-check</v-icon>
                 </v-btn>
                 <v-btn text @click="showCancelTask">
                   <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col
+                class="text-right"
+                v-show="!isUserLoggedIn && cardIsActive"
+                @mouseover="cardIsActive = true"
+              >
+                <v-btn text @click="doingExtraWork" color="grey">
+                  <v-icon>done_all</v-icon>
+                </v-btn>
+                <v-btn text @click="remindMe" color="grey">
+                  <v-icon>alarm</v-icon>
                 </v-btn>
               </v-col>
             </v-card-actions>
@@ -60,13 +86,14 @@
 export default {
   name: "CleaningTask",
   props: {
-    ["task"]: Object
+    ["task"]: Object,
   },
   emits: ["show-check-off-task", "show-cancel-task"],
   data() {
     return {
       showDialogFinishUp: false,
-      showDialogDeclineTask: false
+      showDialogDeclineTask: false,
+      cardIsActive: false,
     };
   },
   methods: {
@@ -78,22 +105,35 @@ export default {
     },
     toggleDialogDeclineTask(newState) {
       this.showDialogDeclineTask = newState;
+    },
+    remindMe(){
+      alert("Not implemented yet.");
+    },
+    doingExtraWork(){
+      // C hat für B gemacht.
+      // C rutscht nach ganz hinten, B bleibt vorne.
+      // DECLINE
+      // A gibt ab. Order: A, B, C, D
+      // shift() -> B und A tauschen Plätze.
+      // Kommentar im Task oder auf der Pinnwand/Chat
     }
   },
   computed: {
     isUserLoggedIn() {
       if (this.$store.getters.currentUser === this.task.assignedTo) {
-                return true;
-       
+        return true;
       } else {
-     return false;
+        return false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
+.mouseOverMe{
+  display: block;
+}
 .cleaningCards {
   width: 100%;
   padding-bottom: 15px;
