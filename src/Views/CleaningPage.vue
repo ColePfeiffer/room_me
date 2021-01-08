@@ -17,17 +17,22 @@
         </v-btn>
       </template>
 
-      <v-btn fab dark small color="pink" @click="showDialogNewTask = true">
+      <v-btn fab dark small color="pink" @click="toggleDialogTask(true)">
         <v-icon>mdi-broom</v-icon>
         <div class="fab-text-custom pink">Add to task list</div>
       </v-btn>
     </v-speed-dial>
     <!-- Dialogs -->
-    <DialogTask :showDialog="showDialogNewTask" :view="'NEW_TASK'" @toggle-visibility="showDialogNewTask = false"></DialogTask>
+    <DialogTask
+      :showDialog="showDialogNewTask"
+      :view="taskView"
+      :existingTask="existingTask"
+      @toggle-visibility="toggleDialogTask(false)"
+    ></DialogTask>
 
     <v-row align="center" justify="center" no-gutters>
       <v-col xs="12" sm="9" md="9" m="9">
-        <CleaningTabs></CleaningTabs>
+        <CleaningTabs @show-check-off-task="showCheckOffTask" @show-cancel-task="showCancelTask"></CleaningTabs>
       </v-col>
     </v-row>
   </v-container>
@@ -35,78 +40,45 @@
 
 <script>
 import CleaningTabs from "../components/cleaningComponents/CleaningTabs";
-import DialogTask from "../components/cleaningComponents/DialogTask"
+import DialogTask from "../components/cleaningComponents/DialogTask";
 
 export default {
   components: {
     CleaningTabs,
-    DialogTask
+    DialogTask,
   },
   data() {
     return {
       fab: false,
       showDialogNewTask: false,
-      colors: [
-        "indigo",
-        "warning",
-        "pink darken-2",
-        "red lighten-1",
-        "deep-purple accent-4",
-      ],
-      taskList: [
-        {
-          id: 1,
-          title: "Küche putzen",
-          description: "Küche muss geschrubbat werdn.",
-          endDate: "22.10.20",
-          startDate: "",
-          completedOn: "",
-          intervallDays: 2,
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 0,
-          order: [],
-          swapDecline: [{ roomie: "", type: "", comment: "" }],
-
-          taskCreator: "",
-        },
-        {
-          id: 2,
-          title: "Küche putzen",
-          description: "KHallo... ksksk dkdkd",
-          endDate: "22.10.20",
-          startDate: "",
-          completedOn: "",
-          intervallDays: 2,
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 0,
-          order: [],
-          swapDecline: [{ roomie: "", type: "", comment: "" }],
-        },
-        {
-          id: 5,
-          title: "Müll rausbringen",
-          description:
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. ",
-          endDate: "",
-          startDate: "",
-          completedOn: "",
-          intervallDays: 2,
-          // Status: 0 - offen, accepted: 1, declined: 2, done: 3
-          status: 0,
-          order: [],
-          swapDecline: [{ roomie: "", type: "", comment: "" }],
-
-          taskCreator: "",
-        },
-      ],
+      taskView: 'NEW_TASK',
+      existingTask: {},
     };
   },
-  methods: {}
+  methods: {
+    toggleDialogTask(newState){
+      this.showDialogNewTask = newState;
+      //
+      if(!newState){
+        this.taskView = 'NEW_TASK';
+      }
+    },
+    showCheckOffTask(existingTask) {
+      this.existingTask = existingTask;
+      this.taskView = 'CHECK_OFF_TASK';
+      this.showDialogNewTask = true;
+
+    },
+    showCancelTask(existingTask) {
+      this.existingTask = existingTask;
+      this.taskView = 'CANCEL_TASK';
+      this.showDialogNewTask = true;
+
+    },
+  },
 };
 </script>
 <style scoped>
-
-
 .fab-text-custom {
   position: absolute;
   right: 50px;

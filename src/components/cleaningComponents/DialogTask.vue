@@ -149,7 +149,7 @@
             <v-col cols="6">
               <!-- Name -->
               <v-text-field
-                :value="task.name"
+                :value="existingTask.name"
                 label="Task"
                 sm="6"
                 m="6"
@@ -174,7 +174,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="task.comment"
+                v-model="existingTask.comment"
                 label="Comment"
                 placeholder="Being late? Did extra? Leave a note."
                 prepend-icon="comment"
@@ -197,7 +197,79 @@
       </v-card>
     </div>
 
-    <div v-else-if="view == 'SWITCH_DECLINE_TASK'"></div>
+    <div v-else-if="view == 'CANCEL_TASK'">
+      <v-card class="removeScrollbar">
+        <v-card-title primary-title>
+          <div>
+            <h3 class="headline mb-0">Can't do it?</h3>
+          </div>
+        </v-card-title>
+        <v-card-text>
+          <v-row class="mx-0">
+            <v-col cols="12">
+              <!-- Name -->
+              <v-text-field
+                :value="existingTask.name"
+                label="Task"
+                sm="6"
+                m="6"
+                prepend-icon="mdi-broom"
+                :color="color"
+                maxlength="15"
+                readonly
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <!-- Comment -->
+          <v-row class="mx-0">
+            <v-col cols="12">
+              <v-text-field
+                v-model="existingTask.comment"
+                label="Comment"
+                placeholder="Leave a note."
+                prepend-icon="comment"
+                :color="color"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="mx-0" align="center" justify="center"
+            ><v-col cols="6" class="d-flex" style="flex-direction: column">
+              <v-radio-group v-model="switchDecline" class="mb-1 flex-grow-1">
+                <v-radio
+                  label="decline task"
+                  value="DECLINE"
+                  :color="color"
+                ></v-radio>
+                <v-radio
+                  label="switch  task"
+                  value="SWITCH"
+                  :color="color"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-col cols="6" v-if="switchDecline == 'DECLINE'"
+              >Explain why you can't do the task in the comment field.</v-col
+            >
+            <v-col cols="6" v-else-if="switchDecline == 'SWITCH'"
+              >WIP. Not implemented yet.</v-col
+            >
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-row justify="space-around">
+            <v-col cols="4"></v-col>
+            <v-col cols="4">
+              <v-btn color="pink" @click="confirmSwitchDeclineDialog"
+                >Confirm</v-btn
+              >
+            </v-col>
+            <v-col cols="4">
+              <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </div>
 
     <div v-else-if="view == 'EDIT_TASK'"></div>
   </v-dialog>
@@ -220,7 +292,7 @@ export default {
     view: String,
     existingTask: Object,
   },
-  created(){
+  created() {
     console.log(this.view);
   },
   data() {
@@ -236,6 +308,7 @@ export default {
 
       // NEW TASK VARS
       orderType: "STANDARD", // STANDARD, CUSTOM
+      switchDecline: "DECLINE", // DECLINE, SWITCH
       EndDateIsDisabled: true,
       valid: true, // for validation
       task: {
@@ -313,11 +386,22 @@ export default {
       // add to taskList
       this.$store.state.taskList.push(newTask);
     },
+
     checkOffTask() {
-      this.task.status = 3;
-      this.task.completedOn = this.currentDate;
+      this.existingTask.status = 3;
+      this.existingTask.completedOn = this.currentDate;
       this.recreateTask();
       this.closeDialog();
+    },
+
+    confirmSwitchDeclineDialog() {
+      this.task.swapDecline = [
+        { id: this.id, roomie: this.roomie, type: 1, comment: this.comment },
+      ];
+    },
+    updateOrder(newOrder) {
+      this.task.order = newOrder;
+      console.log("Order changed!");
     },
     getRoomieFromCustomOrder() {
       let roomieTaskGetsAssignedTo;
