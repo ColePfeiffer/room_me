@@ -1,17 +1,5 @@
 <template>
   <div>
-    <DialogCheckOff
-      :task="task"
-      :showDialog="showDialogFinishUp"
-      @toggle-visibility="toggleDialogFinishUp"
-    ></DialogCheckOff>
-
-    <DialogDeclineTask
-      :task="task"
-      :showDialogDeclineTask="showDialogDeclineTask"
-      @toggle-showDialogDeclineTask="toggleDialogDeclineTask"
-    ></DialogDeclineTask>
-
     <v-row dense class="paddingCards">
       <v-col cols="12">
         <v-card class="cleaningCards">
@@ -52,11 +40,11 @@
 
             <!-- ACTIONS -->
             <v-card-actions v-if="task.status === 0 || task.status === 1">
-              <v-col class="text-right">
-                <v-btn :disabled="isUserLoggedIn" text @click="toggleDialogFinishUp(true)">
+              <v-col v-if="isUserLoggedIn" class="text-right">
+                <v-btn text @click="showCheckOffTask">
                   <v-icon>mdi-check</v-icon>
                 </v-btn>
-                <v-btn :disabled="isUserLoggedIn" text @click="toggleDialogDeclineTask(true)">
+                <v-btn text @click="showCancelTask">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </v-col>
@@ -69,18 +57,12 @@
 </template>
 
 <script>
-import DialogCheckOff from "./DialogCheckOff";
-import DialogDeclineTask from "./DialogDeclineTask";
-
 export default {
   name: "CleaningTask",
   props: {
     ["task"]: Object
   },
-  components: {
-    DialogCheckOff,
-    DialogDeclineTask
-  },
+  emits: ["show-check-off-task", "show-cancel-task"],
   data() {
     return {
       showDialogFinishUp: false,
@@ -88,8 +70,11 @@ export default {
     };
   },
   methods: {
-    toggleDialogFinishUp(newState) {
-      this.showDialogFinishUp = newState;
+    showCheckOffTask() {
+      this.$emit("show-check-off-task", this.task);
+    },
+    showCancelTask() {
+      this.$emit("show-cancel-task", this.task);
     },
     toggleDialogDeclineTask(newState) {
       this.showDialogDeclineTask = newState;
@@ -98,9 +83,10 @@ export default {
   computed: {
     isUserLoggedIn() {
       if (this.$store.getters.currentUser === this.task.assignedTo) {
-        return false;
+                return true;
+       
       } else {
-        return true;
+     return false;
       }
     }
   }

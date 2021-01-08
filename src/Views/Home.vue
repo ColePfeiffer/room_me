@@ -1,28 +1,83 @@
 <template>
   <v-container class="home" fluid>
-    <v-carousel height="400" hide-delimiter-background show-arrows-on-hover>
-      <v-carousel-item v-for="(post, i) in posts" :key="i">
-        <v-sheet :color="colors[i]" height="100%">
+    <v-speed-dial
+      color="pink"
+      v-model="fab"
+      dark
+      small
+      absolute
+      fixed
+      bottom
+      right
+      slide-y-reverse-transition
+    >
+      <template v-slot:activator>
+        <v-btn v-model="fab" color="blue darken-2" dark fab>
+          <v-icon v-if="fab">mdi-close</v-icon>
+          <v-icon v-else>mdi-plus</v-icon>
+        </v-btn>
+      </template>
+
+        <v-btn fab dark small color="green" @click="showDialogNewTask = true">
+        <v-icon>mdi-broom</v-icon>
+        <div class="fab-text-custom green">Add task</div>
+      </v-btn>
+
+     <v-btn fab dark small color="pink" @click="changeDialogState('NEW')">
+        <v-icon>mdi-shopping</v-icon>
+        <div class="fab-text-custom pink">Add article</div>
+      </v-btn>
+  
+    </v-speed-dial>
+
+    <v-carousel height="600" hide-delimiter-background show-arrows-on-hover>
+      <v-carousel-item>
+        <v-sheet :color="colors[0]" height="100%">
           <v-row class="fill-height" align="center" justify="center">
             <div class="posts">
               <v-card elevation="10" max-width="100%">
-                <v-card-title>{{ post.postTitle }}</v-card-title>
-                <v-card-text>{{post.postContent}}</v-card-text>
+              <v-card-title>Welcome to your roomie chat!</v-card-title>
+                <CommentSectionHomePage></CommentSectionHomePage>
+              </v-card>
+            </div>
+          </v-row>
+        </v-sheet>
+      </v-carousel-item>
+      <v-carousel-item>
+        <v-sheet :color="colors[0]" height="100%">
+          <v-row class="fill-height" align="center" justify="center">
+            <div class="purchasingTab">
+              <v-card elevation="10" max-width="100%">
+                <ThePurchasingTabs
+                  :shoppingList="shoppingList"
+                  :currencySymbol="currencySymbol"
+                  @delete-article="deleteArticle"
+                  @open-Dialog-Add-Article="openDialogAddArticle"
+                ></ThePurchasingTabs>
+              </v-card>
+            </div>
+          </v-row>
+        </v-sheet>
+      </v-carousel-item>
+       <v-carousel-item>
+        <v-sheet :color="colors[0]" height="100%">
+          <v-row class="fill-height" align="center" justify="center">
+            <div class="cleaningTabs">
+              <v-card elevation="10" max-width="100%">
+                   <CleaningTabs :taskList="taskList"></CleaningTabs>
               </v-card>
             </div>
           </v-row>
         </v-sheet>
       </v-carousel-item>
     </v-carousel>
-    <CommentSectionHomePage
-    ></CommentSectionHomePage>
-
   </v-container>
 </template>
 
 <script>
-import CommentSectionHomePage from '../components/CommentSectionHomePage.vue';
-
+import CommentSectionHomePage from "../components/CommentSectionHomePage.vue";
+import CleaningTabs from "../components/cleaningComponents/CleaningTabs";
+import ThePurchasingTabs from "../components/purchasing/ThePurchasingTabs";
 
 export default {
   /*
@@ -30,49 +85,26 @@ export default {
             document.body.className = 'home';
         },*/
   name: "Home",
-components: {
-  CommentSectionHomePage,
-  
-  
-},
+  components: {
+    CommentSectionHomePage,
+    ThePurchasingTabs,
+    CleaningTabs,
+  },
   // Leer
   data() {
     return {
-      posts: [
-        {
-          postId: 1,
-          postAuthor: "Peter",
-          postTitle: "Hi friends!",
-          postContent: "Who wants to go to the beach tomorrow?",
-          postTimeDate: "06.06.2020, 13:00",
-        },
-        {
-          postid: 2,
-          postAuthor: "Clara",
-          postTitle: "We need to buy cleaning supplies.",
-          postContent: "See title.",
-          postTimeDate: "07.06.2020, 14:00",
-        }
-      ],
-      commentTitle: String,
-      commentText: String,
-      commentTimeDate: Object,
-      //activeUser von App.vue;
+      fab: false,
       colors: [
         "indigo",
         "warning",
         "pink darken-2",
         "red lighten-1",
-        "deep-purple accent-4"
+        "deep-purple accent-4",
       ],
-      slides: ["First", "Second", "Third", "Fourth", "Fifth"]
     };
   },
-  methods: {
-  
-
-  },
-  created() {}
+  methods: {},
+  created() {},
 };
 </script>
 
@@ -83,6 +115,15 @@ components: {
   border-radius: 25px;
   padding: 20px;
   padding-bottom: 50px;
+}
+.fab-text-custom {
+  position: absolute;
+  right: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
 }
 
 .comments h1 {

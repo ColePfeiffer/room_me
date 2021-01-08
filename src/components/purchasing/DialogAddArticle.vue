@@ -2,14 +2,21 @@
   <v-dialog :value="showDialog" persistent width="500">
     <v-card>
       <!-- FOR NEW ITEMS, States: CASH + NEW -->
-      <v-form ref="form" v-model="isValid" lazy-validation v-if="view === 'CASH' || view === 'NEW'">
+      <v-form
+        ref="form"
+        v-model="isValid"
+        lazy-validation
+        v-if="view === 'CASH' || view === 'NEW'"
+      >
         <v-container>
           <!-- Title -->
           <v-card-title primary-title>
             <div>
-              <h3
-                class="headline mb-0"
-              >{{ view === "NEW" ? 'Add to shopping list' : 'Bought something?'}}</h3>
+              <h3 class="headline mb-0">
+                {{
+                  view === "NEW" ? "Add to shopping list" : "Bought something?"
+                }}
+              </h3>
             </div>
           </v-card-title>
 
@@ -104,12 +111,16 @@
             <!-- Roomie Chips -->
             <v-row v-if="view === 'CASH'">
               <v-col>
-                <fieldset style="text-align:center">
-                  <legend style="padding:10px;text-align:center">
+                <fieldset style="text-align: center">
+                  <legend style="padding: 10px; text-align: center">
                     <p class="text--secondary">Who did you buy it for?</p>
                   </legend>
                   <v-chip-group column multiple active-class="primary--text">
-                    <v-row class="mx-2" v-for="roomie in $store.state.roomies" :key="roomie.id">
+                    <v-row
+                      class="mx-2"
+                      v-for="roomie in $store.state.roomies"
+                      :key="roomie.id"
+                    >
                       <v-chip
                         :color="roomie.color"
                         :outlined="roomieChipOutlined(roomie)"
@@ -118,7 +129,8 @@
                         <v-avatar left>
                           <v-img v-bind:src="roomie.profilePicture"></v-img>
                         </v-avatar>
-                        <strong>{{ roomie.username }}</strong>&nbsp;
+                        <strong>{{ roomie.username }}</strong
+                        >&nbsp;
                       </v-chip>
                     </v-row>
                   </v-chip-group>
@@ -130,11 +142,9 @@
             <v-row justify="space-around">
               <v-col cols="4"></v-col>
               <v-col cols="4">
-                <v-btn
-                  color="pink"
-                  :disabled="!isValid"
-                  @click="addPurchase"
-                >{{view === 'NEW' ? 'Add to list' : 'Split Costs'}}</v-btn>
+                <v-btn color="pink" :disabled="!isValid" @click="addPurchase">{{
+                  view === "NEW" ? "Add to list" : "Split Costs"
+                }}</v-btn>
               </v-col>
               <v-col cols="4">
                 <v-btn color="gray" @click="closeDialog">Close</v-btn>
@@ -146,7 +156,12 @@
       </v-form>
 
       <!-- FOR EXISTING ITEMS, States: CASH_UP_EXISTING -->
-      <v-form ref="form" v-model="isValid" lazy-validation v-else-if="view === 'CASH_UP_EXISTING'">
+      <v-form
+        ref="form"
+        v-model="isValid"
+        lazy-validation
+        v-else-if="view === 'CASH_UP_EXISTING'"
+      >
         <v-container>
           <!-- Title -->
           <v-card-title primary-title>
@@ -209,12 +224,16 @@
             <!-- Roomie Chips -->
             <v-row>
               <v-col>
-                <fieldset style="text-align:center">
-                  <legend style="padding:10px;text-align:center">
+                <fieldset style="text-align: center">
+                  <legend style="padding: 10px; text-align: center">
                     <p class="text--secondary">Who did you buy it for?</p>
                   </legend>
                   <v-chip-group column multiple active-class="primary--text">
-                    <v-row class="mx-2" v-for="roomie in $store.state.roomies" :key="roomie.id">
+                    <v-row
+                      class="mx-2"
+                      v-for="roomie in $store.state.roomies"
+                      :key="roomie.id"
+                    >
                       <v-chip
                         :color="roomie.color"
                         :outlined="roomieChipOutlined(roomie)"
@@ -223,7 +242,8 @@
                         <v-avatar left>
                           <v-img v-bind:src="roomie.profilePicture"></v-img>
                         </v-avatar>
-                        <strong>{{ roomie.username }}</strong>&nbsp;
+                        <strong>{{ roomie.username }}</strong
+                        >&nbsp;
                       </v-chip>
                     </v-row>
                   </v-chip-group>
@@ -235,7 +255,12 @@
             <v-row justify="space-around">
               <v-col cols="4"></v-col>
               <v-col cols="4">
-                <v-btn color="pink" :disabled="!isValid" @click="cashUpExistingArticle">Split Costs</v-btn>
+                <v-btn
+                  color="pink"
+                  :disabled="!isValid"
+                  @click="cashUpExistingArticle"
+                  >Split Costs</v-btn
+                >
               </v-col>
               <v-col cols="4">
                 <v-btn color="gray" @click="closeDialog">Close</v-btn>
@@ -257,7 +282,7 @@ export default {
     showDialog: Boolean,
     view: String, // CASH, NEW, CASH_UP_EXISTING
     categories: Array,
-    existingArticle: Object // for cashing up existing items
+    existingArticle: Object, // for cashing up existing items
   },
   data() {
     return {
@@ -276,23 +301,23 @@ export default {
         avatar: "",
         category: "",
         involvedRoomies: [],
-        status: 0
+        status: 0,
       },
 
       rules: {
-        required: value => !!value || "Required.",
-        numberRule: v => {
+        required: (value) => !!value || "Required.",
+        numberRule: (v) => {
           if (!v.trim()) return true;
           if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
           return "Number has to be between 0 and 999";
         },
-        minChars: v => (v && v.length >= 2) || "Name can't be empty"
-      }
+        minChars: (v) => (v && v.length >= 2) || "Name can't be empty",
+      },
     };
   },
   methods: {
     selectRoomie(selected_roomie) {
-      this.$store.state.roomies.forEach(function(roomie) {
+      this.$store.state.roomies.forEach(function (roomie) {
         if (roomie == selected_roomie) {
           roomie.selected = !roomie.selected;
         }
@@ -311,7 +336,7 @@ export default {
       this.$emit("toggle-Dialog", false);
 
       // reset everything
-      this.$store.state.roomies.forEach(function(roomie) {
+      this.$store.state.roomies.forEach(function (roomie) {
         roomie.selected = true;
       });
 
@@ -326,7 +351,7 @@ export default {
         avatar: "",
         category: "",
         involvedRoomies: [],
-        status: 0
+        status: 0,
       };
     },
     cashUpExistingArticle() {
@@ -335,7 +360,7 @@ export default {
         this.splitCosts(this.existingArticle);
         this.$emit("change-Status-Of-Article", {
           article: this.existingArticle,
-          status: 2
+          status: 2,
         });
       }
 
@@ -393,17 +418,17 @@ export default {
     setCategory(article) {
       // in case no category was picked, the default category will be chosen
       if (article.category === "") {
-        let defaultCat = this.categories.find(cat => cat.isDefault === true);
+        let defaultCat = this.categories.find((cat) => cat.isDefault === true);
         article.category = defaultCat.id;
         article.avatar = defaultCat.avatar;
       } else {
         const category = this.categories.find(
-          cat => cat.id === article.category
+          (cat) => cat.id === article.category
         );
         article.avatar = category.avatar;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
