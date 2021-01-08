@@ -30,7 +30,7 @@
                     <div class="padding15">
                       <label
                         class="stylingTextSubtitle"
-                      >Click on button in the right corner to add a new item.</label>
+                      >Click on the button in the right corner to add a new item.</label>
                     </div>
                   </v-col>
                 </v-card>
@@ -52,7 +52,7 @@
                     <div class="padding15">
                       <label
                         class="stylingTextSubtitle"
-                      >Accept open item and see the pending items card.</label>
+                      >Accept an item from the shopping list.</label>
                     </div>
                   </v-col>
                 </v-card>
@@ -71,7 +71,7 @@
                     <div class="padding15">
                       <label
                         class="stylingTextSubtitle"
-                      >Split an item and see the item inside this card.</label>
+                      >Split the costs of an item first.</label>
                     </div>
                   </v-col>
                 </v-card>
