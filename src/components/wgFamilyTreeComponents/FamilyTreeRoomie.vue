@@ -15,7 +15,7 @@
                 >mdi-island</v-icon>
               </th>
             </template>
-            <span>Yolo!</span>
+            <span>toggle vacation mode</span>
           </v-tooltip>
 
           <v-list-item-avatar id="avatar" width="100" height="100">
