@@ -23,7 +23,7 @@
       </v-btn>
     </v-speed-dial>
     <!-- Dialogs -->
-    <DialogNewTask :showDialog="showDialogNewTask" @toggle-visibility="showDialogNewTask = false"></DialogNewTask>
+    <DialogTask :showDialog="showDialogNewTask" :view="'NEW_TASK'" @toggle-visibility="showDialogNewTask = false"></DialogTask>
 
     <v-row align="center" justify="center" no-gutters>
       <v-col xs="12" sm="9" md="9" m="9">
@@ -35,12 +35,12 @@
 
 <script>
 import CleaningTabs from "../components/cleaningComponents/CleaningTabs";
-import DialogNewTask from "../components/cleaningComponents/DialogNewTask";
+import DialogTask from "../components/cleaningComponents/DialogTask"
 
 export default {
   components: {
     CleaningTabs,
-    DialogNewTask
+    DialogTask
   },
   data() {
     return {
