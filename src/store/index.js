@@ -70,6 +70,25 @@ export default new Vuex.Store({
       if (state.debug) console.log("Order created.");
      
     },
+
+    // This function updates the taskorder-property for each task that uses the standard order
+    updateTasks(state){
+      console.log(state.taskList);
+
+      state.taskList.forEach(task => {
+        console.log("HMM " + task.orderType);
+        if(task.orderType === "STANDARD"){
+          // Adding the last roomie to the taskorder
+          task.order.push({
+            roomie: state.roomies[state.roomies.length - 1],
+            isAssignedToTask: true
+          });
+          if(state.debug) console.log(task.name + " was updated.");
+        }else{
+          if(state.debug) console.log(task.name + " uses a custom taskorder. Skipping.");
+        }
+      });
+    },
     moveTaskorder(state) {
       state.taskorder.push(state.taskorder.shift());
       console.log("Standard Order shifted!");

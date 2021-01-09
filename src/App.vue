@@ -225,7 +225,7 @@ export default {
           currentEndDate: new Date().toISOString().substr(0, 10),
           completedOn: "",
           numberOfDaysInBetween: "7",
-          order: []
+          order: [],
         }
       );
     }

@@ -313,10 +313,12 @@ export default {
         currentEndDate: new Date().toISOString().substr(0, 10),
         completedOn: "",
         numberOfDaysInBetween: "",
-         orderType: "STANDARD", // STANDARD, CUSTOM
+        orderType: "STANDARD", // STANDARD, CUSTOM
         order: this.$store.state.taskorder.slice(),
       },
-      
+
+      orderType: "",
+
       // CHECK OFF VARS
       roomieFound: false,
       currentDate: new Date().toISOString().substr(0, 10),
@@ -339,7 +341,7 @@ export default {
         this.task.createdBy = this.$store.getters.currentUser;
         this.task.taskorder = new Array(this.$store.state.taskorder);
 
-        if (this.task.orderType === "STANDARD") {
+        if (this.task.orderType === "STANDARD" && (this.task.status === 0 || this.task.status === 1)) {
           console.log("Using Standard Order!");
           this.task.order = this.$store.state.taskorder.slice();
 
@@ -350,8 +352,10 @@ export default {
           this.$store.commit("moveTaskorder");
         } else {
           console.log("Using Custom Order!");
+          console.log(          this.task.orderType);
           this.task.assignedTo = this.getRoomieFromCustomOrder(this.task);
-          this.moveTaskorder(this.task); 
+
+          this.moveTaskorder(this.task);
         }
 
         // add to taskList and close Dialog
@@ -360,15 +364,15 @@ export default {
       }
     },
     recreateTask() {
-      console.log("recreate task")
+      console.log("recreate task");
       let newEndDate = this.addDays(
         this.existingTask.completedOn,
         this.existingTask.numberOfDaysInBetween
       )
         .toISOString()
         .substr(0, 10);
-      
-      console.log("1 " +this.existingTask.assignedTo.username);
+
+
       this.moveTaskorder(this.existingTask);
 
       // creating a new task with the data of the old one
@@ -385,16 +389,13 @@ export default {
         currentEndDate: newEndDate,
         completedOn: "",
         numberOfDaysInBetween: this.existingTask.numberOfDaysInBetween,
+        orderType: this.existingTask.orderType,
         order: this.existingTask.order,
       };
 
-
-      console.log("2" + newTask.assignedTo.username);
-      
-
       // add to taskList
       this.$store.state.taskList.push(newTask);
-      console.log("recreate done")
+      console.log("recreate done");
     },
 
     checkOffTask() {
@@ -424,9 +425,7 @@ export default {
         if (task.order[0].isAssignedToTask === true) {
           if (this.$store.state.debug)
             console.log(
-              "Task assigned to " + 
-               task.order[0].roomie.username + "."
-                
+              "Task assigned to " + task.order[0].roomie.username + "."
             );
           roomieFound = true;
           roomieTaskGetsAssignedTo = task.order[0].roomie;
@@ -436,16 +435,18 @@ export default {
               task.order[0].roomie.username +
                 " isn't assigned to this task, going to the next roomie by shifting once..."
             );
-          
+
           this.moveTaskorder(task);
         }
       }
       return roomieTaskGetsAssignedTo;
     },
     // Moving the first element of the array to the last index
-    moveTaskorder(task){
+    moveTaskorder(task) {
       task.order.push(task.order.shift());
-      console.log("Taskorder was moved. Index 0 " + task.order[0].roomie.username)
+      console.log(
+        "Taskorder was moved. Index 0 " + task.order[0].roomie.username
+      );
     },
     reset() {
       this.task = {
@@ -461,8 +462,8 @@ export default {
         currentEndDate: new Date().toISOString().substr(0, 10),
         completedOn: "",
         numberOfDaysInBetween: "",
-         orderType: "STANDARD", // STANDARD, CUSTOM
-        order: this.$store.state.taskorder.slice(0)
+        orderType: "STANDARD", // STANDARD, CUSTOM
+        order: this.$store.state.taskorder.slice(0),
       };
       this.EndDateIsDisabled = true;
       this.valid = false;

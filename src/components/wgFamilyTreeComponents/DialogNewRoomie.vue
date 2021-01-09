@@ -152,8 +152,7 @@ export default {
 
        // update taskorder
       this.$store.commit("createOrder");
-      // give tasks inividual taskorders, so that they wont interact with each other 
-      // add to tasks tagged as taskorder, then shift
+      this.$store.commit("updateTasks");
 
       let indexOfRoomie = this.$store.state.roomies.indexOf(roomie);
 
