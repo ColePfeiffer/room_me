@@ -41,6 +41,7 @@
                 :task="task"
                 @show-check-off-task="showCheckOffTask"
                 @show-cancel-task="showCancelTask"
+                  @recreate-task="recreateTask"
               ></CleaningTask>
             </div>
           </div>
@@ -66,6 +67,7 @@
               :task="task"
               @show-check-off-task="showCheckOffTask"
               @show-cancel-task="showCancelTask"
+              @recreate-task="recreateTask"
             ></CleaningTask>
           </div>
         </div>
@@ -79,7 +81,7 @@ import CleaningTask from "./CleaningTask";
 
 export default {
   name: "CleaningTabs",
-  emits: ["show-check-off-task", "show-cancel-tasks"],
+  emits: ["show-check-off-task", "show-cancel-tasks", "recreate-task"],
   props: {},
   data() {
     return {};
@@ -90,6 +92,9 @@ export default {
     },
     showCancelTask(existingTask) {
       this.$emit("show-cancel-task", existingTask);
+    },
+    recreateTask(existingTask) {
+      this.$emit("recreate-task", existingTask);
     },
   },
   components: {

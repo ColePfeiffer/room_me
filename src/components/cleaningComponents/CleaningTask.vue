@@ -92,7 +92,7 @@ export default {
   props: {
     ["task"]: Object,
   },
-  emits: ["show-check-off-task", "show-cancel-task"],
+  emits: ["show-check-off-task", "show-cancel-task", "recreate-task"],
   data() {
     return {
       showDialogFinishUp: false,
@@ -115,28 +115,25 @@ export default {
     },
     doingExtraWork() {
       let roomieWhoDidTheTask = this.$store.getters.currentUser;
-      let roomieTaskIsAssignedTo = this.task.assignedTo;
-
-      console.log(
-        roomieWhoDidTheTask.username + " " + roomieTaskIsAssignedTo.username
-      );
-
-      console.log(this.task.orderType);
 
       let indexOfRoomieWhoDidtheTask;
 
       this.task.order.forEach((orderElement, index) => {
         if (orderElement.roomie === roomieWhoDidTheTask) {
           indexOfRoomieWhoDidtheTask = index;
+          // Move roomie to the last position
+          this.task.order.push(
+            this.task.order.splice(indexOfRoomieWhoDidtheTask, 1)[0]
+          );
         }
       });
 
-    // Move roomie to the last position
-    this.task.order.push(this.task.order.splice(indexOfRoomieWhoDidtheTask, 1)[0]);
+      // set complete for roomie who did it
+      //this.$emit("mark-as-complete", {task: this.task, setForCurrentUser: true});
 
-    // recreate task, mark as complete
+      // recreate task
+      this.$emit("recreate-task", this.task);
 
-    
       // DECLINE
       // A gibt ab. Order: A, B, C, D
       // shift() -> B und A tauschen Plätze.

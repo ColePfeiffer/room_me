@@ -27,12 +27,13 @@
       :showDialog="showDialogNewTask"
       :view="taskView"
       :existingTask="existingTask"
+      :callRecreateTask="callRecreateTask"
       @toggle-visibility="toggleDialogTask(false)"
     ></DialogTask>
 
     <v-row align="center" justify="center" no-gutters>
       <v-col xs="12" sm="9" md="9" m="9">
-        <CleaningTabs @show-check-off-task="showCheckOffTask" @show-cancel-task="showCancelTask"></CleaningTabs>
+        <CleaningTabs @show-check-off-task="showCheckOffTask" @show-cancel-task="showCancelTask" @recreate-task="recreateTask"></CleaningTabs>
       </v-col>
     </v-row>
   </v-container>
@@ -52,6 +53,7 @@ export default {
       fab: false,
       showDialogNewTask: false,
       taskView: 'NEW_TASK',
+      callRecreateTask: false,
       existingTask: {},
     };
   },
@@ -74,6 +76,12 @@ export default {
       this.taskView = 'CANCEL_TASK';
       this.showDialogNewTask = true;
 
+    },
+
+    recreateTask(existingTask) {
+      this.existingTask = existingTask;
+      console.log("CP " + this.existingTask.name);
+      this.callRecreateTask = !this.callRecreateTask;
     },
   },
 };

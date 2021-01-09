@@ -291,6 +291,7 @@ export default {
     showDialog: Boolean,
     view: String,
     existingTask: Object,
+    callRecreateTask: Boolean,
   },
   created() {
     console.log(this.view);
@@ -341,7 +342,10 @@ export default {
         this.task.createdBy = this.$store.getters.currentUser;
         this.task.taskorder = new Array(this.$store.state.taskorder);
 
-        if (this.task.orderType === "STANDARD" && (this.task.status === 0 || this.task.status === 1)) {
+        if (
+          this.task.orderType === "STANDARD" &&
+          (this.task.status === 0 || this.task.status === 1)
+        ) {
           console.log("Using Standard Order!");
           this.task.order = this.$store.state.taskorder.slice();
 
@@ -352,7 +356,7 @@ export default {
           this.$store.commit("moveTaskorder");
         } else {
           console.log("Using Custom Order!");
-          console.log(          this.task.orderType);
+          console.log(this.task.orderType);
           this.task.assignedTo = this.getRoomieFromCustomOrder(this.task);
 
           this.moveTaskorder(this.task);
@@ -363,15 +367,24 @@ export default {
         this.closeDialog();
       }
     },
+    markAsComplete(setForCurrentUser) {
+      if(setForCurrentUser){
+        this.existingTask.assignedTo = this.$store.getters.currentUser;
+      }
+      this.existingTask.completedOn = this.currentDate;
+      this.existingTask.status = 3;
+    },
     recreateTask() {
       console.log("recreate task");
+
+      console.log(this.existingTask.assignedTo);
+
       let newEndDate = this.addDays(
         this.existingTask.completedOn,
         this.existingTask.numberOfDaysInBetween
       )
         .toISOString()
         .substr(0, 10);
-
 
       this.moveTaskorder(this.existingTask);
 
@@ -399,8 +412,7 @@ export default {
     },
 
     checkOffTask() {
-      this.existingTask.status = 3;
-      this.existingTask.completedOn = this.currentDate;
+      this.markAsComplete(false);
       this.recreateTask();
       this.closeDialog();
     },
@@ -499,6 +511,44 @@ export default {
     },
     toggleCalendar() {
       this.showDialogCalendar = !this.showDialogCalendar;
+    },
+  },
+  watch: {
+    // rename
+    callRecreateTask: function () {
+      this.markAsComplete(true);
+      // user task is assigned to needs to 
+
+      let newEndDate = this.addDays(
+        this.existingTask.completedOn,
+        this.existingTask.numberOfDaysInBetween
+      )
+        .toISOString()
+        .substr(0, 10);
+
+      // creating a new task with the data of the old one
+      let newTask = {
+        id: uuid.v4(),
+        name: this.existingTask.name,
+        description: this.existingTask.description,
+        comment: "",
+        status: 0, // Status: 0 - offen, accepted: 1, declined: 2, done: 3
+        createdBy: this.existingTask.createdBy,
+        // needs to utilize vacation mode
+        assignedTo: this.getRoomieFromCustomOrder(this.existingTask),
+        // doneBy,
+        currentEndDate: newEndDate,
+        completedOn: "",
+        numberOfDaysInBetween: this.existingTask.numberOfDaysInBetween,
+        orderType: this.existingTask.orderType,
+        order: this.existingTask.order,
+      };
+
+      // add to taskList
+      this.$store.state.taskList.push(newTask);
+      console.log("recreate done");
+
+    // this.recreateTask();
     },
   },
 };
