@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       basicCounterForNewOrder: -1,
-      newOrder: this.$store.state.standardOrder // { roomie: ... , isAssignedToTasK: true/false }
+      newOrder: this.$store.state.taskorder // { roomie: ... , isAssignedToTasK: true/false }
     };
   },
   created() {

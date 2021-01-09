@@ -52,13 +52,13 @@
           <v-card-actions>
             <v-btn color="pink" text>Task Order</v-btn>
             <v-spacer></v-spacer>
-            <v-btn icon @click="showTaskOrder = !showTaskOrder">
-              <v-icon>{{ showTaskOrder ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            <v-btn icon @click="showTaskorder = !showTaskorder">
+              <v-icon>{{ showTaskorder ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
             </v-btn>
           </v-card-actions>
 
           <v-expand-transition>
-            <TaskOrder :showStandardOrder="true" v-show="showTaskOrder"></TaskOrder>
+            <TaskOrder v-show="showTaskorder"></TaskOrder>
           </v-expand-transition>
         </v-card>
       </v-col>
@@ -75,7 +75,7 @@ export default {
   data: () => ({
     show: false,
     showKitchen: false,
-    showTaskOrder: false
+    showTaskorder: false
   })
 };
 </script>

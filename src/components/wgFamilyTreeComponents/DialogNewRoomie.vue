@@ -27,7 +27,11 @@
               v-model="roomId"
               :color="color"
               name="roomId"
-              :placeholder="getEmptyRooms.length >= 1 ? 'Select an empty room' : 'No empty rooms'"
+              :placeholder="
+                getEmptyRooms.length >= 1
+                  ? 'Select an empty room'
+                  : 'No empty rooms'
+              "
               item-text="name"
               item-value="id"
               label="Room"
@@ -38,22 +42,35 @@
 
             <!-- Creation Type -->
             <v-radio-group v-model="creationType">
-              <v-radio label="create roomie by invitation" value="INVITE" :color="color"></v-radio>
-              <v-radio label="create dummy roomie" value="DUMMY" :color="color"></v-radio>
+              <v-radio
+                label="create roomie by invitation"
+                value="INVITE"
+                :color="color"
+              ></v-radio>
+              <v-radio
+                label="create dummy roomie"
+                value="DUMMY"
+                :color="color"
+              ></v-radio>
             </v-radio-group>
-            <div
-              v-if="creationType == 'DUMMY'"
-            >Dummy roomies aren't real roomies. They are used to complete the family tree.</div>
-            <div
-              v-else-if="creationType == 'INVITE'"
-            >Generate an invitation code and send it to your new roommate. While creating an account, they will be asked for their code. Doesn't work yet!</div>
+            <div v-if="creationType == 'DUMMY'">
+              Dummy roomies aren't real roomies. They are used to complete the
+              family tree.
+            </div>
+            <div v-else-if="creationType == 'INVITE'">
+              Generate an invitation code and send it to your new roommate.
+              While creating an account, they will be asked for their code.
+              Doesn't work yet!
+            </div>
           </v-card-text>
 
           <v-card-actions>
             <v-row justify="space-around">
               <v-col cols="4"></v-col>
               <v-col cols="4">
-                <v-btn color="pink" :disabled="!valid" @click="createRoomie">Create</v-btn>
+                <v-btn color="pink" :disabled="!valid" @click="create"
+                  >Create</v-btn
+                >
               </v-col>
               <v-col cols="4">
                 <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
@@ -74,7 +91,7 @@ export default {
   emits: ["toggle-visibility"],
 
   props: {
-    showDialog: Boolean
+    showDialog: Boolean,
   },
   data() {
     return {
@@ -84,33 +101,66 @@ export default {
       roomId: "",
       valid: true,
       rules: {
-        required: value => !!value || "Required."
-      }
+        required: (value) => !!value || "Required.",
+      },
     };
   },
   computed: {
     getEmptyRooms() {
-      return this.$store.state.rooms.filter(function(room) {
+      return this.$store.state.rooms.filter(function (room) {
         return room.currentRoomie === "EMPTY";
       });
-    }
+    },
   },
   methods: {
     closeDialog() {
       this.$emit("toggle-visibility");
     },
-    createRoomie() {
+    create() {
       // if this returns true, all required fields are filled out
       if (this.$refs.form.validate()) {
         if (this.creationType == "INVITE") {
           if (this.$store.state.debug)
             console.log("Generate code. NOT YET IMPLEMENTED.");
+             this.createRoomie();
         } else if (this.creationType == "DUMMY") {
           if (this.$store.state.debug) console.log("Created dummy");
 
           this.createDummy();
         }
       }
+    },
+        createRoomie() {
+      // create dummy
+      let roomie = {
+         id: uuid.v4(),
+          username: this.name,
+         description: "No description. Lame.",
+          profilePicture: "https://i.gifer.com/T7n8.gif",
+          moveInDate: new Date(2015, 10, 15),
+          moveOutDate: new Date(2019, 5, 3),
+          movedOut: false,
+          balance: 0,
+          color: "#1F85DE",
+          selected: true,
+          showProfilePage: false,
+          isLoggedIn: false
+      };
+    
+      //push to dummy array
+      this.$store.state.roomies.push(roomie);
+
+       // update taskorder
+      this.$store.commit("createOrder");
+      // give tasks inividual taskorders, so that they wont interact with each other 
+      // add to tasks tagged as taskorder, then shift
+
+      let indexOfRoomie = this.$store.state.roomies.indexOf(roomie);
+
+      // add ref to dummy to selected Room
+      this.selectRoom(this.roomId).currentRoomie = this.$store.state.roomies[
+        indexOfRoomie
+      ];
     },
     createDummy() {
       // create dummy
@@ -123,7 +173,7 @@ export default {
         showProfilePage: false,
         movedOut: false,
         moveInDate: new Date(),
-        moveOutDate: ""
+        moveOutDate: "",
       };
 
       //push to dummy array
@@ -138,8 +188,8 @@ export default {
     },
 
     selectRoom(roomId) {
-      return this.$store.state.rooms.find(room => room.id === roomId);
-    }
-  }
+      return this.$store.state.rooms.find((room) => room.id === roomId);
+    },
+  },
 };
 </script>

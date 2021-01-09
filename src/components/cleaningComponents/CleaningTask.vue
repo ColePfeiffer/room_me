@@ -110,7 +110,15 @@ export default {
       alert("Not implemented yet.");
     },
     doingExtraWork(){
+      let currentUser = this.$store.getters.currentUser;
+      let roomieTaskIsAssignedTo = this.task.assignedTo;
+
+      console.log(currentUser.username + " " + roomieTaskIsAssignedTo.username);
+      console.log(this.task.order);
+
+
       // C hat für B gemacht.
+      
       // C rutscht nach ganz hinten, B bleibt vorne.
       // DECLINE
       // A gibt ab. Order: A, B, C, D

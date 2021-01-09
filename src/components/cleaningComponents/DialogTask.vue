@@ -79,7 +79,7 @@
             </v-row>
             <v-row align="center" justify="center" no-gutters>
               <v-col cols="6">
-                <v-radio-group v-model="orderType">
+                <v-radio-group v-model="task.orderType">
                   <v-radio
                     label="normal order"
                     value="STANDARD"
@@ -93,17 +93,17 @@
                 </v-radio-group>
               </v-col>
 
-              <v-col cols="6" v-if="orderType == 'STANDARD'"
+              <v-col cols="6" v-if="task.orderType == 'STANDARD'"
                 >Everyone has to do this task. No extras.</v-col
               >
-              <v-col cols="6" v-else-if="orderType == 'CUSTOM'"
+              <v-col cols="6" v-else-if="task.orderType == 'CUSTOM'"
                 >This task should only be assigned to certain roomies.</v-col
               >
             </v-row>
 
             <!-- Change Order -->
             <v-row align="center" justify="center" no-gutters>
-              <v-col v-if="orderType == 'CUSTOM'">
+              <v-col v-if="task.orderType == 'CUSTOM'">
                 <TaskOrder
                   :order="task.order"
                   @orderChanged="updateOrder"
@@ -300,16 +300,6 @@ export default {
       color: "#FF6F00", //dialogColor
       showDialogCalendar: false,
       dateInCalendar: "",
-
-      // CHECK OFF VARS
-
-      roomieFound: false,
-      currentDate: new Date().toISOString().substr(0, 10),
-
-      // NEW TASK VARS
-      orderType: "STANDARD", // STANDARD, CUSTOM
-      switchDecline: "DECLINE", // DECLINE, SWITCH
-      EndDateIsDisabled: true,
       valid: true, // for validation
       task: {
         id: 0,
@@ -323,9 +313,18 @@ export default {
         currentEndDate: new Date().toISOString().substr(0, 10),
         completedOn: "",
         numberOfDaysInBetween: "",
-        order: this.$store.state.standardOrder,
-        //swapDecline: [{ roomie: "ref", type: "", comment: "" }]
+         orderType: "STANDARD", // STANDARD, CUSTOM
+        order: this.$store.state.taskorder.slice(),
       },
+      
+      // CHECK OFF VARS
+      roomieFound: false,
+      currentDate: new Date().toISOString().substr(0, 10),
+
+      // NEW TASK VARS
+      switchDecline: "DECLINE", // DECLINE, SWITCH
+      EndDateIsDisabled: true,
+
       rules: {
         required: (value) => !!value || "Required.",
       },
@@ -338,19 +337,21 @@ export default {
         // set data
         this.task.id = uuid.v4();
         this.task.createdBy = this.$store.getters.currentUser;
+        this.task.taskorder = new Array(this.$store.state.taskorder);
 
-        // Assigning Task to next Roomie using the Task Order
-        if (this.orderType === "STANDARD") {
+        if (this.task.orderType === "STANDARD") {
           console.log("Using Standard Order!");
-          this.task.assignedTo = this.$store.state.standardOrder[0].roomie;
-          this.$store.commit(
-            "setLastRoomieSelectedForStandardOrder",
-            this.task.assignedTo
-          );
-          this.$store.commit("moveTaskOrder");
+          this.task.order = this.$store.state.taskorder.slice();
+
+          // Assigning the task to a roomie, using taskorder
+          this.task.assignedTo = this.$store.state.taskorder[0].roomie;
+
+          // Moving the standard taskorder by one position, so that next time a task will be created another roomie will be the one who starts
+          this.$store.commit("moveTaskorder");
         } else {
           console.log("Using Custom Order!");
-          this.task.assignedTo = this.getRoomieFromCustomOrder();
+          this.task.assignedTo = this.getRoomieFromCustomOrder(this.task);
+          this.moveTaskorder(this.task); 
         }
 
         // add to taskList and close Dialog
@@ -359,23 +360,27 @@ export default {
       }
     },
     recreateTask() {
+      console.log("recreate task")
       let newEndDate = this.addDays(
         this.existingTask.completedOn,
         this.existingTask.numberOfDaysInBetween
       )
         .toISOString()
         .substr(0, 10);
+      
+      console.log("1 " +this.existingTask.assignedTo.username);
+      this.moveTaskorder(this.existingTask);
 
+      // creating a new task with the data of the old one
       let newTask = {
         id: uuid.v4(),
         name: this.existingTask.name,
         description: this.existingTask.description,
         comment: "",
-
         status: 0, // Status: 0 - offen, accepted: 1, declined: 2, done: 3
         createdBy: this.existingTask.createdBy,
         // needs to utilize vacation mode
-        assignedTo: this.getRoomieFromCustomOrder(),
+        assignedTo: this.getRoomieFromCustomOrder(this.existingTask),
         // doneBy,
         currentEndDate: newEndDate,
         completedOn: "",
@@ -383,8 +388,13 @@ export default {
         order: this.existingTask.order,
       };
 
+
+      console.log("2" + newTask.assignedTo.username);
+      
+
       // add to taskList
       this.$store.state.taskList.push(newTask);
+      console.log("recreate done")
     },
 
     checkOffTask() {
@@ -403,30 +413,39 @@ export default {
       this.task.order = newOrder;
       console.log("Order changed!");
     },
-    getRoomieFromCustomOrder() {
+
+    // goes through the tasks order property to get the next roomie assigned to the task; then shifts once more.
+    // returns the roomie
+    getRoomieFromCustomOrder(task) {
       let roomieTaskGetsAssignedTo;
+
       let roomieFound = false;
       while (!roomieFound) {
-        if (this.task.order[0].isAssignedToTask === true) {
+        if (task.order[0].isAssignedToTask === true) {
           if (this.$store.state.debug)
             console.log(
-              "Assigning " +
-                this.task.order[0].roomie.username +
-                " to the job. "
+              "Task assigned to " + 
+               task.order[0].roomie.username + "."
+                
             );
           roomieFound = true;
-          roomieTaskGetsAssignedTo = this.task.order[0].roomie;
+          roomieTaskGetsAssignedTo = task.order[0].roomie;
         } else {
           if (this.$store.state.debug)
             console.log(
-              this.task.order[0].roomie.username +
-                " isn't assigned, going to the next roomie by shifting once..."
+              task.order[0].roomie.username +
+                " isn't assigned to this task, going to the next roomie by shifting once..."
             );
-          this.task.order.push(this.task.order.shift());
+          
+          this.moveTaskorder(task);
         }
       }
-      this.task.order.push(this.task.order.shift());
       return roomieTaskGetsAssignedTo;
+    },
+    // Moving the first element of the array to the last index
+    moveTaskorder(task){
+      task.order.push(task.order.shift());
+      console.log("Taskorder was moved. Index 0 " + task.order[0].roomie.username)
     },
     reset() {
       this.task = {
@@ -442,11 +461,11 @@ export default {
         currentEndDate: new Date().toISOString().substr(0, 10),
         completedOn: "",
         numberOfDaysInBetween: "",
-        order: this.$store.state.standardOrder,
+         orderType: "STANDARD", // STANDARD, CUSTOM
+        order: this.$store.state.taskorder.slice(0)
       };
       this.EndDateIsDisabled = true;
       this.valid = false;
-      this.orderType = "STANDARD";
 
       // Resetting CHECK_OFF vars
       this.currentDate = new Date().toISOString().substr(0, 10);

@@ -10,8 +10,8 @@ export default new Vuex.Store({
     phone: false,
 
     // Task Management
-    standardOrder: [], // array, holds references to roomie objects within roomies
-    lastRoomieSelectedForStandardOrder: "",
+    taskorder: [], // array, holds references to roomie objects within roomies
+    lastRoomieSelectedForTaskorder: "",
     timeOptions: [
       { text: "Every day", days: 1 },
       { text: "Every week", days: 7 },
@@ -49,27 +49,29 @@ export default new Vuex.Store({
     getRoomieByID(state, id) {
       return state.roomies.find(roomie => roomie.id === id);
     },
-    getRoomieFromTaskOrder(state, commit) {
-      let roomieTaskGetsAssignedTo = state.standardOrder[0];
-      commit.moveTaskOrder(state);
+    getRoomieFromTaskorder(state, commit) {
+      let roomieTaskGetsAssignedTo = state.taskorder[0];
+      commit.moveTaskorder(state);
       return roomieTaskGetsAssignedTo;
     }
   },
   mutations: {
     // creates the standard order based on the order in the roomie array
     createOrder(state) {
-      state.standardOrder = [];
+      state.taskorder = [];
 
       for (let i = 0; i < state.roomies.length; i++) {
-        state.standardOrder.push({
+        state.taskorder.push({
           roomie: state.roomies[i],
           isAssignedToTask: true
         });
+        console.log(state.roomies.[i].username);
       }
       if (state.debug) console.log("Order created.");
+     
     },
-    moveTaskOrder(state) {
-      state.standardOrder.push(state.standardOrder.shift());
+    moveTaskorder(state) {
+      state.taskorder.push(state.taskorder.shift());
       console.log("Standard Order shifted!");
     },
     // Setters and Toggles
@@ -95,8 +97,8 @@ export default new Vuex.Store({
       let roomie = state.roomies.find(roomie => roomie.id === roomieId);
       roomie.isLoggedIn = true;
     },
-    setLastRoomieSelectedForStandardOrder(state, roomie) {
-      state.lastRoomieSelectedForStandardOrder = roomie;
+    setLastRoomieSelectedForTaskorder(state, roomie) {
+      state.lastRoomieSelectedFortaskorder = roomie;
     }
   }
 });
