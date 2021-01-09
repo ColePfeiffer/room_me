@@ -1,5 +1,9 @@
 <template>
-  <div class="mouseOverMe" @mouseover ="cardIsActive = true" @mouseout ="cardIsActive = false">
+  <div
+    class="mouseOverMe"
+    @mouseover="cardIsActive = true"
+    @mouseout="cardIsActive = false"
+  >
     <v-row dense class="paddingCards">
       <v-col cols="12">
         <v-card class="cleaningCards">
@@ -106,25 +110,38 @@ export default {
     toggleDialogDeclineTask(newState) {
       this.showDialogDeclineTask = newState;
     },
-    remindMe(){
+    remindMe() {
       alert("Not implemented yet.");
     },
-    doingExtraWork(){
-      let currentUser = this.$store.getters.currentUser;
+    doingExtraWork() {
+      let roomieWhoDidTheTask = this.$store.getters.currentUser;
       let roomieTaskIsAssignedTo = this.task.assignedTo;
 
-      console.log(currentUser.username + " " + roomieTaskIsAssignedTo.username);
-      console.log(this.task.order);
+      console.log(
+        roomieWhoDidTheTask.username + " " + roomieTaskIsAssignedTo.username
+      );
 
+      console.log(this.task.orderType);
 
-      // C hat für B gemacht.
-      
-      // C rutscht nach ganz hinten, B bleibt vorne.
+      let indexOfRoomieWhoDidtheTask;
+
+      this.task.order.forEach((orderElement, index) => {
+        if (orderElement.roomie === roomieWhoDidTheTask) {
+          indexOfRoomieWhoDidtheTask = index;
+        }
+      });
+
+    // Move roomie to the last position
+    this.task.order.push(this.task.order.splice(indexOfRoomieWhoDidtheTask, 1)[0]);
+
+    // recreate task, mark as complete
+
+    
       // DECLINE
       // A gibt ab. Order: A, B, C, D
       // shift() -> B und A tauschen Plätze.
       // Kommentar im Task oder auf der Pinnwand/Chat
-    }
+    },
   },
   computed: {
     isUserLoggedIn() {
@@ -139,7 +156,7 @@ export default {
 </script>
 
 <style scoped>
-.mouseOverMe{
+.mouseOverMe {
   display: block;
 }
 .cleaningCards {
