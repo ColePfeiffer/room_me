@@ -8,7 +8,7 @@ export default new Vuex.Store({
     // For Debugging
     debug: true,
     phone: false,
-
+    showToolTips: false,
     // Task Management
     taskorder: [], // array, holds references to roomie objects within roomies
     lastRoomieSelectedForTaskorder: "",
@@ -73,10 +73,7 @@ export default new Vuex.Store({
 
     // This function updates the taskorder-property for each task that uses the standard order
     updateTasks(state){
-      console.log(state.taskList);
-
       state.taskList.forEach(task => {
-        console.log("HMM " + task.orderType);
         if(task.orderType === "STANDARD"){
           // Adding the last roomie to the taskorder
           task.order.push({
@@ -91,21 +88,26 @@ export default new Vuex.Store({
     },
     moveTaskorder(state) {
       state.taskorder.push(state.taskorder.shift());
-      console.log("Standard Order shifted!");
+      if(state.debug) console.log("Standard Order shifted!");
     },
     // Setters and Toggles
     incrementNumberOfRooms(state) {
       state.numberOfRooms += 1;
-      console.log("NumberOfRooms set to " + state.numberOfRooms);
+      if(state.debug) console.log("NumberOfRooms set to " + state.numberOfRooms);
     },
     toggleDebug(state) {
       state.debug = !state.debug;
-      console.log("Debug mode was turned " + state.debug);
+      if(state.debug) console.log("Debug mode was turned " + state.debug);
     },
 
     togglePhone(state) {
       state.phone = !state.phone;
-      console.log("Phone mode was turned " + state.phone);
+      if(state.debug) console.log("Phone mode was turned " + state.phone);
+    },
+
+    toggleShowToolTips(state) {
+      state.showToolTips = !state.showToolTips;
+      if(state.debug) console.log("Showing Tool Tips: " + state.showToolTips);
     },
 
     setCurrentUser(state, roomieId) {

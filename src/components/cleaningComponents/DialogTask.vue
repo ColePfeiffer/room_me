@@ -293,9 +293,6 @@ export default {
     existingTask: Object,
     callTakeOverFunction: Boolean,
   },
-  created() {
-    console.log(this.view);
-  },
   data() {
     return {
       color: "#FF6F00", //dialogColor
@@ -346,7 +343,7 @@ export default {
           this.task.orderType === "STANDARD" &&
           (this.task.status === 0 || this.task.status === 1)
         ) {
-          console.log("Using Standard Order!");
+          if (this.$store.state.debug) console.log("Using Standard Order!");
           this.task.order = this.$store.state.taskorder.slice();
 
           // Assigning the task to a roomie, using taskorder
@@ -355,8 +352,8 @@ export default {
           // Moving the standard taskorder by one position, so that next time a task will be created another roomie will be the one who starts
           this.$store.commit("moveTaskorder");
         } else {
-          console.log("Using Custom Order!");
-          console.log(this.task.orderType);
+          if (this.$store.state.debug) console.log("Using Custom Order!");
+
           this.task.assignedTo = this.getRoomieFromCustomOrder(this.task);
 
           this.moveTaskorder(this.task);
@@ -368,17 +365,13 @@ export default {
       }
     },
     markAsComplete(setForCurrentUser) {
-      if(setForCurrentUser){
+      if (setForCurrentUser) {
         this.existingTask.assignedTo = this.$store.getters.currentUser;
       }
       this.existingTask.completedOn = this.currentDate;
       this.existingTask.status = 3;
     },
     recreateTask() {
-      console.log("recreate task");
-
-      console.log(this.existingTask.assignedTo);
-
       let newEndDate = this.addDays(
         this.existingTask.completedOn,
         this.existingTask.numberOfDaysInBetween
@@ -408,7 +401,6 @@ export default {
 
       // add to taskList
       this.$store.state.taskList.push(newTask);
-      console.log("recreate done");
     },
 
     checkOffTask() {
@@ -424,7 +416,7 @@ export default {
     },
     updateOrder(newOrder) {
       this.task.order = newOrder;
-      console.log("Order changed!");
+      if(this.$store.state.debug) console.log("Order changed!");
     },
 
     // goes through the tasks order property to get the next roomie assigned to the task; then shifts once more.
@@ -531,7 +523,7 @@ export default {
       });
 
       this.markAsComplete(true);
-      // user task is assigned to needs to 
+      // user task is assigned to needs to
 
       let newEndDate = this.addDays(
         this.existingTask.completedOn,
@@ -560,7 +552,6 @@ export default {
 
       // add to taskList
       this.$store.state.taskList.push(newTask);
-      console.log("recreate done");
     },
   },
 };

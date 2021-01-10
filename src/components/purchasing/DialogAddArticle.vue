@@ -137,7 +137,8 @@
                 </fieldset>
               </v-col>
             </v-row>
-
+          </v-card-text>
+          <v-card-actions>
             <!-- Buttons -->
             <v-row justify="space-around">
               <v-col cols="4"></v-col>
@@ -149,9 +150,8 @@
               <v-col cols="4">
                 <v-btn color="gray" @click="closeDialog">Close</v-btn>
               </v-col>
-            </v-row>
-          </v-card-text>
-          <v-card-actions></v-card-actions>
+            </v-row></v-card-actions
+          >
         </v-container>
       </v-form>
 
@@ -382,7 +382,7 @@ export default {
 
         this.closeDialog();
       } else {
-        if (this.$store.state.debug) console.log("Nah.");
+        if (this.$store.state.debug) console.log("Missing data.");
       }
     },
 

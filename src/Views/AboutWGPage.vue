@@ -15,19 +15,19 @@
         </v-btn>
       </template>
 
-      <v-btn fab dark small color="orange" class="ma-2 white--text">
+      <v-btn fab dark small color="orange" @click="$store.commit('toggleShowToolTips')">
         <v-icon>mdi-help</v-icon>
         <div class="fab-text-custom orange">Help</div>
       </v-btn>
-
-      <v-btn fab dark small color="pink" @click="showDialogForRoomManager = true">
-        <v-icon>mdi-pencil</v-icon>
-        <div class="fab-text-custom pink">Room Manager</div>
-      </v-btn>
-      <v-btn fab dark small color="black" @click="showDialogForNewRoomie = true">
+      <v-btn fab dark small color="pink" @click="showDialogForNewRoomie = true">
         <v-icon>mdi-plus</v-icon>
-        <div class="fab-text-custom black">Add roomie</div>
+        <div class="fab-text-custom pink">Add roomie</div>
       </v-btn>
+      <v-btn fab dark small color="black" @click="showDialogForRoomManager = true">
+        <v-icon>mdi-pencil</v-icon>
+        <div class="fab-text-custom black">Room Manager</div>
+      </v-btn>
+
     </v-speed-dial>
 
     <DialogNewRoomie
@@ -73,7 +73,8 @@ export default {
     return {
       fab: false,
       showDialogForNewRoomie: false,
-      showDialogForRoomManager: false
+      showDialogForRoomManager: false,
+
     };
   },
   methods: {}
