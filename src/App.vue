@@ -200,31 +200,16 @@ export default {
       this.$store.state.taskList.push(
         {
           id: 0,
-          name: "Küche putzen",
-          description: "Küche muss geschrubbat werdn.",
+          name: "Cleaning the kitchen",
+          description: "",
           comment: "",
           status: 0,
           createdBy: this.$store.state.roomies[0],
           assignedTo: this.$store.state.roomies[0],
-          // doneBy,
           currentEndDate: new Date().toISOString().substr(0, 10),
           completedOn: "",
           numberOfDaysInBetween: "7",
-          order: []
-        },
-        {
-          id: 3233,
-          name: "Müll rausbringen",
-          description: "Glasmüll auch.",
-          comment: "",
-          status: 0,
-          createdBy: this.$store.state.roomies[2],
-          assignedTo: this.$store.state.roomies[3],
-          // doneBy,
-          currentEndDate: new Date().toISOString().substr(0, 10),
-          completedOn: "",
-          numberOfDaysInBetween: "7",
-          order: [],
+          order: [{roomie: this.$store.state.roomies[0], isAssignedToTask: true}, {roomie: this.$store.state.roomies[1], isAssignedToTask: true}, {roomie: this.$store.state.roomies[2], isAssignedToTask: true} ]
         }
       );
     }

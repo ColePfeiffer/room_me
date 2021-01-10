@@ -10,13 +10,13 @@
           </v-tab>
 
           <v-tab href="#tab-2">
-            Pending
+            Shopping Cart
             <v-icon color="pink">mdi-cart</v-icon>
           </v-tab>
 
           <v-tab href="#tab-3">
-            Done
-            <v-icon color="green">mdi-checkbox-multiple-marked-circle</v-icon>
+            Bought
+            <v-icon color="green">euro</v-icon>
           </v-tab>
 
           <v-tab-item class="someStyling" v-for="i in 3" :key="i" :value="'tab-' + i">

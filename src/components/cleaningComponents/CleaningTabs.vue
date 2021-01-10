@@ -4,7 +4,7 @@
       <v-tabs-slider color="pink"></v-tabs-slider>
       <v-tab href="#tab-1">
         Task
-        <v-icon color="pink">mdi-note</v-icon>
+        <v-icon color="pink">mdi-broom</v-icon>
       </v-tab>
 
       <v-tab href="#tab-2">
