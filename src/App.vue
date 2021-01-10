@@ -69,7 +69,6 @@ export default {
   }),
   computed: {
     currentRouteName() {
-      console.log("path" + this.$router.history.current.path);
       return this.$router.history.current.path;
     }
   },

@@ -1,81 +1,112 @@
 <template>
   <v-container>
-    <!-- Fab Button -->
-    <v-speed-dial
-      class="fab-button"
-      color="pink"
-      v-model="fab"
-      fixed
-      right
-      bottom
-      slide-y-reverse-transition
-    >
-      <template v-slot:activator>
-        <v-btn v-model="fab" dark fab>
-          <v-icon v-if="fab">mdi-close</v-icon>
-          <v-icon v-else>mdi-plus</v-icon>
-        </v-btn>
+    <overlay :showOverlay="showOverlay" @toggle-overlay="toggleOverlay">
+      <template v-slot:content>
+        <!-- Fab Button -->
+        <v-speed-dial
+          class="fab-button"
+          color="pink"
+          v-model="fab"
+          fixed
+          right
+          bottom
+          slide-y-reverse-transition
+        >
+          <template v-slot:activator>
+            <v-btn v-model="fab" dark fab>
+              <v-icon v-if="fab">mdi-close</v-icon>
+              <v-icon v-else>mdi-plus</v-icon>
+            </v-btn>
+          </template>
+
+          <v-btn fab dark small color="orange" @click="toggleOverlay">
+            <v-icon>mdi-help</v-icon>
+            <div class="fab-text-custom orange">Help</div>
+          </v-btn>
+          <v-btn fab dark small color="pink" @click="toggleDialogTask(true)">
+            <v-icon>mdi-broom</v-icon>
+            <div class="fab-text-custom pink">Add to task list</div>
+          </v-btn>
+        </v-speed-dial>
+        <!-- Dialogs -->
+        <DialogTask
+          :showDialog="showDialogNewTask"
+          :view="taskView"
+          :existingTask="existingTask"
+          :callTakeOverFunction="callTakeOverFunction"
+          @toggle-visibility="toggleDialogTask(false)"
+        ></DialogTask>
+
+        <v-row align="center" justify="center" no-gutters>
+          <v-col xs="12" sm="9" md="9" m="9">
+            <CleaningTabs
+              @show-check-off-task="showCheckOffTask"
+              @show-cancel-task="showCancelTask"
+              @take-task-over="takeTaskOver"
+            ></CleaningTabs>
+          </v-col>
+        </v-row>
       </template>
+      <template v-slot:overlayText>
+        <v-card-title primary-title>
+          <div>
+            <h3 class="headline mb-0">Create and organize Tasks</h3>
+          </div>
+        </v-card-title>
 
-      <v-btn fab dark small color="pink" @click="toggleDialogTask(true)">
-        <v-icon>mdi-broom</v-icon>
-        <div class="fab-text-custom pink">Add to task list</div>
-      </v-btn>
-    </v-speed-dial>
-    <!-- Dialogs -->
-    <DialogTask
-      :showDialog="showDialogNewTask"
-      :view="taskView"
-      :existingTask="existingTask"
-      :callTakeOverFunction="callTakeOverFunction"
-      @toggle-visibility="toggleDialogTask(false)"
-    ></DialogTask>
-
-    <v-row align="center" justify="center" no-gutters>
-      <v-col xs="12" sm="9" md="9" m="9">
-        <CleaningTabs @show-check-off-task="showCheckOffTask" @show-cancel-task="showCancelTask" @take-task-over="takeTaskOver"></CleaningTabs>
-      </v-col>
-    </v-row>
+        <v-card-text>
+          <v-row>
+            <v-col>Here you can create tasks for your household.</v-col>
+          </v-row>
+        </v-card-text>
+      </template>
+    </overlay>
   </v-container>
 </template>
 
 <script>
 import CleaningTabs from "../components/cleaningComponents/CleaningTabs";
 import DialogTask from "../components/cleaningComponents/DialogTask";
+import overlay from "../components/UI/overlay";
 
 export default {
   components: {
     CleaningTabs,
     DialogTask,
+    overlay,
   },
   data() {
     return {
       fab: false,
       showDialogNewTask: false,
-      taskView: 'NEW_TASK',
+      taskView: "NEW_TASK",
       callTakeOverFunction: false,
       existingTask: {},
+      showOverlay: false,
     };
   },
   methods: {
-    toggleDialogTask(newState){
+    toggleOverlay() {
+      this.showOverlay = !this.showOverlay;
+      if (this.$store.state.debug)
+        console.log("Showing Overlay: " + this.showOverlay);
+    },
+    toggleDialogTask(newState) {
       this.showDialogNewTask = newState;
       //
-      if(!newState){
-        this.taskView = 'NEW_TASK';
+      if (!newState) {
+        this.taskView = "NEW_TASK";
       }
     },
     showCheckOffTask(existingTask) {
       this.existingTask = existingTask;
-      this.taskView = 'CHECK_OFF_TASK';
+      this.taskView = "CHECK_OFF_TASK";
       this.showDialogNewTask = true;
-
     },
     showCancelTask(existingTask) {
       this.existingTask = existingTask;
-      this.taskView = 'CANCEL_TASK';
+      this.taskView = "CANCEL_TASK";
       this.showDialogNewTask = true;
-
     },
 
     takeTaskOver(existingTask) {
