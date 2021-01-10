@@ -199,75 +199,57 @@
 
     <div v-else-if="view == 'CANCEL_TASK'">
       <v-card class="removeScrollbar">
-        <v-card-title primary-title>
-          <div>
-            <h3 class="headline mb-0">Can't do it?</h3>
-          </div>
-        </v-card-title>
-        <v-card-text>
-          <v-row class="mx-0">
-            <v-col cols="12">
-              <!-- Name -->
-              <v-text-field
-                :value="existingTask.name"
-                label="Task"
-                sm="6"
-                m="6"
-                prepend-icon="mdi-broom"
-                :color="color"
-                maxlength="15"
-                readonly
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <!-- Comment -->
-          <v-row class="mx-0">
-            <v-col cols="12">
-              <v-text-field
-                v-model="existingTask.comment"
-                label="Comment"
-                placeholder="Leave a note."
-                prepend-icon="comment"
-                :color="color"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row class="mx-0" align="center" justify="center"
-            ><v-col cols="6" class="d-flex" style="flex-direction: column">
-              <v-radio-group v-model="switchDecline" class="mb-1 flex-grow-1">
-                <v-radio
-                  label="decline task"
-                  value="DECLINE"
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">Can't do it?</h3>
+            </div>
+          </v-card-title>
+          <v-card-text>
+            <v-row class="mx-0">
+              <v-col cols="12">
+                <!-- Name -->
+                <v-text-field
+                  :value="existingTask.name"
+                  label="Task"
+                  sm="6"
+                  m="6"
+                  prepend-icon="mdi-broom"
                   :color="color"
-                ></v-radio>
-                <v-radio
-                  label="switch  task"
-                  value="SWITCH"
+                  maxlength="15"
+                  readonly
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <!-- Comment -->
+            <v-row class="mx-0">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="existingTask.comment"
+                  label="Explain why you can't do the task"
+                  placeholder=""
+                  prepend-icon="comment"
                   :color="color"
-                ></v-radio>
-              </v-radio-group>
-            </v-col>
-            <v-col cols="6" v-if="switchDecline == 'DECLINE'"
-              >Explain why you can't do the task in the comment field.</v-col
-            >
-            <v-col cols="6" v-else-if="switchDecline == 'SWITCH'"
-              >WIP. Not implemented yet.</v-col
-            >
-          </v-row>
-        </v-card-text>
-        <v-card-actions>
-          <v-row justify="space-around">
-            <v-col cols="4"></v-col>
-            <v-col cols="4">
-              <v-btn color="pink" @click="confirmSwitchDeclineDialog"
-                >Confirm</v-btn
-              >
-            </v-col>
-            <v-col cols="4">
-              <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
-            </v-col>
-          </v-row>
-        </v-card-actions>
+                  :rules="[rules.required]"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-actions>
+            <v-row justify="space-around">
+              <v-col cols="4"></v-col>
+              <v-col cols="4">
+                <v-btn color="pink" :disabled="!valid" @click="declineTask"
+                  >Confirm</v-btn
+                >
+              </v-col>
+              <v-col cols="4">
+                <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </div>
 
@@ -409,14 +391,27 @@ export default {
       this.closeDialog();
     },
 
-    confirmSwitchDeclineDialog() {
-      this.task.swapDecline = [
-        { id: this.id, roomie: this.roomie, type: 1, comment: this.comment },
-      ];
+    declineTask() {
+      if (this.$refs.form.validate()) {
+        // get declining Roomie
+        let decliningRoomie = this.existingTask.order[0];
+
+        // remove declining Roomie from the array
+        this.existingTask.order.splice(0, 1);
+        
+        // Assigning the task to the next roomie
+        this.existingTask.assignedTo = this.getRoomieFromCustomOrder(this.existingTask);
+
+        // Add roomie back to array, at index 1, so they will have to do the task the upcoming week.
+        this.existingTask.order.splice(1, 0, decliningRoomie);
+        // Kommentar im Task oder auf der Pinnwand/Chat
+
+        this.closeDialog();
+      }
     },
     updateOrder(newOrder) {
       this.task.order = newOrder;
-      if(this.$store.state.debug) console.log("Order changed!");
+      if (this.$store.state.debug) console.log("Order changed!");
     },
 
     // goes through the tasks order property to get the next roomie assigned to the task; then shifts once more.

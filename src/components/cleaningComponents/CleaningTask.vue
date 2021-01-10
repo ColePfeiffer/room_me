@@ -131,11 +131,6 @@ export default {
     },
     takeTaskOver() {
       this.$emit("take-task-over", this.task);
-
-      // DECLINE
-      // A gibt ab. Order: A, B, C, D
-      // shift() -> B und A tauschen Plätze.
-      // Kommentar im Task oder auf der Pinnwand/Chat
     },
   },
   computed: {
