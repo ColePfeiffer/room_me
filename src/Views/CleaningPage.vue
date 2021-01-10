@@ -27,13 +27,13 @@
       :showDialog="showDialogNewTask"
       :view="taskView"
       :existingTask="existingTask"
-      :callRecreateTask="callRecreateTask"
+      :callTakeOverFunction="callTakeOverFunction"
       @toggle-visibility="toggleDialogTask(false)"
     ></DialogTask>
 
     <v-row align="center" justify="center" no-gutters>
       <v-col xs="12" sm="9" md="9" m="9">
-        <CleaningTabs @show-check-off-task="showCheckOffTask" @show-cancel-task="showCancelTask" @recreate-task="recreateTask"></CleaningTabs>
+        <CleaningTabs @show-check-off-task="showCheckOffTask" @show-cancel-task="showCancelTask" @take-task-over="takeTaskOver"></CleaningTabs>
       </v-col>
     </v-row>
   </v-container>
@@ -53,7 +53,7 @@ export default {
       fab: false,
       showDialogNewTask: false,
       taskView: 'NEW_TASK',
-      callRecreateTask: false,
+      callTakeOverFunction: false,
       existingTask: {},
     };
   },
@@ -78,10 +78,9 @@ export default {
 
     },
 
-    recreateTask(existingTask) {
+    takeTaskOver(existingTask) {
       this.existingTask = existingTask;
-      console.log("CP " + this.existingTask.name);
-      this.callRecreateTask = !this.callRecreateTask;
+      this.callTakeOverFunction = !this.callTakeOverFunction;
     },
   },
 };

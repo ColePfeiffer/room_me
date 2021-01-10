@@ -71,7 +71,7 @@
                 v-show="!isUserLoggedIn && cardIsActive"
                 @mouseover="cardIsActive = true"
               >
-                <v-btn text @click="doingExtraWork" color="grey">
+                <v-btn text @click="takeTaskOver" color="grey">
                   <v-icon>done_all</v-icon>
                 </v-btn>
                 <v-btn text @click="remindMe" color="grey">
@@ -92,7 +92,7 @@ export default {
   props: {
     ["task"]: Object,
   },
-  emits: ["show-check-off-task", "show-cancel-task", "recreate-task"],
+  emits: ["show-check-off-task", "show-cancel-task", "take-task-over"],
   data() {
     return {
       showDialogFinishUp: false,
@@ -113,26 +113,8 @@ export default {
     remindMe() {
       alert("Not implemented yet.");
     },
-    doingExtraWork() {
-      let roomieWhoDidTheTask = this.$store.getters.currentUser;
-
-      let indexOfRoomieWhoDidtheTask;
-
-      this.task.order.forEach((orderElement, index) => {
-        if (orderElement.roomie === roomieWhoDidTheTask) {
-          indexOfRoomieWhoDidtheTask = index;
-          // Move roomie to the last position
-          this.task.order.push(
-            this.task.order.splice(indexOfRoomieWhoDidtheTask, 1)[0]
-          );
-        }
-      });
-
-      // set complete for roomie who did it
-      //this.$emit("mark-as-complete", {task: this.task, setForCurrentUser: true});
-
-      // recreate task
-      this.$emit("recreate-task", this.task);
+    takeTaskOver() {
+      this.$emit("take-task-over", this.task);
 
       // DECLINE
       // A gibt ab. Order: A, B, C, D

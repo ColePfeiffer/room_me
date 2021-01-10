@@ -18,7 +18,7 @@
         :key="i"
         :value="'tab-' + i"
       >
-        <div v-if="i == 1">
+        <div v-if="i == 1" :class="wrapper_scrollbar_classes">
           <div v-if="openTasks.length === 0 && pendingTasks.length === 0">
             <v-card class="purchasingCards">
               <v-col>
@@ -36,17 +36,17 @@
             </v-card>
           </div>
           <div v-else>
-            <div v-for="task in openTasks" :key="task.id">
+            <div v-for="task in openTasks.reverse()" :key="task.id">
               <CleaningTask
                 :task="task"
                 @show-check-off-task="showCheckOffTask"
                 @show-cancel-task="showCancelTask"
-                  @recreate-task="recreateTask"
+                  @take-task-over="takeTaskOver"
               ></CleaningTask>
             </div>
           </div>
         </div>
-        <div v-if="i == 2">
+        <div v-if="i == 2" :class="wrapper_scrollbar_classes">
           <div v-if="doneTasks.length === 0">
             <v-card class="purchasingCards">
               <v-col>
@@ -62,12 +62,12 @@
               </v-col>
             </v-card>
           </div>
-          <div v-for="task in doneTasks" :key="task.id">
+          <div v-for="task in doneTasks.reverse()" :key="task.id">
             <CleaningTask
               :task="task"
               @show-check-off-task="showCheckOffTask"
               @show-cancel-task="showCancelTask"
-              @recreate-task="recreateTask"
+              @take-task-over="takeTaskOver"
             ></CleaningTask>
           </div>
         </div>
@@ -81,10 +81,13 @@ import CleaningTask from "./CleaningTask";
 
 export default {
   name: "CleaningTabs",
-  emits: ["show-check-off-task", "show-cancel-tasks", "recreate-task"],
+  emits: ["show-check-off-task", "show-cancel-tasks", "take-task-over"],
   props: {},
   data() {
-    return {};
+    return {
+      wrapper_scrollbar_classes : ['custom-scrollbar', 'scrollbar-wrapper'],
+    };
+    
   },
   methods: {
     showCheckOffTask(existingTask) {
@@ -93,8 +96,8 @@ export default {
     showCancelTask(existingTask) {
       this.$emit("show-cancel-task", existingTask);
     },
-    recreateTask(existingTask) {
-      this.$emit("recreate-task", existingTask);
+    takeTaskOver(existingTask) {
+      this.$emit("take-task-over", existingTask);
     },
   },
   components: {
@@ -125,6 +128,33 @@ export default {
 </script>
 
 <style scoped>
+.scrollbar-wrapper {
+    max-height: 700px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 8px;
+    background-color: #fff;
+}
+.custom-scrollbar::-webkit-scrollbar
+{
+    width: 8px;
+    background-color: #fff;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    -moz-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #fff;
+}
+
 .someStyling {
   padding: 10px;
 }

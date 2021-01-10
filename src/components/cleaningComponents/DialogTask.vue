@@ -291,7 +291,7 @@ export default {
     showDialog: Boolean,
     view: String,
     existingTask: Object,
-    callRecreateTask: Boolean,
+    callTakeOverFunction: Boolean,
   },
   created() {
     console.log(this.view);
@@ -515,7 +515,21 @@ export default {
   },
   watch: {
     // rename
-    callRecreateTask: function () {
+    callTakeOverFunction: function () {
+      let roomieWhoDidTheTask = this.$store.getters.currentUser;
+
+      let indexOfRoomieWhoDidtheTask;
+
+      this.existingTask.order.forEach((orderElement, index) => {
+        if (orderElement.roomie === roomieWhoDidTheTask) {
+          indexOfRoomieWhoDidtheTask = index;
+          // Move roomie to the last position
+          this.existingTask.order.push(
+            this.existingTask.order.splice(indexOfRoomieWhoDidtheTask, 1)[0]
+          );
+        }
+      });
+
       this.markAsComplete(true);
       // user task is assigned to needs to 
 
@@ -547,8 +561,6 @@ export default {
       // add to taskList
       this.$store.state.taskList.push(newTask);
       console.log("recreate done");
-
-    // this.recreateTask();
     },
   },
 };
