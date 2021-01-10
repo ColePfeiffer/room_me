@@ -3,12 +3,12 @@
     <v-tabs fixed-tabs color="white" dark icons-and-text>
       <v-tabs-slider color="pink"></v-tabs-slider>
       <v-tab href="#tab-1">
-        Task
+        Tasks
         <v-icon color="pink">mdi-broom</v-icon>
       </v-tab>
 
       <v-tab href="#tab-2">
-        Done
+        Completed
         <v-icon color="green">mdi-checkbox-multiple-marked-circle</v-icon>
       </v-tab>
 

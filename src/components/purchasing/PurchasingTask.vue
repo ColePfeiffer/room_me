@@ -54,7 +54,7 @@
             <v-card-actions>
               <v-col class="text-right">
                 <v-btn text @click="acceptItem(item)">
-                  <v-icon>mdi-check</v-icon>
+                  <v-icon>mdi-cart</v-icon>
                 </v-btn>
                 <v-btn text @click="openDialogSplit(item)">
                   <v-icon>euro</v-icon>
