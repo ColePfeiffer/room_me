@@ -23,12 +23,17 @@
             <v-icon>mdi-help</v-icon>
             <div class="fab-text-custom orange">Help</div>
           </v-btn>
+                    <v-btn fab dark small color="pink" @click="toggleDialogEditTasks(true)">
+            <v-icon>mdi-task</v-icon>
+            <div class="fab-text-custom pink">Edit a task</div>
+          </v-btn>
           <v-btn fab dark small color="pink" @click="toggleDialogTask(true)">
             <v-icon>mdi-broom</v-icon>
-            <div class="fab-text-custom pink">Add to task list</div>
+            <div class="fab-text-custom pink">Add a task</div>
           </v-btn>
         </v-speed-dial>
         <!-- Dialogs -->
+        <TaskOverview :showDialog="showDialogEditTasks" @toggle-visibility="toggleDialogEditTasks(false)"></TaskOverview>
         <DialogTask
           :showDialog="showDialogNewTask"
           :view="taskView"
@@ -68,12 +73,14 @@
 import CleaningTabs from "../components/cleaningComponents/CleaningTabs";
 import DialogTask from "../components/cleaningComponents/DialogTask";
 import overlay from "../components/UI/overlay";
+import TaskOverview from "../components/cleaningComponents/TaskOverview";
 
 export default {
   components: {
     CleaningTabs,
     DialogTask,
     overlay,
+    TaskOverview
   },
   data() {
     return {
@@ -83,6 +90,7 @@ export default {
       callTakeOverFunction: false,
       existingTask: {},
       showOverlay: false,
+      showDialogEditTasks: false
     };
   },
   methods: {
@@ -90,6 +98,9 @@ export default {
       this.showOverlay = !this.showOverlay;
       if (this.$store.state.debug)
         console.log("Showing Overlay: " + this.showOverlay);
+    },
+    toggleDialogEditTasks(newState){
+this.showDialogEditTasks = newState;
     },
     toggleDialogTask(newState) {
       this.showDialogNewTask = newState;

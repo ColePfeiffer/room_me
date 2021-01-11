@@ -16,6 +16,10 @@
           <v-icon v-else>mdi-plus</v-icon>
         </v-btn>
       </template>
+            <v-btn fab dark small color="grey">
+        <v-icon>mdi-empty</v-icon>
+        <div class="fab-text-custom grey">Reset balance</div>
+      </v-btn>
       <v-btn fab dark small color="green" @click="changeDialogState('CASH')">
         <v-icon>euro</v-icon>
         <div class="fab-text-custom green">Add bought item</div>
