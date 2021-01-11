@@ -1,5 +1,5 @@
 <template>
-    <div v-if="view === 'NEW_TASK'">
+    <div>
       <DialogCalendar
         :showDialog="showDialogCalendar"
         :initialDate="dateInCalendar"
@@ -10,11 +10,7 @@
 
       <v-card class="removeScrollbar">
         <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">Task Creator</h3>
-            </div>
-          </v-card-title>
+            
           <v-card-text>
             <!-- Name and End Date -->
             <v-row>
@@ -110,20 +106,6 @@
               </v-col>
             </v-row>
           </v-card-text>
-
-          <v-card-actions>
-            <v-row justify="space-around">
-              <v-col cols="4"></v-col>
-              <v-col cols="4">
-                <v-btn color="pink" :disabled="!valid" @click="createNewTask"
-                  >Create</v-btn
-                >
-              </v-col>
-              <v-col cols="4">
-                <v-btn color="gray" @click="closeDialog">Cancel</v-btn>
-              </v-col>
-            </v-row>
-          </v-card-actions>
         </v-form>
       </v-card>
     </div>
