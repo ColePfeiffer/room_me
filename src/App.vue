@@ -3,11 +3,19 @@
     <v-card color="grey lighten-4" flat tile>
       <v-toolbar dark color="#211E21">
         <!--                 Title for Toolbar-->
-        <v-toolbar-title style="cursor: pointer" @click="goToPageAndSetColor('/home')">
+        <v-toolbar-title
+          style="cursor: pointer"
+          @click="goToPageAndSetColor('/home')"
+        >
           RoomMe
           <v-icon right></v-icon>
         </v-toolbar-title>
-        <v-btn class="no-background-hover" text color="white" @click="goToPageAndSetColor('/home')">
+        <v-btn
+          class="no-background-hover"
+          text
+          color="white"
+          @click="goToPageAndSetColor('/home')"
+        >
           <span></span>
           <v-icon :color="getColor('/home')">mdi-home</v-icon>
         </v-btn>
@@ -29,7 +37,11 @@
           <span></span>
           <v-icon :color="getColor('/einkaufen')">mdi-shopping</v-icon>
         </v-btn>
-        <v-btn class="no-background-hover" text @click="goToPageAndSetColor('/putzen')">
+        <v-btn
+          class="no-background-hover"
+          text
+          @click="goToPageAndSetColor('/putzen')"
+        >
           <span></span>
           <v-icon :color="getColor('/putzen')">mdi-broom</v-icon>
         </v-btn>
@@ -62,20 +74,22 @@ export default {
   name: "App",
 
   components: {
-    SettingsMenu
+    SettingsMenu,
   },
   data: () => ({
-    currentPage: "/home"
+    currentPage: "/home",
   }),
   computed: {
     currentRouteName() {
       return this.$router.history.current.path;
-    }
+    },
   },
   methods: {
     goToPageAndSetColor(page) {
       this.currentPage = page;
-      this.$router.push(page);
+      if (this.$route.path !== page) {
+        this.$router.push(page);
+      }
     },
     getColor(page) {
       if (this.currentPage === page) {
@@ -101,7 +115,7 @@ export default {
           color: "#1F85DE",
           selected: true,
           showProfilePage: false,
-          isLoggedIn: true
+          isLoggedIn: true,
         },
         {
           id: 1,
@@ -115,7 +129,7 @@ export default {
           selected: true,
           color: "#DE591F",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 2,
@@ -129,7 +143,7 @@ export default {
           selected: true,
           color: "#BDA0EC",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         },
         {
           id: 3,
@@ -143,7 +157,7 @@ export default {
           selected: true,
           color: "#EBE386",
           showProfilePage: false,
-          isLoggedIn: false
+          isLoggedIn: false,
         }
       );
 
@@ -172,7 +186,7 @@ export default {
             moveOutDate: new Date(2019, 5, 3)
             
           }*/
-          ]
+          ],
         });
         this.$store.commit("incrementNumberOfRooms");
       }
@@ -182,42 +196,44 @@ export default {
         {
           id: 1,
           roomie: this.$store.state.roomies[0],
-          text: "Der Chat funktioniert, juhu. Was geht!"
+          text: "Der Chat funktioniert, juhu. Was geht!",
         },
         {
           id: 3,
           roomie: this.$store.state.roomies[3],
-          text: "Steilo!"
+          text: "Steilo!",
         },
         {
           id: 2,
           roomie: this.$store.state.roomies[2],
-          text: "Who let the dogs out, wuf - wuf - wuf..."
+          text: "Who let the dogs out, wuf - wuf - wuf...",
         }
       );
 
       if (this.$store.state.debug) console.log("Creating tasks");
-      this.$store.state.taskList.push(
-        {
-          id: 0,
-          name: "Cleaning the kitchen",
-          description: "",
-          comment: "",
-          status: 0,
-          createdBy: this.$store.state.roomies[0],
-          assignedTo: this.$store.state.roomies[0],
-          currentEndDate: new Date().toISOString().substr(0, 10),
-          completedOn: "",
-          numberOfDaysInBetween: "7",
-          order: [{roomie: this.$store.state.roomies[0], isAssignedToTask: true}, {roomie: this.$store.state.roomies[1], isAssignedToTask: true}, {roomie: this.$store.state.roomies[2], isAssignedToTask: true} ]
-        }
-      );
-    }
+      this.$store.state.taskList.push({
+        id: 0,
+        name: "Cleaning the kitchen",
+        description: "",
+        comment: "",
+        status: 0,
+        createdBy: this.$store.state.roomies[0],
+        assignedTo: this.$store.state.roomies[0],
+        currentEndDate: new Date().toISOString().substr(0, 10),
+        completedOn: "",
+        numberOfDaysInBetween: "7",
+        order: [
+          { roomie: this.$store.state.roomies[0], isAssignedToTask: true },
+          { roomie: this.$store.state.roomies[1], isAssignedToTask: true },
+          { roomie: this.$store.state.roomies[2], isAssignedToTask: true },
+        ],
+      });
+    },
   },
 
   created() {
     this.setupForDebugging();
-  }
+  },
 };
 
 // Colors: EEF5F0 - weiß

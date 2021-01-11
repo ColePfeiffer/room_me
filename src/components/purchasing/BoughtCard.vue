@@ -24,9 +24,9 @@
             <v-row no-gutters>
               <v-card-text id="articleInformation">
                 {{ article.purchasedBy.username }}
-                <span
-                  v-if="article.comment != ''"
-                >- {{ article.comment }}</span>
+                <span v-if="article.comment != ''"
+                  >- {{ article.comment }}</span
+                >
               </v-card-text>
             </v-row>
           </v-col>
@@ -34,7 +34,9 @@
       </v-col>
       <v-divider vertical></v-divider>
       <v-col s="2" md="2">
-        <v-card-title id="price">{{ article.price }} {{ currencySymbol }}</v-card-title>
+        <v-card-title id="price"
+          >{{ article.price }} {{ $store.state.currencySymbol }}</v-card-title
+        >
       </v-col>
     </v-row>
   </v-card>
@@ -84,7 +86,9 @@
       </v-col>
       <v-divider vertical></v-divider>
       <v-col s="2" md="2">
-        <v-card-title id="price">{{ article.price }} {{ currencySymbol }}</v-card-title>
+        <v-card-title id="price"
+          >{{ article.price }} {{ $store.state.currencySymbol  }}</v-card-title
+        >
       </v-col>
     </v-row>
   </v-card>
@@ -93,30 +97,36 @@
 <script>
 export default {
   name: "BoughtCard",
-  emits: ["delete-Article"],
   props: {
-    ["article"]: Object,
-    ["currencySymbol"]: String
+    ["article"]: Object
   },
   components: {},
   data() {
     return {
       showSettings: false,
       showDeleteInfo: false,
-      isSecondClick: false
+      isSecondClick: false,
     };
   },
   methods: {
     deleteArticle() {
       if (this.isSecondClick) {
-        this.$emit("delete-Article", this.article);
+        // Deleting
+        const position = this.$store.state.shoppingList.indexOf(this.article);
+        if ( this.$store.state.debug)
+        console.log("Deleted " + this.article.name + ".");
+        this.$store.state.shoppingList.splice(position, 1);
+
+        // Revert Money Stuff, add a new property to task: pay data or something
+        // pay data: {roomie: *, amount: -3}
+
         this.isSecondClick = false;
         this.showSettings = false;
       } else {
         this.isSecondClick = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

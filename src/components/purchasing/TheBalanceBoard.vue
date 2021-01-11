@@ -25,8 +25,8 @@
                   <span
                     v-if="roomie.balance >= 0"
                     class="balance-plus"
-                  >{{ "+" + roomie.balance + currencySymbol }}</span>
-                  <span v-else class="balance-minus">{{ roomie.balance + currencySymbol }}</span>
+                  >{{ "+" + roomie.balance + $store.state.currencySymbol }}</span>
+                  <span v-else class="balance-minus">{{ roomie.balance + $store.state.currencySymbol }}</span>
                 </v-list-item-subtitle>
                 <v-divider class="ma-1" horizontal color="pink"></v-divider>
               </v-list-item-content>
@@ -48,9 +48,6 @@ export default {
   emits: ["save-changes", "toggle-dialogCashUp"],
   components: {
     DialogProfilePage
-  },
-  props: {
-    currencySymbol: String
   },
   data() {
     return {};

@@ -9,6 +9,7 @@ export default new Vuex.Store({
     debug: true,
     phone: false,
     showToolTips: false,
+    currencySymbol: " €",
     // Task Management
     taskorder: [], // array, holds references to roomie objects within roomies
     lastRoomieSelectedForTaskorder: "",

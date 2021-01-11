@@ -18,16 +18,15 @@
         </v-btn>
       </template>
 
-        <v-btn fab dark small color="green" @click="showDialogNewTask = true">
+      <v-btn fab dark small color="green" @click="showDialogNewTask = true">
         <v-icon>mdi-broom</v-icon>
         <div class="fab-text-custom green">Add task</div>
       </v-btn>
 
-     <v-btn fab dark small color="pink" @click="changeDialogState('NEW')">
+      <v-btn fab dark small color="pink" @click="changeDialogState('NEW')">
         <v-icon>mdi-shopping</v-icon>
         <div class="fab-text-custom pink">Add article</div>
       </v-btn>
-  
     </v-speed-dial>
 
     <v-carousel height="600" hide-delimiter-background show-arrows-on-hover>
@@ -36,7 +35,7 @@
           <v-row class="fill-height" align="center" justify="center">
             <div class="posts">
               <v-card elevation="10" max-width="100%">
-              <v-card-title>Welcome to your roomie chat!</v-card-title>
+                <v-card-title>Welcome to your roomie chat!</v-card-title>
                 <CommentSectionHomePage></CommentSectionHomePage>
               </v-card>
             </div>
@@ -49,9 +48,7 @@
             <div class="purchasingTab">
               <v-card elevation="10" max-width="100%">
                 <ThePurchasingTabs
-                  :shoppingList="shoppingList"
-                  :currencySymbol="currencySymbol"
-                  @delete-article="deleteArticle"
+                  class="add-padding"
                   @open-Dialog-Add-Article="openDialogAddArticle"
                 ></ThePurchasingTabs>
               </v-card>
@@ -59,12 +56,16 @@
           </v-row>
         </v-sheet>
       </v-carousel-item>
-       <v-carousel-item>
+      <v-carousel-item>
         <v-sheet :color="colors[0]" height="100%">
           <v-row class="fill-height" align="center" justify="center">
-            <div class="cleaningTabs">
-              <v-card elevation="10" max-width="100%">
-                   <CleaningTabs :taskList="taskList"></CleaningTabs>
+            <div class="mx-5">
+              <v-card elevation="10">
+                <CleaningTabs
+                  @show-check-off-task="showCheckOffTask"
+                  @show-cancel-task="showCancelTask"
+                  @take-task-over="takeTaskOver"
+                ></CleaningTabs>
               </v-card>
             </div>
           </v-row>
@@ -94,6 +95,10 @@ export default {
   data() {
     return {
       fab: false,
+      existingTask: {},
+      showDialogNewTask: false,
+      taskView: "NEW_TASK",
+      callTakeOverFunction: false,
       colors: [
         "indigo",
         "warning",
@@ -103,7 +108,27 @@ export default {
       ],
     };
   },
-  methods: {},
+  methods: {
+    openDialogAddArticle(item) {
+      this.changeDialogState("CASH_UP_EXISTING");
+      this.existingArticle = item;
+    },
+    showCheckOffTask(existingTask) {
+      this.existingTask = existingTask;
+      this.taskView = "CHECK_OFF_TASK";
+      this.showDialogNewTask = true;
+    },
+    showCancelTask(existingTask) {
+      this.existingTask = existingTask;
+      this.taskView = "CANCEL_TASK";
+      this.showDialogNewTask = true;
+    },
+
+    takeTaskOver(existingTask) {
+      this.existingTask = existingTask;
+      this.callTakeOverFunction = !this.callTakeOverFunction;
+    },
+  },
   created() {},
 };
 </script>

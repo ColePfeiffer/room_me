@@ -46,7 +46,7 @@
           xl="6"
           class="d-flex flex-column justify-center align-center"
         >
-          <TheBalanceBoard class="add-padding" :currencySymbol="currencySymbol"></TheBalanceBoard>
+          <TheBalanceBoard class="add-padding"></TheBalanceBoard>
         </v-col>
         <v-col
           xs="12"
@@ -58,8 +58,6 @@
         >
           <ThePurchasingTabs
             class="add-padding"
-            :currencySymbol="currencySymbol"
-            @delete-article="deleteArticle"
             @open-Dialog-Add-Article="openDialogAddArticle"
           ></ThePurchasingTabs>
         </v-col>
@@ -94,7 +92,6 @@ export default {
       model: 0,
       showDialogNewArticle: false,
       showDialogSplit: false,
-      currencySymbol: " €",
       debug: true,
       existingArticle: {
         name: " ",
@@ -147,12 +144,6 @@ export default {
     };
   },
   methods: {
-    deleteArticle(article) {
-      const position = this.$store.state.shoppingList.indexOf(article);
-      if (this.debug)
-        console.log("Position of " + article.name + " is " + position);
-      this.$store.state.shoppingList.splice(position, 1);
-    },
     openDialogAddArticle(item) {
       this.changeDialogState("CASH_UP_EXISTING");
       this.existingArticle = item;

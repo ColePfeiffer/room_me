@@ -19,18 +19,26 @@
             <v-icon color="green">euro</v-icon>
           </v-tab>
 
-          <v-tab-item class="someStyling" v-for="i in 3" :key="i" :value="'tab-' + i">
+          <v-tab-item
+            class="someStyling"
+            v-for="i in 3"
+            :key="i"
+            :value="'tab-' + i"
+          >
             <!--If list is empty: -->
             <div v-if="i == 1">
               <div v-if="openItems.length === 0">
                 <v-card class="purchasingCards">
                   <v-col>
-                    <v-card-text class="stylingTextHeadline">No items added yet.</v-card-text>
+                    <v-card-text class="stylingTextHeadline"
+                      >No items added yet.</v-card-text
+                    >
 
                     <div class="padding15">
-                      <label
-                        class="stylingTextSubtitle"
-                      >Click on the button in the right corner to add a new item.</label>
+                      <label class="stylingTextSubtitle"
+                        >Click on the button in the right corner to add a new
+                        item.</label
+                      >
                     </div>
                   </v-col>
                 </v-card>
@@ -38,7 +46,10 @@
 
               <div v-else>
                 <div v-for="item in openItems.reverse()" :key="item.id">
-                  <PurchasingTask :item="item" @open-Dialog-Add-Article="openDialogAddArticle"></PurchasingTask>
+                  <PurchasingTask
+                    :item="item"
+                    @open-Dialog-Add-Article="openDialogAddArticle"
+                  ></PurchasingTask>
                 </div>
               </div>
             </div>
@@ -47,18 +58,23 @@
               <div v-if="pendingItems.length === 0">
                 <v-card class="purchasingCards">
                   <v-col class>
-                    <v-card-text class="stylingTextHeadline">No pending items yet.</v-card-text>
+                    <v-card-text class="stylingTextHeadline"
+                      >No pending items yet.</v-card-text
+                    >
 
                     <div class="padding15">
-                      <label
-                        class="stylingTextSubtitle"
-                      >Accept an item from the shopping list.</label>
+                      <label class="stylingTextSubtitle"
+                        >Accept an item from the shopping list.</label
+                      >
                     </div>
                   </v-col>
                 </v-card>
               </div>
               <div v-for="item in pendingItems.reverse()" :key="item.id">
-                <PurchasingTask :item="item" @open-Dialog-Add-Article="openDialogAddArticle"></PurchasingTask>
+                <PurchasingTask
+                  :item="item"
+                  @open-Dialog-Add-Article="openDialogAddArticle"
+                ></PurchasingTask>
               </div>
             </div>
 
@@ -66,12 +82,14 @@
               <div v-if="doneItems.length === 0">
                 <v-card class="purchasingCards">
                   <v-col class>
-                    <v-card-text class="stylingTextHeadline">No items bought yet.</v-card-text>
+                    <v-card-text class="stylingTextHeadline"
+                      >No items bought yet.</v-card-text
+                    >
 
                     <div class="padding15">
-                      <label
-                        class="stylingTextSubtitle"
-                      >Split the costs of an item first.</label>
+                      <label class="stylingTextSubtitle"
+                        >Split the costs of an item first.</label
+                      >
                     </div>
                   </v-col>
                 </v-card>
@@ -79,8 +97,6 @@
               <div v-for="item in doneItems.reverse()" :key="item.id">
                 <BoughtCard
                   :article="item"
-                  :currencySymbol="currencySymbol"
-                  @delete-Article="deleteArticle"
                 ></BoughtCard>
               </div>
             </div>
@@ -97,47 +113,40 @@ import BoughtCard from "./BoughtCard";
 
 export default {
   name: "PurchasingTabs",
-  emits: ["toggle-dialogCashUp", "delete-article"],
-  props: {
-    ["item"]: Object,
-    ["currencySymbol"]: String
-  },
+  emits: ["toggle-dialogCashUp"],
   components: {
     PurchasingTask,
-    BoughtCard
+    BoughtCard,
   },
   computed: {
     // Wählt einzig die aktiven Items aus der ShoppingList aus, um diese anzuzeigen
     openItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.$store.state.shoppingList.filter(function(value) {
+      return this.$store.state.shoppingList.filter(function (value) {
         return value.status === 0;
       });
     },
     pendingItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.$store.state.shoppingList.filter(function(value) {
+      return this.$store.state.shoppingList.filter(function (value) {
         return value.status === 1;
       });
     },
     doneItems() {
       // Javascript-Funktion zum Filtern von Arrays
-      return this.$store.state.shoppingList.filter(function(value) {
+      return this.$store.state.shoppingList.filter(function (value) {
         return value.status === 2;
       });
-    }
+    },
   },
   data() {
     return {};
   },
   methods: {
-    deleteArticle(article) {
-      this.$emit("delete-article", article);
-    },
     openDialogAddArticle(item) {
       this.$emit("open-Dialog-Add-Article", item);
-    }
-  }
+    },
+  },
 };
 </script>
 
