@@ -59,16 +59,17 @@
       </v-carousel-item>
       <v-carousel-item>
         <v-sheet :color="colors[0]" height="100%">
-          <v-row class="fill-height" align="center" justify="center">
-           
+         <v-row class="fill-height" align="center" justify="center">
+            <div class="purchasingTab">
               <v-card elevation="10" style="width:500px;height:auto;">
-                <v-card-title>Cleaning Tasks</v-card-title>
+                <v-card-title>Cleaning</v-card-title>
                 <CleaningTabs
                   @show-check-off-task="showCheckOffTask"
                   @show-cancel-task="showCancelTask"
                   @take-task-over="takeTaskOver"
                 ></CleaningTabs>
               </v-card>
+            </div>
            
           </v-row>
         </v-sheet>

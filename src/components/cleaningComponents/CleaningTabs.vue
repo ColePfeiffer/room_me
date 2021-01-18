@@ -1,5 +1,5 @@
 <template>
-  <v-col xs="12" sm="12" md="9">
+  <v-col xs="12" sm="12" md="12">
     <v-tabs fixed-tabs color="white" dark icons-and-text>
       <v-tabs-slider color="pink"></v-tabs-slider>
       <v-tab href="#tab-1">
