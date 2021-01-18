@@ -23,7 +23,7 @@
             <v-icon>mdi-help</v-icon>
             <div class="fab-text-custom orange">Help</div>
           </v-btn>
-                    <v-btn fab dark small color="pink" @click="toggleDialogEditTasks(true)">
+                    <v-btn v-if="false" fab dark small color="pink" @click="toggleDialogEditTasks(true)">
             <v-icon>mdi-task</v-icon>
             <div class="fab-text-custom pink">Edit a task</div>
           </v-btn>

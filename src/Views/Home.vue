@@ -47,6 +47,7 @@
           <v-row class="fill-height" align="center" justify="center">
             <div class="purchasingTab">
               <v-card elevation="10" max-width="100%">
+                <v-card-title>Shopping Tasks</v-card-title>
                 <ThePurchasingTabs
                   class="add-padding"
                   @open-Dialog-Add-Article="openDialogAddArticle"
@@ -59,15 +60,16 @@
       <v-carousel-item>
         <v-sheet :color="colors[0]" height="100%">
           <v-row class="fill-height" align="center" justify="center">
-            <div class="mx-5">
-              <v-card elevation="10">
+           
+              <v-card elevation="10" style="width:500px;height:auto;">
+                <v-card-title>Cleaning Tasks</v-card-title>
                 <CleaningTabs
                   @show-check-off-task="showCheckOffTask"
                   @show-cancel-task="showCancelTask"
                   @take-task-over="takeTaskOver"
                 ></CleaningTabs>
               </v-card>
-            </div>
+           
           </v-row>
         </v-sheet>
       </v-carousel-item>
