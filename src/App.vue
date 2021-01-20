@@ -54,12 +54,10 @@
         <!-- </v-btn>-->
       </v-toolbar>
     </v-card>
-
     <v-content class="content">
       <!--            Hier werden einzelne Seiten reingeladen-->
       <router-view></router-view>
     </v-content>
-
     <v-footer dark dense color="#211E21">
       <v-spacer></v-spacer>
       <div>RoomMe | &copy; {{ new Date().getFullYear() }}</div>

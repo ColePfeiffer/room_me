@@ -74,7 +74,6 @@ export default {
       fab: false,
       showDialogForNewRoomie: false,
       showDialogForRoomManager: false,
-
     };
   },
   methods: {}
